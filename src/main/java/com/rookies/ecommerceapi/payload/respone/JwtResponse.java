@@ -1,7 +1,5 @@
 package com.rookies.ecommerceapi.payload.respone;
 
-import java.util.List;
-
 public class JwtResponse {
     private String token;
     private String type = "Bearer";
@@ -9,17 +7,25 @@ public class JwtResponse {
     private String username;
     private String email;
     private String phoneNumber;
-    private List<String> roles;
+    private String role;
 
     public JwtResponse(String token, String type, Long id, String username, String email, String phoneNumber,
-            List<String> roles) {
+            String role) {
         this.token = token;
         this.type = type;
         this.id = id;
         this.username = username;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.roles = roles;
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getToken() {
@@ -68,13 +74,5 @@ public class JwtResponse {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public List<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
     }
 }

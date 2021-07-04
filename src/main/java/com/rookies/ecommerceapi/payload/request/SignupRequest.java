@@ -1,6 +1,5 @@
 package com.rookies.ecommerceapi.payload.request;
 
-import java.util.Set;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -14,7 +13,7 @@ public class SignupRequest {
     @Size(min = 8, max = 40)
     private String password;
 
-    private Set<String> role;
+    private String role;
 
     @NotBlank
     @Size(max = 50)
@@ -59,11 +58,11 @@ public class SignupRequest {
         this.password = password;
     }
 
-    public Set<String> getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Set<String> role) {
+    public void setRole(String role) {
         this.role = role;
     }
 

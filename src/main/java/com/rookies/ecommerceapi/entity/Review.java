@@ -12,16 +12,10 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "reviews", uniqueConstraints = {
                 @UniqueConstraint(columnNames = { "order_id", "product_detail_id", "user_id" }) })
-@Data // lombok help generate constructor, get, set v.v.
-@AllArgsConstructor
-@NoArgsConstructor
 public class Review {
         @Id
         // @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -72,5 +66,120 @@ public class Review {
 
         @NotNull
         private Short status;
+
+        public Review(Long id, ProductDetail productDetail, User user, Order order, @NotNull Short numOfStar,
+                        String description, Short img, @NotNull LocalDateTime createDate, LocalDateTime updateDate,
+                        @NotNull Short anonymous, @NotNull Short status) {
+                this.id = id;
+                this.productDetail = productDetail;
+                this.user = user;
+                this.order = order;
+                this.numOfStar = numOfStar;
+                this.description = description;
+                this.img = img;
+                this.createDate = createDate;
+                this.updateDate = updateDate;
+                this.anonymous = anonymous;
+                this.status = status;
+        }
+
+        public Review() {
+        }
+
+        public Long getId() {
+                return id;
+        }
+
+        public void setId(Long id) {
+                this.id = id;
+        }
+
+        public ProductDetail getProductDetail() {
+                return productDetail;
+        }
+
+        public void setProductDetail(ProductDetail productDetail) {
+                this.productDetail = productDetail;
+        }
+
+        public User getUser() {
+                return user;
+        }
+
+        public void setUser(User user) {
+                this.user = user;
+        }
+
+        public Order getOrder() {
+                return order;
+        }
+
+        public void setOrder(Order order) {
+                this.order = order;
+        }
+
+        public Short getNumOfStar() {
+                return numOfStar;
+        }
+
+        public void setNumOfStar(Short numOfStar) {
+                this.numOfStar = numOfStar;
+        }
+
+        public String getDescription() {
+                return description;
+        }
+
+        public void setDescription(String description) {
+                this.description = description;
+        }
+
+        public Short getImg() {
+                return img;
+        }
+
+        public void setImg(Short img) {
+                this.img = img;
+        }
+
+        public LocalDateTime getCreateDate() {
+                return createDate;
+        }
+
+        public void setCreateDate(LocalDateTime createDate) {
+                this.createDate = createDate;
+        }
+
+        public LocalDateTime getUpdateDate() {
+                return updateDate;
+        }
+
+        public void setUpdateDate(LocalDateTime updateDate) {
+                this.updateDate = updateDate;
+        }
+
+        public Short getAnonymous() {
+                return anonymous;
+        }
+
+        public void setAnonymous(Short anonymous) {
+                this.anonymous = anonymous;
+        }
+
+        public Short getStatus() {
+                return status;
+        }
+
+        public void setStatus(Short status) {
+                this.status = status;
+        }
+
+        @Override
+        public String toString() {
+                return "Review [anonymous=" + anonymous + ", createDate=" + createDate + ", description=" + description
+                                + ", id=" + id + ", img=" + img + ", numOfStar=" + numOfStar + ", order=" + order
+                                + ", productDetail=" + productDetail + ", status=" + status + ", updateDate="
+                                + updateDate + ", user=" + user + "]";
+        }
 
 }

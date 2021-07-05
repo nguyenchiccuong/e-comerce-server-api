@@ -13,15 +13,9 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "product_details", uniqueConstraints = { @UniqueConstraint(columnNames = { "product_id", "color" }) })
-@Data // lombok help generate constructor, get, set v.v.
-@AllArgsConstructor
-@NoArgsConstructor
 public class ProductDetail {
     @Id
     // @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -53,4 +47,81 @@ public class ProductDetail {
 
     @OneToMany(mappedBy = "productDetail")
     private Collection<Review> reviews;
+
+    public ProductDetail(Long id, Product product, @NotNull String color, @NotNull Integer quantity,
+            @NotNull Long price, Collection<OrderDetail> orderDetails, Collection<Review> reviews) {
+        this.id = id;
+        this.product = product;
+        this.color = color;
+        this.quantity = quantity;
+        this.price = price;
+        this.orderDetails = orderDetails;
+        this.reviews = reviews;
+    }
+
+    public ProductDetail() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    public Collection<OrderDetail> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(Collection<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
+
+    public Collection<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Collection<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductDetail [color=" + color + ", id=" + id + ", orderDetails=" + orderDetails + ", price=" + price
+                + ", product=" + product + ", quantity=" + quantity + ", reviews=" + reviews + "]";
+    }
+
 }

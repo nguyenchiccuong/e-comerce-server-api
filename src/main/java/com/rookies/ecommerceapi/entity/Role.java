@@ -15,15 +15,9 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.Parameter;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "roles", uniqueConstraints = { @UniqueConstraint(columnNames = { "role_name" }) })
-@Data // lombok help generate constructor, get, set v.v.
-@AllArgsConstructor
-@NoArgsConstructor
 public class Role {
     @Id
     // @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -42,5 +36,43 @@ public class Role {
 
     @OneToMany(mappedBy = "Role")
     private Collection<User> users;
+
+    public Role(Short id, @NotNull RoleName roleName, Collection<User> users) {
+        this.id = id;
+        this.roleName = roleName;
+        this.users = users;
+    }
+
+    public Role() {
+    }
+
+    public Short getId() {
+        return id;
+    }
+
+    public void setId(Short id) {
+        this.id = id;
+    }
+
+    public RoleName getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(RoleName roleName) {
+        this.roleName = roleName;
+    }
+
+    public Collection<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Collection<User> users) {
+        this.users = users;
+    }
+
+    @Override
+    public String toString() {
+        return "Role [id=" + id + ", roleName=" + roleName + ", users=" + users + "]";
+    }
 
 }

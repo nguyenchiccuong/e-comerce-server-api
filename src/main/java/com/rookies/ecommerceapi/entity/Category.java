@@ -13,15 +13,9 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "categories", uniqueConstraints = { @UniqueConstraint(columnNames = { "category_name" }) })
-@Data // lombok help generate constructor, get, set v.v.
-@AllArgsConstructor
-@NoArgsConstructor
 public class Category {
     @Id
     // @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -39,12 +33,71 @@ public class Category {
     // @Column(name = "parent_category_id")
     // private Integer parentCategoryId;
     @ManyToOne
-    @JoinColumn(name="parent_category_id")
+    @JoinColumn(name = "parent_category_id")
     private Category category;
 
     @OneToMany(mappedBy = "category")
     private Collection<Product> products;
 
-    @OneToMany(mappedBy="category")
+    @OneToMany(mappedBy = "category")
     private Collection<Category> Categories;
+
+    public Category(Integer id, @NotNull String categoryName, Category category, Collection<Product> products,
+            Collection<Category> categories) {
+        this.id = id;
+        this.categoryName = categoryName;
+        this.category = category;
+        this.products = products;
+        Categories = categories;
+    }
+
+    public Category() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Collection<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Collection<Product> products) {
+        this.products = products;
+    }
+
+    public Collection<Category> getCategories() {
+        return Categories;
+    }
+
+    public void setCategories(Collection<Category> categories) {
+        Categories = categories;
+    }
+
+    @Override
+    public String toString() {
+        return "Category [Categories=" + Categories + ", category=" + category + ", categoryName=" + categoryName
+                + ", id=" + id + ", products=" + products + "]";
+    }
+
 }

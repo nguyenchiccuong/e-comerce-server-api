@@ -44,12 +44,12 @@ public class User {
 
     @NotNull
     private Short status;
-    // , cascade = CascadeType.ALL
-    @OneToOne(mappedBy = "user")
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Customer Customer;
-    // , cascade = CascadeType.ALL
-    @OneToOne(mappedBy = "user")
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Employee employee;
 
@@ -58,6 +58,14 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private Collection<Review> reviews;
+
+    public User(@NotNull String username, @NotNull String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public User() {
+    }
 
     public User(Long id, @NotNull String username, @NotNull String password, com.rookies.ecommerceapi.entity.Role role,
             @NotNull Short status, com.rookies.ecommerceapi.entity.Customer customer, Employee employee,
@@ -71,9 +79,6 @@ public class User {
         this.employee = employee;
         this.orders = orders;
         this.reviews = reviews;
-    }
-
-    public User() {
     }
 
     public Long getId() {
@@ -150,9 +155,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [Customer=" + Customer + ", Role=" + Role + ", employee=" + employee + ", id=" + id + ", orders="
-                + orders + ", password=" + password + ", reviews=" + reviews + ", status=" + status + ", username="
-                + username + "]";
+        return "User [id=" + id + ", password=" + password + ", status=" + status + ", username=" + username + "]";
     }
 
 }

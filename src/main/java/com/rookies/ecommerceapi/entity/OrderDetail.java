@@ -99,8 +99,7 @@ public class OrderDetail {
 
         @Override
         public String toString() {
-                return "OrderDetail [id=" + id + ", order=" + order + ", price=" + price + ", productDetail="
-                                + productDetail + ", quantity=" + quantity + "]";
+                return "OrderDetail [id=" + id + ", price=" + price + ", quantity=" + quantity + "]";
         }
 
 }

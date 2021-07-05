@@ -229,11 +229,10 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product [brand=" + brand + ", category=" + category + ", createDate=" + createDate + ", description="
-                + description + ", id=" + id + ", img=" + img + ", material=" + material + ", model=" + model
-                + ", origin=" + origin + ", productDetails=" + productDetails + ", productName=" + productName
-                + ", size=" + size + ", standard=" + standard + ", updateDate=" + updateDate + ", warranty=" + warranty
-                + ", weight=" + weight + "]";
+        return "Product [createDate=" + createDate + ", description=" + description + ", id=" + id + ", img=" + img
+                + ", material=" + material + ", model=" + model + ", productName=" + productName + ", size=" + size
+                + ", standard=" + standard + ", updateDate=" + updateDate + ", warranty=" + warranty + ", weight="
+                + weight + "]";
     }
 
 }

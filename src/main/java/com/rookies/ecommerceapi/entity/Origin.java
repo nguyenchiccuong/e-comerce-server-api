@@ -64,7 +64,7 @@ public class Origin {
 
     @Override
     public String toString() {
-        return "Origin [country=" + country + ", id=" + id + ", products=" + products + "]";
+        return "Origin [country=" + country + ", id=" + id + "]";
     }
 
 }

@@ -1,7 +1,10 @@
 package com.rookies.ecommerceapi.service.impl;
 
-import com.rookies.ecommerceapi.service.OriginService;
+import org.springframework.stereotype.Service;
 
-public class OrderServiceImpl implements OriginService{
+import com.rookies.ecommerceapi.service.OrderService;
+
+@Service
+public class OrderServiceImpl implements OrderService{
     
 }

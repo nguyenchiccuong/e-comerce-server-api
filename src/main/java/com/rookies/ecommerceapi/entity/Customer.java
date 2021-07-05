@@ -2,6 +2,8 @@ package com.rookies.ecommerceapi.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -21,7 +23,7 @@ public class Customer {
     @Column(name = "user_id")
     private Long userId;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @MapsId
     @JoinColumn(name = "user_id")
     private User user;
@@ -59,6 +61,15 @@ public class Customer {
     }
 
     public Customer() {
+    }
+
+    public Customer(Long userId, @NotNull String name, String phoneNumber, @Email String email,
+            @NotNull LocalDateTime createDate) {
+        this.userId = userId;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.createDate = createDate;
     }
 
     public Long getUserId() {
@@ -136,8 +147,7 @@ public class Customer {
     @Override
     public String toString() {
         return "Customer [address=" + address + ", createDate=" + createDate + ", dob=" + dob + ", email=" + email
-                + ", name=" + name + ", phoneNumber=" + phoneNumber + ", sex=" + sex + ", user=" + user + ", userId="
-                + userId + "]";
+                + ", name=" + name + ", phoneNumber=" + phoneNumber + ", sex=" + sex + ", userId=" + userId + "]";
     }
 
 }

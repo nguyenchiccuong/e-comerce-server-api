@@ -212,10 +212,10 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order [address=" + address + ", createDate=" + createDate + ", id=" + id + ", orderDetails="
-                + orderDetails + ", paymentId=" + paymentId + ", paymentMethod=" + paymentMethod + ", paymentStatus="
-                + paymentStatus + ", phoneNumber=" + phoneNumber + ", receiver=" + receiver + ", reviews=" + reviews
-                + ", status=" + status + ", total=" + total + ", updateDate=" + updateDate + ", user=" + user + "]";
+        return "Order [address=" + address + ", createDate=" + createDate + ", id=" + id + ", paymentId=" + paymentId
+                + ", paymentMethod=" + paymentMethod + ", paymentStatus=" + paymentStatus + ", phoneNumber="
+                + phoneNumber + ", receiver=" + receiver + ", status=" + status + ", total=" + total + ", updateDate="
+                + updateDate + "]";
     }
 
 }

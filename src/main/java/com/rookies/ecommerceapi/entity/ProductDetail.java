@@ -120,8 +120,7 @@ public class ProductDetail {
 
     @Override
     public String toString() {
-        return "ProductDetail [color=" + color + ", id=" + id + ", orderDetails=" + orderDetails + ", price=" + price
-                + ", product=" + product + ", quantity=" + quantity + ", reviews=" + reviews + "]";
+        return "ProductDetail [color=" + color + ", id=" + id + ", price=" + price + ", quantity=" + quantity + "]";
     }
 
 }

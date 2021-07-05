@@ -177,9 +177,8 @@ public class Review {
         @Override
         public String toString() {
                 return "Review [anonymous=" + anonymous + ", createDate=" + createDate + ", description=" + description
-                                + ", id=" + id + ", img=" + img + ", numOfStar=" + numOfStar + ", order=" + order
-                                + ", productDetail=" + productDetail + ", status=" + status + ", updateDate="
-                                + updateDate + ", user=" + user + "]";
+                                + ", id=" + id + ", img=" + img + ", numOfStar=" + numOfStar + ", status=" + status
+                                + ", updateDate=" + updateDate + "]";
         }
 
 }

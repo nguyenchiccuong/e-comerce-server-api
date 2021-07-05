@@ -2,6 +2,8 @@ package com.rookies.ecommerceapi.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -21,7 +23,7 @@ public class Employee {
     @Column(name = "user_id")
     private Long userId;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @MapsId
     @JoinColumn(name = "user_id")
     private User user;
@@ -142,8 +144,7 @@ public class Employee {
     @Override
     public String toString() {
         return "Employee [address=" + address + ", createDate=" + createDate + ", dob=" + dob + ", email=" + email
-                + ", name=" + name + ", phoneNumber=" + phoneNumber + ", sex=" + sex + ", user=" + user + ", userId="
-                + userId + "]";
+                + ", name=" + name + ", phoneNumber=" + phoneNumber + ", sex=" + sex + ", userId=" + userId + "]";
     }
 
 }

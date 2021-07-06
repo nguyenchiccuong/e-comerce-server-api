@@ -9,7 +9,7 @@ public class SignupRequest {
     @NotBlank
     @Pattern(regexp = "^[a-zA-Z][a-zA-Z0-9\\.]{7,15}$", message = "Invalid username!")
     private String username;
-    //star with character, can have ., number, charracter length from 7->15
+    //star with character, can have ., number, charracter length from 8->16
 
     @NotBlank
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,10}$", message = "Invalid password!")

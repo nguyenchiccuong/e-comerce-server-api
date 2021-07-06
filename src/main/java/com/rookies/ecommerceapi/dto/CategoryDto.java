@@ -1,8 +1,11 @@
 package com.rookies.ecommerceapi.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class CategoryDto {
     private Integer id;
 
+    @NotBlank
     private String categoryName;
 
     public CategoryDto(Integer id, String categoryName) {

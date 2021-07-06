@@ -34,13 +34,13 @@ public class Category {
     // private Integer parentCategoryId;
     @ManyToOne
     @JoinColumn(name = "parent_category_id")
-    private Category category;
+    private Category category; // parent category
 
     @OneToMany(mappedBy = "category")
     private Collection<Product> products;
 
     @OneToMany(mappedBy = "category")
-    private Collection<Category> Categories;
+    private Collection<Category> Categories; // sub category
 
     public Category(Integer id, @NotNull String categoryName, Category category, Collection<Product> products,
             Collection<Category> categories) {

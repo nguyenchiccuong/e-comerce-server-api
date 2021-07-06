@@ -5,6 +5,14 @@ public class CategoryDto {
 
     private String categoryName;
 
+    public CategoryDto(Integer id, String categoryName) {
+        this.id = id;
+        this.categoryName = categoryName;
+    }
+
+    public CategoryDto() {
+    }
+
     public Integer getId() {
         return id;
     }

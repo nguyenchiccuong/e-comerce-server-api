@@ -10,6 +10,7 @@ import com.rookies.ecommerceapi.entity.Category;
 import com.rookies.ecommerceapi.repository.CategoryRepository;
 import com.rookies.ecommerceapi.service.CategoryService;
 import com.rookies.ecommerceapi.exception.CategoryNameExistException;
+import com.rookies.ecommerceapi.payload.respone.MessageResponse;
 import com.rookies.ecommerceapi.exception.CategoryIdNotFoundException;
 
 @Service
@@ -57,26 +58,48 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         Optional<Category> categoryByCategoryName = categoryRepository.findByCategoryName(category.getCategoryName());
-
         if (categoryByCategoryName.isPresent()) {
             throw new CategoryNameExistException(category.getCategoryName());
-        } else {
-            Category categorySave = new Category();
-            categorySave.setCategory(categoryById.get());
-            categorySave.setCategoryName(category.getCategoryName());
-            return categoryRepository.save(categorySave);
         }
+
+        Category categorySave = new Category();
+        categorySave.setCategory(categoryById.get());
+        categorySave.setCategoryName(category.getCategoryName());
+        return categoryRepository.save(categorySave);
+
     }
 
     @Override
     public ResponseEntity<?> updateCategory(Category category) {
-        // TODO Auto-generated method stub
-        return null;
+        if (category.getId() == null) {
+            throw new CategoryIdNotFoundException(category.getId());
+        }
+
+        Optional<Category> categoryById = categoryRepository.findById(category.getId());
+        if (!categoryById.isPresent()) {
+            throw new CategoryIdNotFoundException(category.getId());
+        }
+        if (categoryById.get().getCategoryName().equals(category.getCategoryName())) {
+            throw new CategoryNameExistException(category.getCategoryName());
+        }
+
+        Optional<Category> categoryByCategoryName = categoryRepository.findByCategoryName(category.getCategoryName());
+        if (categoryByCategoryName.isPresent()) {
+            throw new CategoryNameExistException(category.getCategoryName());
+        }
+
+        Category categoryUpdate = categoryById.get();
+        categoryUpdate.setCategoryName(category.getCategoryName());
+        categoryRepository.save(categoryUpdate);
+        return ResponseEntity.ok(new MessageResponse("update success"));
+
     }
 
     @Override
     public ResponseEntity<?> deleteCategory(Integer id) {
-        // TODO Auto-generated method stub
+        if (id == null) {
+            throw new CategoryIdNotFoundException(id);
+        }
         return null;
     }
 

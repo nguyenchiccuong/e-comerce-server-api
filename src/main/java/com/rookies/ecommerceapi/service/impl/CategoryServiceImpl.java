@@ -10,6 +10,7 @@ import com.rookies.ecommerceapi.entity.Category;
 import com.rookies.ecommerceapi.repository.CategoryRepository;
 import com.rookies.ecommerceapi.service.CategoryService;
 import com.rookies.ecommerceapi.exception.CategoryNameExistException;
+import com.rookies.ecommerceapi.exception.CategoryIdNotFoundException;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -45,8 +46,26 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category saveSubCategory(Category category) {
-        // TODO Auto-generated method stub
-        return null;
+        if (category.getId() == null) {
+            throw new CategoryIdNotFoundException(category.getId());
+        }
+
+        // check if not null and id is a parent category
+        Optional<Category> categoryById = categoryRepository.findByIdAndCategoryIsNull(category.getId());
+        if (!categoryById.isPresent()) {
+            throw new CategoryIdNotFoundException(category.getId());
+        }
+
+        Optional<Category> categoryByCategoryName = categoryRepository.findByCategoryName(category.getCategoryName());
+
+        if (categoryByCategoryName.isPresent()) {
+            throw new CategoryNameExistException(category.getCategoryName());
+        } else {
+            Category categorySave = new Category();
+            categorySave.setCategory(categoryById.get());
+            categorySave.setCategoryName(category.getCategoryName());
+            return categoryRepository.save(categorySave);
+        }
     }
 
     @Override

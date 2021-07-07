@@ -17,9 +17,12 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
     List<Category> findByCategoryIsNull();
 
-    @Query("FROM Category c WHERE c.category.id =?1")
+    @Query("FROM Category c WHERE c.category.id = ?1")
     List<Category> findSubCategoryByParentCategoryId(Integer parentId);
 
     Optional<Category> findByCategoryName(String categoryName);
+
+    // @Query("FROM Category c WHERE c.category is null and c.id = ?1")
+    Optional<Category> findByIdAndCategoryIsNull(Integer id);
 
 }

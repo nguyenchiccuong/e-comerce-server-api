@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import javax.validation.Valid;
 
 import com.rookies.ecommerceapi.dto.CategoryDto;
 import com.rookies.ecommerceapi.entity.Category;
@@ -35,7 +36,7 @@ public class CategoryManageController {
 
     @PostMapping("/parent")
     @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    public CategoryDto saveCategory(@RequestBody CategoryDto categoryDto) {
+    public CategoryDto saveCategory(@Valid @RequestBody CategoryDto categoryDto) {
         Category categoryRequest = modelMapper.map(categoryDto, Category.class);
         Category category = categoryService.saveCategory(categoryRequest);
         return modelMapper.map(category, CategoryDto.class);
@@ -43,7 +44,7 @@ public class CategoryManageController {
 
     @PostMapping("/sub")
     @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    public CategoryDto saveSubCategory(@RequestBody CategoryDto categoryDto) {
+    public CategoryDto saveSubCategory(@Valid @RequestBody CategoryDto categoryDto) {
         Category categoryRequest = modelMapper.map(categoryDto, Category.class);
         Category category = categoryService.saveSubCategory(categoryRequest);
         return modelMapper.map(category, CategoryDto.class);
@@ -51,7 +52,7 @@ public class CategoryManageController {
 
     @PutMapping
     @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> updateCategory(@RequestBody CategoryDto categoryDto) {
+    public ResponseEntity<?> updateCategory(@Valid @RequestBody CategoryDto categoryDto) {
         Category categoryRequest = modelMapper.map(categoryDto, Category.class);
         return categoryService.updateCategory(categoryRequest);
     }

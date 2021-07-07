@@ -7,10 +7,13 @@ import java.util.List;
 import java.util.Optional;
 
 import com.rookies.ecommerceapi.entity.Category;
+import com.rookies.ecommerceapi.entity.Product;
 import com.rookies.ecommerceapi.repository.CategoryRepository;
+import com.rookies.ecommerceapi.repository.ProductRepository;
 import com.rookies.ecommerceapi.service.CategoryService;
 import com.rookies.ecommerceapi.exception.CategoryNameExistException;
 import com.rookies.ecommerceapi.payload.respone.MessageResponse;
+import com.rookies.ecommerceapi.exception.CategoryExistInProductException;
 import com.rookies.ecommerceapi.exception.CategoryIdNotFoundException;
 
 @Service
@@ -18,9 +21,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    private final ProductRepository productRepository;
+
     @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, ProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
+        this.productRepository = productRepository;
     }
 
     @Override
@@ -91,16 +97,25 @@ public class CategoryServiceImpl implements CategoryService {
         Category categoryUpdate = categoryById.get();
         categoryUpdate.setCategoryName(category.getCategoryName());
         categoryRepository.save(categoryUpdate);
-        return ResponseEntity.ok(new MessageResponse("update success"));
+        return ResponseEntity.ok(new MessageResponse("Update success"));
 
     }
 
     @Override
     public ResponseEntity<?> deleteCategory(Integer id) {
-        if (id == null) {
+        boolean exist = categoryRepository.existsById(id);
+        if (!exist) {
             throw new CategoryIdNotFoundException(id);
         }
-        return null;
+
+        List<Product> listProductCategoryId = productRepository.findByCategoryId(id);
+        if (listProductCategoryId.size() > 0) {
+            throw new CategoryExistInProductException(id);
+        }
+
+        categoryRepository.deleteById(id);
+        return ResponseEntity.ok(new MessageResponse("Delete success"));
+
     }
 
 }

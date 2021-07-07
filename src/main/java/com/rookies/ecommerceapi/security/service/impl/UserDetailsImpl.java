@@ -25,22 +25,26 @@ public class UserDetailsImpl implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
+    private Short status;
+
     public UserDetailsImpl(Long id, String username, String password,
-            Collection<? extends GrantedAuthority> authorities) {
+            Collection<? extends GrantedAuthority> authorities, Short status) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.authorities = authorities;
+        this.status = status;
     }
 
     public static UserDetailsImpl build(User user) {
+        // be careful, basic role has many but i only use 1 user 1 role
         Set<Role> roleSet = new HashSet<Role>();
         roleSet.add(user.getRole());
 
         List<GrantedAuthority> authorities = roleSet.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getRoleName().name())).collect(Collectors.toList());
 
-        return new UserDetailsImpl(user.getId(), user.getUsername(), user.getPassword(), authorities);
+        return new UserDetailsImpl(user.getId(), user.getUsername(), user.getPassword(), authorities, user.getStatus());
     }
 
     public Long getId() {
@@ -49,6 +53,14 @@ public class UserDetailsImpl implements UserDetails {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Short getStatus() {
+        return status;
+    }
+
+    public void setStatus(Short status) {
+        this.status = status;
     }
 
     @Override

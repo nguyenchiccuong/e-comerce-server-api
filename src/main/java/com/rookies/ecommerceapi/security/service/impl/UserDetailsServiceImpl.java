@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rookies.ecommerceapi.entity.User;
+import com.rookies.ecommerceapi.exception.UserLockedException;
 import com.rookies.ecommerceapi.repository.UserRepository;
 
 @Service
@@ -22,6 +23,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with -> username : " + username));
+
+        // check if status = 0 mean user is log in
+        if (user.getStatus() == 0) {
+            throw new UserLockedException(username);
+        }
 
         return UserDetailsImpl.build(user);
     }

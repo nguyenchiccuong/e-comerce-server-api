@@ -138,7 +138,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new UserIdNotFoundException(userId);
         }
 
-        return customerRepository.findByUserId(userId).get();
+        return customerByUserId.get();
     }
 
     @Override

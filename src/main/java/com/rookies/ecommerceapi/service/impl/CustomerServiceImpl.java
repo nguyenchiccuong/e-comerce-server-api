@@ -1,6 +1,8 @@
 package com.rookies.ecommerceapi.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.time.LocalDateTime;
 
+import com.rookies.ecommerceapi.dto.CustomerDto;
 import com.rookies.ecommerceapi.entity.Customer;
 import com.rookies.ecommerceapi.entity.Role;
 import com.rookies.ecommerceapi.entity.RoleName;
@@ -117,6 +120,11 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepository.save(customer);
 
         return ResponseEntity.ok(new MessageResponse("Customer registered successfully!"));
+    }
+
+    @Override
+    public Page<Customer> retrieveCustomers(Pageable page) {
+        return customerRepository.findAll(page);
     }
 
 }

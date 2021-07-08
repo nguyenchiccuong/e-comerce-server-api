@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -41,7 +42,7 @@ public class ProductDetail {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @NotNull
+    @NotBlank // @NotNull
     private String color;
 
     @NotNull

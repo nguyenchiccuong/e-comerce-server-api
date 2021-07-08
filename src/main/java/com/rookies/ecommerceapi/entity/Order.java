@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -55,18 +56,18 @@ public class Order {
     @NotNull
     private LocalDateTime updateDate;
 
-    @NotNull
+    @NotBlank // @NotNull
     private String receiver;
 
-    @NotNull
+    @NotBlank // @NotNull
     private String address;
 
     @Column(name = "phone_number")
-    @NotNull
+    @NotBlank // @NotNull
     private String phoneNumber;
 
     @Column(name = "payment_method")
-    @NotNull
+    @NotBlank // @NotNull
     private String paymentMethod;
 
     @Column(name = "payment_id")

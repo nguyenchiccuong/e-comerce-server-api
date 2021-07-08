@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,7 +37,7 @@ public class Customer {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @NotNull
+    @NotBlank // @NotNull
     private String name;
 
     @Column(name = "phone_number")
@@ -55,7 +56,7 @@ public class Customer {
     @NotNull
     private LocalDateTime createDate;
 
-    public Customer(Long userId, @NotNull String name, String phoneNumber, @Email String email,
+    public Customer(Long userId, @NotBlank /* @NotNull */ String name, String phoneNumber, @Email String email,
             @NotNull LocalDateTime createDate) {
         this.userId = userId;
         this.name = name;

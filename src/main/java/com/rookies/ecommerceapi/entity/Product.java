@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -35,7 +36,7 @@ public class Product {
     private Long id;
 
     @Column(name = "product_name")
-    @NotNull
+    @NotBlank // @NotNull
     private String productName;
 
     // @Column(name = "category_id")

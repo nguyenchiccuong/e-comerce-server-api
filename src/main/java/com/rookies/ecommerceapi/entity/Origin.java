@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -31,7 +32,7 @@ public class Origin {
             @Parameter(name = "increment_size", value = "1") })
     private Integer id;
 
-    @NotNull
+    @NotBlank // @NotNull
     private String country;
 
     @OneToMany(mappedBy = "origin")

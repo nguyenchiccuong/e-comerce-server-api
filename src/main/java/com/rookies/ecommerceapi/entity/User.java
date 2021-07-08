@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -37,10 +38,10 @@ public class User {
             @Parameter(name = "increment_size", value = "1") })
     private Long id;
 
-    @NotNull
+    @NotBlank // @NotNull
     private String username;
 
-    @NotNull
+    @NotBlank // @NotNull
     private String password;
 
     // @Column(name = "role_id")
@@ -67,7 +68,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Collection<Review> reviews;
 
-    public User(@NotNull String username, @NotNull String password) {
+    public User(@NotBlank /* @NotNull */ String username, @NotBlank /* @NotNull */ String password) {
         this.username = username;
         this.password = password;
     }

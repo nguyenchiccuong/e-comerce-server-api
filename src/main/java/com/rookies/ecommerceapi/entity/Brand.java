@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -33,7 +34,7 @@ public class Brand {
     private Integer id;
 
     @Column(name = "brand_name")
-    @NotNull
+    @NotBlank // @NotNull
     private String brandName;
 
     @OneToMany(mappedBy = "brand")

@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -36,7 +37,7 @@ public class Category {
     private Integer id;
 
     @Column(name = "category_name")
-    @NotNull
+    @NotBlank // @NotNull
     private String categoryName;
 
     // @Column(name = "parent_category_id")

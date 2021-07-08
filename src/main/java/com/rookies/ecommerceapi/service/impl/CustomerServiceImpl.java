@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Optional;
 import java.time.LocalDateTime;
 
 import com.rookies.ecommerceapi.dto.CustomerDto;
@@ -20,6 +21,7 @@ import com.rookies.ecommerceapi.entity.Role;
 import com.rookies.ecommerceapi.entity.RoleName;
 import com.rookies.ecommerceapi.entity.User;
 import com.rookies.ecommerceapi.exception.RoleNameNotFoundException;
+import com.rookies.ecommerceapi.exception.UserIdNotFoundException;
 import com.rookies.ecommerceapi.payload.request.LoginRequest;
 import com.rookies.ecommerceapi.payload.request.SignupRequest;
 import com.rookies.ecommerceapi.payload.respone.JwtResponse;
@@ -129,7 +131,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer retrieveCustomerByUserId(Long userId) {
-       return customerRepository.findByUserId(userId).get();
+        Optional<Customer> customerByUserId = customerRepository.findByUserId(userId);
+        if (!customerByUserId.isPresent()) {
+            throw new UserIdNotFoundException(userId);
+        }
+        return customerRepository.findByUserId(userId).get();
     }
 
 }

@@ -13,9 +13,17 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "products")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Product {
     @Id
     // @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -74,158 +82,6 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     private Collection<ProductDetail> productDetails;
-
-    public Product(Long id, @NotNull String productName, Category category, String model, Brand brand, Origin origin,
-            String standard, String size, Float weight, String material, String description, Short warranty, Short img,
-            @NotNull LocalDateTime createDate, LocalDateTime updateDate, Collection<ProductDetail> productDetails) {
-        this.id = id;
-        this.productName = productName;
-        this.category = category;
-        this.model = model;
-        this.brand = brand;
-        this.origin = origin;
-        this.standard = standard;
-        this.size = size;
-        this.weight = weight;
-        this.material = material;
-        this.description = description;
-        this.warranty = warranty;
-        this.img = img;
-        this.createDate = createDate;
-        this.updateDate = updateDate;
-        this.productDetails = productDetails;
-    }
-
-    public Product() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public Brand getBrand() {
-        return brand;
-    }
-
-    public void setBrand(Brand brand) {
-        this.brand = brand;
-    }
-
-    public Origin getOrigin() {
-        return origin;
-    }
-
-    public void setOrigin(Origin origin) {
-        this.origin = origin;
-    }
-
-    public String getStandard() {
-        return standard;
-    }
-
-    public void setStandard(String standard) {
-        this.standard = standard;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
-
-    public Float getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Float weight) {
-        this.weight = weight;
-    }
-
-    public String getMaterial() {
-        return material;
-    }
-
-    public void setMaterial(String material) {
-        this.material = material;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Short getWarranty() {
-        return warranty;
-    }
-
-    public void setWarranty(Short warranty) {
-        this.warranty = warranty;
-    }
-
-    public Short getImg() {
-        return img;
-    }
-
-    public void setImg(Short img) {
-        this.img = img;
-    }
-
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
-    }
-
-    public LocalDateTime getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(LocalDateTime updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public Collection<ProductDetail> getProductDetails() {
-        return productDetails;
-    }
-
-    public void setProductDetails(Collection<ProductDetail> productDetails) {
-        this.productDetails = productDetails;
-    }
 
     @Override
     public String toString() {

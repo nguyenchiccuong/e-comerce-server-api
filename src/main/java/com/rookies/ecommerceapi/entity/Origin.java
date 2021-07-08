@@ -10,9 +10,17 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "origins", uniqueConstraints = { @UniqueConstraint(columnNames = { "country" }) })
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Origin {
     @Id
     // @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -28,39 +36,6 @@ public class Origin {
 
     @OneToMany(mappedBy = "origin")
     private Collection<Product> products;
-
-    public Origin(Integer id, @NotNull String country, Collection<Product> products) {
-        this.id = id;
-        this.country = country;
-        this.products = products;
-    }
-
-    public Origin() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public Collection<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Collection<Product> products) {
-        this.products = products;
-    }
 
     @Override
     public String toString() {

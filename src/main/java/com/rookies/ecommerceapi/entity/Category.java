@@ -14,9 +14,17 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "categories", uniqueConstraints = { @UniqueConstraint(columnNames = { "category_name" }) })
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Category {
     @Id
     // @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -42,58 +50,6 @@ public class Category {
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Collection<Category> Categories; // sub category
-
-    public Category(Integer id, @NotNull String categoryName, Category category, Collection<Product> products,
-            Collection<Category> categories) {
-        this.id = id;
-        this.categoryName = categoryName;
-        this.category = category;
-        this.products = products;
-        Categories = categories;
-    }
-
-    public Category() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public Collection<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Collection<Product> products) {
-        this.products = products;
-    }
-
-    public Collection<Category> getCategories() {
-        return Categories;
-    }
-
-    public void setCategories(Collection<Category> categories) {
-        Categories = categories;
-    }
 
     @Override
     public String toString() {

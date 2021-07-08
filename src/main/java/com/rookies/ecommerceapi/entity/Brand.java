@@ -11,9 +11,17 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "brands", uniqueConstraints = { @UniqueConstraint(columnNames = { "brand_name" }) })
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Brand {
     @Id
     // @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -30,39 +38,6 @@ public class Brand {
 
     @OneToMany(mappedBy = "brand")
     private Collection<Product> products;
-
-    public Brand(Integer id, @NotNull String brandName, Collection<Product> products) {
-        this.id = id;
-        this.brandName = brandName;
-        this.products = products;
-    }
-
-    public Brand() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getBrandName() {
-        return brandName;
-    }
-
-    public void setBrandName(String brandName) {
-        this.brandName = brandName;
-    }
-
-    public Collection<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Collection<Product> products) {
-        this.products = products;
-    }
 
     @Override
     public String toString() {

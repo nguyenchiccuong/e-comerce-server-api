@@ -15,4 +15,6 @@ public interface CustomerService {
     public ResponseEntity<?> registerCustomer(SignupRequest signUpRequest);
 
     public Page<Customer> retrieveCustomers(Pageable page);
+
+    public Customer retrieveCustomerByUserId(Long userId);
 }

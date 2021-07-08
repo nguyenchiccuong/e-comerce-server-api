@@ -127,4 +127,9 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findAll(page);
     }
 
+    @Override
+    public Customer retrieveCustomerByUserId(Long userId) {
+       return customerRepository.findByUserId(userId).get();
+    }
+
 }

@@ -17,4 +17,8 @@ public interface CustomerService {
     public Page<Customer> retrieveCustomers(Pageable page);
 
     public Customer retrieveCustomerByUserId(Long userId);
+
+    public ResponseEntity<?> lockCustomerByUserId(Long userId);
+
+    public ResponseEntity<?> unlockCustomerByUserId(Long userId);
 }

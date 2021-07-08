@@ -3,10 +3,13 @@ package com.rookies.ecommerceapi.restcontroller;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,12 +50,16 @@ public class CustomerManageController {
         return modelMapper.map(customer, CustomerDto.class);
     }
 
-    // @PutMapping
-    // @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    // public ResponseEntity<?> updateCategory(@Valid @RequestBody CategoryDto
-    // categoryDto) {
-    // Category categoryRequest = modelMapper.map(categoryDto, Category.class);
-    // return categoryService.updateCategory(categoryRequest);
-    // }
+    @PutMapping("/lock/{userId}")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> lockCustomerByUserId(@PathVariable("userId") Long userId) {
+        return customerService.lockCustomerByUserId(userId);
+    }
+
+    @PutMapping("/unlock/{userId}")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> unlockCustomerByUserId(@PathVariable("userId") Long userId) {
+        return customerService.unlockCustomerByUserId(userId);
+    }
 
 }

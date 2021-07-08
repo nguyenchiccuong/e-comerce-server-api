@@ -10,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Optional;
@@ -135,7 +137,60 @@ public class CustomerServiceImpl implements CustomerService {
         if (!customerByUserId.isPresent()) {
             throw new UserIdNotFoundException(userId);
         }
+
         return customerRepository.findByUserId(userId).get();
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<?> lockCustomerByUserId(Long userId) {
+        Optional<Customer> customerByUserId = customerRepository.findById(userId);
+        if (!customerByUserId.isPresent()) {
+            throw new UserIdNotFoundException(userId);
+        }
+
+        Optional<User> userByUserId = userRepository.findById(userId);
+        if (!userByUserId.isPresent()) {
+            throw new UserIdNotFoundException(userId);
+        }
+        User user = userByUserId.get();
+
+        Optional<Role> roleByRoleName = roleRepository.findByRoleName(RoleName.ROLE_CUSTOMER_LOCKED);
+        if (!roleByRoleName.isPresent()) {
+            throw new RoleNameNotFoundException(RoleName.ROLE_CUSTOMER_LOCKED.name());
+        }
+
+        user.setRole(roleByRoleName.get());
+        Short status = 0;
+        user.setStatus(status);
+
+        return ResponseEntity.ok(new MessageResponse("Locked successfully"));
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<?> unlockCustomerByUserId(Long userId) {
+        Optional<Customer> customerByUserId = customerRepository.findById(userId);
+        if (!customerByUserId.isPresent()) {
+            throw new UserIdNotFoundException(userId);
+        }
+
+        Optional<User> userByUserId = userRepository.findById(userId);
+        if (!userByUserId.isPresent()) {
+            throw new UserIdNotFoundException(userId);
+        }
+        User user = userByUserId.get();
+
+        Optional<Role> roleByRoleName = roleRepository.findByRoleName(RoleName.ROLE_CUSTOMER);
+        if (!roleByRoleName.isPresent()) {
+            throw new RoleNameNotFoundException(RoleName.ROLE_CUSTOMER.name());
+        }
+
+        user.setRole(roleByRoleName.get());
+        Short status = 1;
+        user.setStatus(status);
+
+        return ResponseEntity.ok(new MessageResponse("Unlocked successfully"));
     }
 
 }

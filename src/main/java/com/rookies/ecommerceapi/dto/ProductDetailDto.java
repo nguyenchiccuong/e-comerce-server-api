@@ -1,5 +1,6 @@
 package com.rookies.ecommerceapi.dto;
 
+import java.util.Collection;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -26,4 +27,5 @@ public class ProductDetailDto {
     @NotNull
     private Long price;
 
+    private Collection<ReviewDto> reviews;
 }

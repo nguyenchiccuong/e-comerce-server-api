@@ -3,6 +3,7 @@ package com.rookies.ecommerceapi.dto;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -52,5 +53,6 @@ public class ProductDto {
 
     private LocalDateTime updateDate;
 
+    @NotEmpty
     private Collection<ProductDetailDto> productDetails;
 }

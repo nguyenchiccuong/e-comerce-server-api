@@ -11,9 +11,17 @@ public interface ProductService {
 
     public Product retrieveProductById(Long id);
 
-    public Page<Product> retrieveProductsByCategoryName(Pageable page);
+    public Page<Product> retrieveProductsByCategoryId(Pageable page, Integer categoryId);
 
-    public Page<Product> retrieveProductsByBrandName(Pageable page);
+    public Page<Product> retrieveProductsByBrandName(Pageable page, String brandName);
 
-    public Page<Product> retrieveProductsByOriginName(Pageable page);
+    public Page<Product> retrieveProductsByCountry(Pageable page, String country);
+
+    public Long countProduct();
+
+    public Long countProductByCategoryId(Integer categoryId);
+
+    public Long countProductByBrandName(String brandName);
+
+    public Long countProductByCountry(String country);
 }

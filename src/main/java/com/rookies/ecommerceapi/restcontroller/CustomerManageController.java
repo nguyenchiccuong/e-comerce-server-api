@@ -63,8 +63,6 @@ public class CustomerManageController {
         return customerService.unlockCustomerByUserId(userId);
     }
 
-    // not done
-
     @GetMapping("/status")
     @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public List<CustomerDto> retrieveCustomersByStatus(@RequestParam(name = "page", required = true) Integer pageNum,

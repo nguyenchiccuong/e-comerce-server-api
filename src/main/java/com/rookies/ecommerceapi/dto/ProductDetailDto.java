@@ -28,4 +28,5 @@ public class ProductDetailDto {
     private Long price;
 
     private Collection<ReviewDto> reviews;
+
 }

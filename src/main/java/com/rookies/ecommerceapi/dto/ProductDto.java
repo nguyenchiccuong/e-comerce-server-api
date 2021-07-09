@@ -2,6 +2,8 @@ package com.rookies.ecommerceapi.dto;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Set;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

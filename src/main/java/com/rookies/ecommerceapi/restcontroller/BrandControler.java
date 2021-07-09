@@ -14,7 +14,7 @@ import com.rookies.ecommerceapi.service.BrandService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/v1/public/brand")
+@RequestMapping("/public/brand")
 public class BrandControler {
     private final BrandService brandService;
 

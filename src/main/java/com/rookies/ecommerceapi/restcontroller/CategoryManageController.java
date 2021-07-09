@@ -20,7 +20,7 @@ import com.rookies.ecommerceapi.service.CategoryService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/v1/employee/category")
+@RequestMapping("/employee/category")
 public class CategoryManageController {
 
     private final CategoryService categoryService;

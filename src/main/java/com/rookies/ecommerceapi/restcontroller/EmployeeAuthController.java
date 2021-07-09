@@ -14,7 +14,7 @@ import com.rookies.ecommerceapi.service.EmployeeService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/v1/employee/auth")
+@RequestMapping("/employee/auth")
 public class EmployeeAuthController {
 
     private final EmployeeService employeeService;

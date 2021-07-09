@@ -15,7 +15,7 @@ import com.rookies.ecommerceapi.service.OriginService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/v1/public/origin")
+@RequestMapping("/public/origin")
 public class OriginController {
     private final OriginService originService;
 

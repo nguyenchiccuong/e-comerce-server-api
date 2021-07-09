@@ -15,7 +15,7 @@ import com.rookies.ecommerceapi.service.CustomerService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/v1/customer/auth")
+@RequestMapping("/customer/auth")
 public class CustomerAuthController {
 
     private final CustomerService customerService;

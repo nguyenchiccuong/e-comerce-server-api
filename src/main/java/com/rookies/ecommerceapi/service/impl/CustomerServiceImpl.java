@@ -193,4 +193,19 @@ public class CustomerServiceImpl implements CustomerService {
         return ResponseEntity.ok(new MessageResponse("Unlocked successfully"));
     }
 
+    @Override
+    public Long countCustomer() {
+        return customerRepository.count();
+    }
+
+    @Override
+    public Long countCustomerByStatus(Short status) {
+        return customerRepository.countByStatus(status);
+    }
+
+    @Override
+    public Page<Customer> retrieveCustomersByStatus(Pageable page, Short status) {
+        return customerRepository.findByStatus(page, status);
+    }
+
 }

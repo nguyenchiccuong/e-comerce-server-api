@@ -21,4 +21,10 @@ public interface CustomerService {
     public ResponseEntity<?> lockCustomerByUserId(Long userId);
 
     public ResponseEntity<?> unlockCustomerByUserId(Long userId);
+
+    public Long countCustomer();
+
+    public Long countCustomerByStatus(Short status);
+
+    public Page<Customer> retrieveCustomersByStatus(Pageable page, Short status);
 }

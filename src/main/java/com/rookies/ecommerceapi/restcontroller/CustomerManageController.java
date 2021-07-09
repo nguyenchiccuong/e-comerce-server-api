@@ -3,6 +3,7 @@ package com.rookies.ecommerceapi.restcontroller;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.rookies.ecommerceapi.dto.CustomerDto;
+import com.rookies.ecommerceapi.dto.NumberOfEntityDto;
 import com.rookies.ecommerceapi.entity.Customer;
 import com.rookies.ecommerceapi.service.CustomerService;
 
@@ -38,8 +40,8 @@ public class CustomerManageController {
     @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public List<CustomerDto> retrieveCustomers(@RequestParam(name = "page", required = true) Integer pageNum,
             @RequestParam(name = "items", required = true) Integer numOfItems) {
-        return customerService.retrieveCustomers(PageRequest.of(pageNum, numOfItems)).stream()
-                .map(customer -> modelMapper.map(customer, CustomerDto.class)).collect(Collectors.toList());
+        return customerService.retrieveCustomers(PageRequest.of(pageNum, numOfItems, Sort.by("userId").descending()))
+                .stream().map(customer -> modelMapper.map(customer, CustomerDto.class)).collect(Collectors.toList());
     }
 
     @GetMapping("/{userId}")
@@ -59,6 +61,30 @@ public class CustomerManageController {
     @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> unlockCustomerByUserId(@PathVariable("userId") Long userId) {
         return customerService.unlockCustomerByUserId(userId);
+    }
+
+    // not done
+
+    @GetMapping("/status")
+    @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+    public List<CustomerDto> retrieveCustomersByStatus(@RequestParam(name = "page", required = true) Integer pageNum,
+            @RequestParam(name = "items", required = true) Integer numOfItems,
+            @RequestParam(name = "status", required = true) Short status) {
+        return customerService
+                .retrieveCustomersByStatus(PageRequest.of(pageNum, numOfItems, Sort.by("userId").descending()), status)
+                .stream().map(customer -> modelMapper.map(customer, CustomerDto.class)).collect(Collectors.toList());
+    }
+
+    @GetMapping("/count/status")
+    @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+    public NumberOfEntityDto countCustomerByStatus(@RequestParam(name = "status", required = true) Short status) {
+        return new NumberOfEntityDto(customerService.countCustomerByStatus(status));
+    }
+
+    @GetMapping("/count")
+    @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+    public NumberOfEntityDto countCustomer() {
+        return new NumberOfEntityDto(customerService.countCustomer());
     }
 
 }

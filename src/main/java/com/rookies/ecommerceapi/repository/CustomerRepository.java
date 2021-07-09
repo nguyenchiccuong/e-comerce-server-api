@@ -1,6 +1,9 @@
 package com.rookies.ecommerceapi.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
@@ -14,5 +17,11 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     Boolean existsByPhoneNumber(String email);
 
     Optional<Customer> findByUserId(Long id);
+
+    @Query("SELECT COUNT (*) FROM Customer c WHERE c.user.status = ?1")
+    Long countByStatus(Short status);
+
+    @Query("FROM Customer c WHERE c.user.status = ?1")
+    Page<Customer> findByStatus(Pageable page, Short status);
 
 }

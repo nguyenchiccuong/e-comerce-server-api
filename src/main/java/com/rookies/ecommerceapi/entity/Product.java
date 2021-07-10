@@ -2,6 +2,7 @@ package com.rookies.ecommerceapi.entity;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -81,9 +82,9 @@ public class Product {
     @Column(name = "update_date")
     private LocalDateTime updateDate;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Collection<ProductDetail> productDetails;
-    
+
     public Product(@NotBlank String productName, Category category, String model, Brand brand, Origin origin,
             String standard, String size, Float weight, String material, String description, Short warranty, Short img,
             @NotNull LocalDateTime createDate) {
@@ -101,8 +102,6 @@ public class Product {
         this.img = img;
         this.createDate = createDate;
     }
-
-
 
     @Override
     public String toString() {

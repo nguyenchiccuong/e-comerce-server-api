@@ -1,6 +1,7 @@
 package com.rookies.ecommerceapi.entity;
 
 import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -54,7 +55,7 @@ public class ProductDetail {
     @OneToMany(mappedBy = "productDetail")
     private Collection<OrderDetail> orderDetails;
 
-    @OneToMany(mappedBy = "productDetail")
+    @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL)
     private Collection<Review> reviews;
 
     public ProductDetail(Product product, @NotBlank String color, @NotNull Integer quantity, @NotNull Long price) {

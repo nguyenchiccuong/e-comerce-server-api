@@ -1,7 +1,6 @@
 package com.rookies.ecommerceapi.entity;
 
 import java.util.Collection;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

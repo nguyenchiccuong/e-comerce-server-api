@@ -228,7 +228,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ResponseEntity<?> deleteProduct(Long productId) {
-        // TODO Auto-generated method stub
-        return null;
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductIdNotFoundException(productId));
+        // product detail list from db to check if a detail reference to a order detail
+        product.getProductDetails().forEach(productDetail -> {
+            // if productDetail is exist in order detail, cannot remove it
+            if (!productDetail.getOrderDetails().isEmpty()) {
+                throw new ProductDetailIdExistInOrderDetail(productDetail.getId());
+            }
+        });
+
+        productRepository.deleteById(productId);
+        return ResponseEntity.ok(new MessageResponse("Delete success"));
     }
 }

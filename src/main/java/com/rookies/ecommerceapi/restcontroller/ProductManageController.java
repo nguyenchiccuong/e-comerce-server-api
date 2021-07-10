@@ -47,9 +47,6 @@ public class ProductManageController {
         productRequest.getBrand().setId(productDto.getBrandId());
         productRequest.getOrigin().setId(productDto.getOriginId());
         productRequest.getCategory().setId(productDto.getCategoryId());
-        System.out.println(productRequest.getBrand().getId());
-        System.out.println(productRequest.getOrigin().getId());
-        System.out.println(productRequest.getCategory().getId());
         Product product = productService.saveProduct(productRequest);
         return modelMapper.map(product, ProductDto.class);
     }
@@ -58,6 +55,9 @@ public class ProductManageController {
     @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updateProduct(@Valid @RequestBody ProductDto productDto) {
         Product productRequest = modelMapper.map(productDto, Product.class);
+        productRequest.setBrand(new Brand());
+        productRequest.setOrigin(new Origin());
+        productRequest.setCategory(new Category());
         productRequest.getBrand().setId(productDto.getBrandId());
         productRequest.getOrigin().setId(productDto.getOriginId());
         productRequest.getCategory().setId(productDto.getCategoryId());

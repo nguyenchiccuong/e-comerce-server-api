@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.rookies.ecommerceapi.entity.Brand;
 import com.rookies.ecommerceapi.entity.Category;
@@ -17,8 +18,10 @@ import com.rookies.ecommerceapi.entity.ProductDetail;
 import com.rookies.ecommerceapi.exception.BrandIdNotFoundException;
 import com.rookies.ecommerceapi.exception.CategoryIdNotFoundException;
 import com.rookies.ecommerceapi.exception.OriginIdNotFoundException;
+import com.rookies.ecommerceapi.exception.ProductDetailIdExistInOrderDetail;
 import com.rookies.ecommerceapi.exception.ProductDetailNotValidException;
 import com.rookies.ecommerceapi.exception.ProductIdNotFoundException;
+import com.rookies.ecommerceapi.payload.respone.MessageResponse;
 import com.rookies.ecommerceapi.repository.BrandRepository;
 import com.rookies.ecommerceapi.repository.CategoryRepository;
 import com.rookies.ecommerceapi.repository.OrderDetailRepository;
@@ -148,8 +151,79 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ResponseEntity<?> updateProduct(Product product) {
-        // TODO Auto-generated method stub
-        return null;
+        if (product.getId() == null) {
+            throw new ProductIdNotFoundException(product.getId());
+        }
+
+        Product productUpdate = productRepository.findById(product.getId())
+                .orElseThrow(() -> new ProductIdNotFoundException(product.getId()));
+
+        Brand brand = brandRepository.findById(product.getBrand().getId())
+                .orElseThrow(() -> new BrandIdNotFoundException(product.getBrand().getId()));
+
+        Origin origin = originRepository.findById(product.getOrigin().getId())
+                .orElseThrow(() -> new OriginIdNotFoundException(product.getOrigin().getId()));
+
+        Category category = categoryRepository.findById(product.getCategory().getId())
+                .orElseThrow(() -> new CategoryIdNotFoundException(product.getCategory().getId()));
+
+        if (!ValidateProductDetailCollection.validateProductDetailCollection(product.getProductDetails())) {
+            throw new ProductDetailNotValidException();
+        }
+
+        // product detail list from db to check if a detail can remove, if not throw
+        // exception
+        productUpdate.getProductDetails().forEach(productDetail -> {
+            // if productDetail is exist in order detail, cannot remove it, find in product
+            // update request if it don't have that product detail id, throw exception)
+            if (!productDetail.getOrderDetails().isEmpty()) {
+                product.getProductDetails().stream()
+                        .filter(productDetailFromRequest -> productDetailFromRequest.getId() == productDetail.getId())
+                        .findAny().orElseThrow(() -> new ProductDetailIdExistInOrderDetail(productDetail.getId()));
+            }
+        });
+
+        productUpdate.setProductName(product.getProductName());
+        productUpdate.setCategory(category);
+        productUpdate.setModel(product.getModel() == null ? productUpdate.getModel() : product.getModel());
+        productUpdate.setBrand(brand);
+        productUpdate.setOrigin(origin);
+        productUpdate.setStandard(product.getStandard() == null ? productUpdate.getStandard() : product.getStandard());
+        productUpdate.setSize(product.getSize() == null ? productUpdate.getSize() : product.getSize());
+        productUpdate.setWeight(product.getWeight() == null ? productUpdate.getWeight() : product.getWeight());
+        productUpdate.setMaterial(product.getMaterial() == null ? productUpdate.getMaterial() : product.getMaterial());
+        productUpdate.setDescription(
+                product.getDescription() == null ? productUpdate.getDescription() : product.getDescription());
+        productUpdate.setImg(product.getImg() == null ? productUpdate.getImg() : product.getImg());
+        productUpdate.setUpdateDate(LocalDateTime.now());
+        productUpdate.setWarranty(product.getWarranty() == null ? productUpdate.getWarranty() : product.getWarranty());
+
+        productRepository.save(productUpdate);
+
+        // product detail list from db to check if not exist in request, then remove, if
+        // exist then update
+        productUpdate.getProductDetails().forEach(productDetail -> {
+            Optional<ProductDetail> productDetailFoundFromRequest = product.getProductDetails().stream()
+                    .filter(productDetailFromRequest -> productDetailFromRequest.getId() == productDetail.getId())
+                    .findAny();
+            if (!productDetailFoundFromRequest.isPresent()) {
+                productDetailRepository.deleteById(productDetail.getId());
+            } else {
+                ProductDetail productDetailUpdate = productDetailFoundFromRequest.get();
+                productDetailUpdate.setProduct(productUpdate);
+                productDetailRepository.save(productDetailUpdate);
+            }
+        });
+
+        // product detail from request, if id = null mean new then save it
+        product.getProductDetails().forEach(productDetail -> {
+            if (productDetail.getId() == null) {
+                productDetail.setProduct(productUpdate);
+                productDetailRepository.save(productDetail);
+            }
+        });
+
+        return ResponseEntity.ok(new MessageResponse("Update success"));
     }
 
     @Override

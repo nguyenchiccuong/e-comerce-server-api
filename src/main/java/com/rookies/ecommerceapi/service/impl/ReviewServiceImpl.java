@@ -3,7 +3,6 @@ package com.rookies.ecommerceapi.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 
 import com.rookies.ecommerceapi.entity.Order;
@@ -13,6 +12,9 @@ import com.rookies.ecommerceapi.entity.User;
 import com.rookies.ecommerceapi.exception.OrderIdNotFoundException;
 import com.rookies.ecommerceapi.exception.ProductDetailIdNotFoundException;
 import com.rookies.ecommerceapi.exception.UsernameNotFoundException;
+import com.rookies.ecommerceapi.exception.UsernameUnmatchWithReviewException;
+import com.rookies.ecommerceapi.payload.respone.MessageResponse;
+import com.rookies.ecommerceapi.exception.ReviewIdNotFoundException;
 import com.rookies.ecommerceapi.repository.OrderRepository;
 import com.rookies.ecommerceapi.repository.ProductDetailRepository;
 import com.rookies.ecommerceapi.repository.ReviewRepository;
@@ -63,9 +65,27 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public ResponseEntity<?> updateReview(Review reviewRequest, String username) {
         if (reviewRequest.getId() == null) {
-
+            throw new ReviewIdNotFoundException(reviewRequest.getId());
         }
-        return null;
+
+        Review reviewUpdate = reviewRepository.findById(reviewRequest.getId())
+                .orElseThrow(() -> new ReviewIdNotFoundException(reviewRequest.getId()));
+
+        if (!reviewUpdate.getUser().getUsername().equals(username)) {
+            throw new UsernameUnmatchWithReviewException(username);
+        }
+
+        reviewUpdate.setNumOfStar(reviewRequest.getNumOfStar());
+        reviewUpdate.setDescription(reviewRequest.getDescription() == null ? reviewUpdate.getDescription()
+                : reviewRequest.getDescription());
+        reviewUpdate.setImg(reviewRequest.getImg() == null ? reviewUpdate.getImg() : reviewRequest.getImg());
+        reviewUpdate.setUpdateDate(LocalDateTime.now());
+        reviewUpdate.setAnonymous(reviewRequest.getAnonymous());
+        reviewUpdate
+                .setStatus(reviewRequest.getStatus() == null ? reviewUpdate.getStatus() : reviewRequest.getStatus());
+        reviewRepository.save(reviewUpdate);
+        
+        return ResponseEntity.ok(new MessageResponse("Update success"));
     }
 
     @Override

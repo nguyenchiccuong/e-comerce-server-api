@@ -5,8 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import com.rookies.ecommerceapi.entity.Brand;
@@ -33,11 +33,17 @@ import com.rookies.ecommerceapi.util.ValidateProductDetailCollection;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+
     private final CategoryRepository categoryRepository;
+
     private final BrandRepository brandRepository;
+
     private final OriginRepository originRepository;
+
     private final ProductDetailRepository productDetailRepository;
+
     private final ReviewRepository reviewRepository;
+
     private final OrderDetailRepository orderDetailRepository;
 
     @Autowired
@@ -129,7 +135,14 @@ public class ProductServiceImpl implements ProductService {
             productDetailRepository.save(productDetailSave);
         });
 
-        return productRepository.findById(productId).orElseThrow(() -> new ProductIdNotFoundException(productId));
+        productSave = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductIdNotFoundException(productId));
+
+        List<ProductDetail> productDetails = productDetailRepository.findByProductId(productId);
+
+        productSave.setProductDetails(productDetails);
+
+        return productSave;
 
     }
 

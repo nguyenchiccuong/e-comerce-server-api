@@ -18,8 +18,7 @@ public class ReviewDto {
     @NotNull
     private Long productDetailId;
 
-    @NotNull
-    private Long userId;
+    // @NotNull
     private UserDto user;
 
     // private OrderDto order;
@@ -40,7 +39,7 @@ public class ReviewDto {
     @NotNull
     private Short anonymous;
 
-    @NotNull
+    // @NotNull
     private Short status;
 
 }

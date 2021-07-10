@@ -84,14 +84,24 @@ public class ReviewServiceImpl implements ReviewService {
         reviewUpdate
                 .setStatus(reviewRequest.getStatus() == null ? reviewUpdate.getStatus() : reviewRequest.getStatus());
         reviewRepository.save(reviewUpdate);
-        
+
         return ResponseEntity.ok(new MessageResponse("Update success"));
     }
 
     @Override
     public ResponseEntity<?> deleteReview(Long reviewId, String username) {
-        // TODO Auto-generated method stub
-        return null;
+        if (reviewId == null) {
+            throw new ReviewIdNotFoundException(reviewId);
+        }
+
+        Review reviewUpdate = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ReviewIdNotFoundException(reviewId));
+
+        if (!reviewUpdate.getUser().getUsername().equals(username)) {
+            throw new UsernameUnmatchWithReviewException(username);
+        }
+        reviewRepository.deleteById(reviewId);
+        return ResponseEntity.ok(new MessageResponse("Delete success"));
     }
 
 }

@@ -133,34 +133,20 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer retrieveCustomerByUserId(Long userId) {
-        Optional<Customer> customerByUserId = customerRepository.findByUserId(userId);
-        if (!customerByUserId.isPresent()) {
-            throw new UserIdNotFoundException(userId);
-        }
-
-        return customerByUserId.get();
+        return customerRepository.findByUserId(userId).orElseThrow(() -> new UserIdNotFoundException(userId));
     }
 
     @Override
     @Transactional
     public ResponseEntity<?> lockCustomerByUserId(Long userId) {
-        Optional<Customer> customerByUserId = customerRepository.findById(userId);
-        if (!customerByUserId.isPresent()) {
-            throw new UserIdNotFoundException(userId);
-        }
+        customerRepository.findById(userId).orElseThrow(() -> new UserIdNotFoundException(userId));
 
-        Optional<User> userByUserId = userRepository.findById(userId);
-        if (!userByUserId.isPresent()) {
-            throw new UserIdNotFoundException(userId);
-        }
-        User user = userByUserId.get();
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserIdNotFoundException(userId));
 
-        Optional<Role> roleByRoleName = roleRepository.findByRoleName(RoleName.ROLE_CUSTOMER_LOCKED);
-        if (!roleByRoleName.isPresent()) {
-            throw new RoleNameNotFoundException(RoleName.ROLE_CUSTOMER_LOCKED.name());
-        }
+        Role roleByRoleName = roleRepository.findByRoleName(RoleName.ROLE_CUSTOMER_LOCKED)
+                .orElseThrow(() -> new RoleNameNotFoundException(RoleName.ROLE_CUSTOMER_LOCKED.name()));
 
-        user.setRole(roleByRoleName.get());
+        user.setRole(roleByRoleName);
         Short status = 0;
         user.setStatus(status);
 
@@ -170,23 +156,14 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public ResponseEntity<?> unlockCustomerByUserId(Long userId) {
-        Optional<Customer> customerByUserId = customerRepository.findById(userId);
-        if (!customerByUserId.isPresent()) {
-            throw new UserIdNotFoundException(userId);
-        }
+        customerRepository.findById(userId).orElseThrow(() -> new UserIdNotFoundException(userId));
 
-        Optional<User> userByUserId = userRepository.findById(userId);
-        if (!userByUserId.isPresent()) {
-            throw new UserIdNotFoundException(userId);
-        }
-        User user = userByUserId.get();
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserIdNotFoundException(userId));
 
-        Optional<Role> roleByRoleName = roleRepository.findByRoleName(RoleName.ROLE_CUSTOMER);
-        if (!roleByRoleName.isPresent()) {
-            throw new RoleNameNotFoundException(RoleName.ROLE_CUSTOMER.name());
-        }
+        Role roleByRoleName = roleRepository.findByRoleName(RoleName.ROLE_CUSTOMER)
+                .orElseThrow(() -> new RoleNameNotFoundException(RoleName.ROLE_CUSTOMER.name()));
 
-        user.setRole(roleByRoleName.get());
+        user.setRole(roleByRoleName);
         Short status = 1;
         user.setStatus(status);
 

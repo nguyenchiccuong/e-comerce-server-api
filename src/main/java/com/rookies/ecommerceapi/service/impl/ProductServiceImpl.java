@@ -61,12 +61,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product retrieveProductById(Long id) {
-        Optional<Product> productById = productRepository.findById(id);
-        if (!productById.isPresent()) {
-            throw new ProductIdNotFoundException(id);
-        }
-
-        return productById.get();
+        return productRepository.findById(id).orElseThrow(() -> new ProductIdNotFoundException(id));
     }
 
     @Override
@@ -106,28 +101,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product saveProduct(Product product) {
-        Optional<Brand> brandById = brandRepository.findById(product.getBrand().getId());
-        if (!brandById.isPresent()) {
-            throw new BrandIdNotFoundException(product.getBrand().getId());
-        }
+        Brand brand = brandRepository.findById(product.getBrand().getId())
+                .orElseThrow(() -> new BrandIdNotFoundException(product.getBrand().getId()));
 
-        Optional<Origin> originById = originRepository.findById(product.getOrigin().getId());
-        if (!originById.isPresent()) {
-            throw new OriginIdNotFoundException(product.getOrigin().getId());
-        }
+        Origin origin = originRepository.findById(product.getOrigin().getId())
+                .orElseThrow(() -> new OriginIdNotFoundException(product.getOrigin().getId()));
 
-        Optional<Category> categoryById = categoryRepository.findById(product.getCategory().getId());
-        if (!categoryById.isPresent()) {
-            throw new CategoryIdNotFoundException(product.getCategory().getId());
-        }
+        Category category = categoryRepository.findById(product.getCategory().getId())
+                .orElseThrow(() -> new CategoryIdNotFoundException(product.getCategory().getId()));
 
         if (!ValidateProductDetailCollection.validateProductDetailCollection(product.getProductDetails())) {
             throw new ProductDetailNotValidException();
         }
-
-        Category category = categoryById.get();
-        Brand brand = brandById.get();
-        Origin origin = originById.get();
 
         Product productSave = new Product(product.getProductName(), category, product.getModel(), brand, origin,
                 product.getStandard(), product.getSize(), product.getWeight(), product.getMaterial(),
@@ -144,12 +129,8 @@ public class ProductServiceImpl implements ProductService {
             productDetailRepository.save(productDetailSave);
         });
 
-        Optional<Product> productById = productRepository.findById(productId);
-        if (!productById.isPresent()) {
-            throw new ProductIdNotFoundException(productId);
-        }
+        return productRepository.findById(productId).orElseThrow(() -> new ProductIdNotFoundException(productId));
 
-        return productById.get();
     }
 
     @Override

@@ -58,10 +58,8 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         // check if not null and id is a parent category
-        Optional<Category> categoryById = categoryRepository.findByIdAndCategoryIsNull(category.getId());
-        if (!categoryById.isPresent()) {
-            throw new CategoryIdNotFoundException(category.getId());
-        }
+        Category categoryById = categoryRepository.findByIdAndCategoryIsNull(category.getId())
+                .orElseThrow(() -> new CategoryIdNotFoundException(category.getId()));
 
         Optional<Category> categoryByCategoryName = categoryRepository.findByCategoryName(category.getCategoryName());
         if (categoryByCategoryName.isPresent()) {
@@ -69,7 +67,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         Category categorySave = new Category();
-        categorySave.setCategory(categoryById.get());
+        categorySave.setCategory(categoryById);
         categorySave.setCategoryName(category.getCategoryName());
         return categoryRepository.save(categorySave);
 
@@ -81,11 +79,10 @@ public class CategoryServiceImpl implements CategoryService {
             throw new CategoryIdNotFoundException(category.getId());
         }
 
-        Optional<Category> categoryById = categoryRepository.findById(category.getId());
-        if (!categoryById.isPresent()) {
-            throw new CategoryIdNotFoundException(category.getId());
-        }
-        if (categoryById.get().getCategoryName().equals(category.getCategoryName())) {
+        Category categoryById = categoryRepository.findById(category.getId())
+                .orElseThrow(() -> new CategoryIdNotFoundException(category.getId()));
+
+        if (categoryById.getCategoryName().equals(category.getCategoryName())) {
             throw new CategoryNameExistException(category.getCategoryName());
         }
 
@@ -94,7 +91,7 @@ public class CategoryServiceImpl implements CategoryService {
             throw new CategoryNameExistException(category.getCategoryName());
         }
 
-        Category categoryUpdate = categoryById.get();
+        Category categoryUpdate = categoryById;
         categoryUpdate.setCategoryName(category.getCategoryName());
         categoryRepository.save(categoryUpdate);
         return ResponseEntity.ok(new MessageResponse("Update success"));

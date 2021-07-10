@@ -83,8 +83,6 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     private Collection<ProductDetail> productDetails;
-
-
     
     public Product(@NotBlank String productName, Category category, String model, Brand brand, Origin origin,
             String standard, String size, Float weight, String material, String description, Short warranty, Short img,

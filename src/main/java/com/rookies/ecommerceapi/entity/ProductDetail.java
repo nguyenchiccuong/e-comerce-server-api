@@ -57,6 +57,13 @@ public class ProductDetail {
     @OneToMany(mappedBy = "productDetail")
     private Collection<Review> reviews;
 
+    public ProductDetail(Product product, @NotBlank String color, @NotNull Integer quantity, @NotNull Long price) {
+        this.product = product;
+        this.color = color;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
     @Override
     public String toString() {
         return "ProductDetail [color=" + color + ", id=" + id + ", price=" + price + ", quantity=" + quantity + "]";

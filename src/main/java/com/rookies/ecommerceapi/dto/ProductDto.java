@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -55,6 +56,7 @@ public class ProductDto {
 
     private LocalDateTime updateDate;
 
+    @Valid
     @NotEmpty
     private Collection<ProductDetailDto> productDetails;
 }

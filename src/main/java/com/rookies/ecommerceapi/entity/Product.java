@@ -84,6 +84,28 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private Collection<ProductDetail> productDetails;
 
+
+    
+    public Product(@NotBlank String productName, Category category, String model, Brand brand, Origin origin,
+            String standard, String size, Float weight, String material, String description, Short warranty, Short img,
+            @NotNull LocalDateTime createDate) {
+        this.productName = productName;
+        this.category = category;
+        this.model = model;
+        this.brand = brand;
+        this.origin = origin;
+        this.standard = standard;
+        this.size = size;
+        this.weight = weight;
+        this.material = material;
+        this.description = description;
+        this.warranty = warranty;
+        this.img = img;
+        this.createDate = createDate;
+    }
+
+
+
     @Override
     public String toString() {
         return "Product [createDate=" + createDate + ", description=" + description + ", id=" + id + ", img=" + img

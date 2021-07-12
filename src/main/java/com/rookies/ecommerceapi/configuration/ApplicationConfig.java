@@ -20,6 +20,6 @@ public class ApplicationConfig {
 
     @Bean
     public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> webServerFactoryCustomizer() {
-        return factory -> factory.setContextPath("/api/v1");
+        return factory -> factory.setContextPath("/my-shop/api/v1");
     }
 }

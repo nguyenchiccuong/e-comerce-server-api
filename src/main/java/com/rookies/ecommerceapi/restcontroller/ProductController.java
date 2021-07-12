@@ -88,7 +88,7 @@ public class ProductController {
 
     @GetMapping("/count/category")
     public NumberOfEntityDto countProductByCategoryId(
-            @RequestParam(name = "categoryId", required = true) Integer categoryId) {
+            @RequestParam(name = "category_id", required = true) Integer categoryId) {
         return new NumberOfEntityDto(productService.countProductByCategoryId(categoryId));
     }
 

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
+import com.rookies.ecommerceapi.converter.ProductConverter;
 import com.rookies.ecommerceapi.dto.ProductDto;
 import com.rookies.ecommerceapi.entity.Brand;
 import com.rookies.ecommerceapi.entity.Category;
@@ -34,22 +35,20 @@ public class ProductManageController {
 
     private final ModelMapper modelMapper;
 
+    private final ProductConverter productConverter;
+
     @Autowired
-    public ProductManageController(ProductService productService, ModelMapper modelMapper) {
+    public ProductManageController(ProductService productService, ModelMapper modelMapper,
+            ProductConverter productConverter) {
         this.productService = productService;
         this.modelMapper = modelMapper;
+        this.productConverter = productConverter;
     }
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public ProductDto saveProduct(@Valid @RequestBody ProductDto productDto) {
-        Product productRequest = modelMapper.map(productDto, Product.class);
-        productRequest.setBrand(new Brand());
-        productRequest.setOrigin(new Origin());
-        productRequest.setCategory(new Category());
-        productRequest.getBrand().setId(productDto.getBrandId());
-        productRequest.getOrigin().setId(productDto.getOriginId());
-        productRequest.getCategory().setId(productDto.getCategoryId());
+        Product productRequest = productConverter.convertToEntity(productDto);
         Product product = productService.saveProduct(productRequest);
         return modelMapper.map(product, ProductDto.class);
     }
@@ -57,13 +56,7 @@ public class ProductManageController {
     @PutMapping
     @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updateProduct(@Valid @RequestBody ProductDto productDto) {
-        Product productRequest = modelMapper.map(productDto, Product.class);
-        productRequest.setBrand(new Brand());
-        productRequest.setOrigin(new Origin());
-        productRequest.setCategory(new Category());
-        productRequest.getBrand().setId(productDto.getBrandId());
-        productRequest.getOrigin().setId(productDto.getOriginId());
-        productRequest.getCategory().setId(productDto.getCategoryId());
+        Product productRequest = productConverter.convertToEntity(productDto);
         return productService.updateProduct(productRequest);
     }
 

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rookies.ecommerceapi.converter.ReviewConverter;
 import com.rookies.ecommerceapi.dto.ReviewDto;
 import com.rookies.ecommerceapi.entity.Order;
 import com.rookies.ecommerceapi.entity.ProductDetail;
@@ -38,11 +39,15 @@ public class ReviewManageController {
 
     private final JwtUtils jwtUtils;
 
+    private final ReviewConverter reviewConverter;
+
     @Autowired
-    public ReviewManageController(ReviewService reviewService, ModelMapper modelMapper, JwtUtils jwtUtils) {
+    public ReviewManageController(ReviewService reviewService, ModelMapper modelMapper, JwtUtils jwtUtils,
+            ReviewConverter reviewConverter) {
         this.reviewService = reviewService;
         this.modelMapper = modelMapper;
         this.jwtUtils = jwtUtils;
+        this.reviewConverter = reviewConverter;
     }
 
     @PostMapping
@@ -51,11 +56,8 @@ public class ReviewManageController {
         String jwt = req.getHeader("Authorization").substring(7, req.getHeader("Authorization").length());
         String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
-        Review reviewRequest = modelMapper.map(reviewDto, Review.class);
-        reviewRequest.setProductDetail(new ProductDetail());
-        reviewRequest.setOrder(new Order());
-        reviewRequest.getProductDetail().setId(reviewDto.getProductDetailId());
-        reviewRequest.getOrder().setId(reviewDto.getOrderId());
+        Review reviewRequest = reviewConverter.convertToEntity(reviewDto);
+
         Review review = reviewService.saveReview(reviewRequest, username);
 
         return modelMapper.map(review, ReviewDto.class);
@@ -67,11 +69,7 @@ public class ReviewManageController {
         String jwt = req.getHeader("Authorization").substring(7, req.getHeader("Authorization").length());
         String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
-        Review reviewRequest = modelMapper.map(reviewDto, Review.class);
-        reviewRequest.setProductDetail(new ProductDetail());
-        reviewRequest.setOrder(new Order());
-        reviewRequest.getProductDetail().setId(reviewDto.getProductDetailId());
-        reviewRequest.getOrder().setId(reviewDto.getOrderId());
+        Review reviewRequest = reviewConverter.convertToEntity(reviewDto);
 
         return reviewService.updateReview(reviewRequest, username);
     }

@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.rookies.ecommerceapi.dto.ResponseDto;
 import com.rookies.ecommerceapi.payload.request.LoginRequest;
 import com.rookies.ecommerceapi.payload.request.SignupRequest;
 import com.rookies.ecommerceapi.service.CustomerService;
@@ -30,12 +31,12 @@ public class CustomerAuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateCustomer(@Valid @RequestBody LoginRequest loginRequest) {
-        return customerService.authenticateCustomer(loginRequest);
+    public ResponseEntity<ResponseDto> authenticateCustomer(@Valid @RequestBody LoginRequest loginRequest) {
+        return ResponseEntity.ok(customerService.authenticateCustomer(loginRequest));
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerCustomer(@Valid @RequestBody SignupRequest signUpRequest) {
-        return customerService.registerCustomer(signUpRequest);
+    public ResponseEntity<ResponseDto> registerCustomer(@Valid @RequestBody SignupRequest signUpRequest) {
+        return ResponseEntity.ok(customerService.registerCustomer(signUpRequest));
     }
 }

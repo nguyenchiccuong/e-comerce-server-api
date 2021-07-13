@@ -1,11 +1,9 @@
 package com.rookies.ecommerceapi.service;
 
-import java.util.List;
-
-import com.rookies.ecommerceapi.entity.Brand;
+import com.rookies.ecommerceapi.dto.ResponseDto;
 
 public interface BrandService {
 
-    List<Brand> retrieveBrands();
+    public ResponseDto retrieveBrands();
 
 }

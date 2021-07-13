@@ -19,9 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rookies.ecommerceapi.converter.ReviewConverter;
+import com.rookies.ecommerceapi.dto.ResponseDto;
 import com.rookies.ecommerceapi.dto.ReviewDto;
-import com.rookies.ecommerceapi.entity.Order;
-import com.rookies.ecommerceapi.entity.ProductDetail;
 import com.rookies.ecommerceapi.entity.Review;
 import com.rookies.ecommerceapi.security.jwt.JwtUtils;
 import com.rookies.ecommerceapi.service.ReviewService;
@@ -52,34 +51,36 @@ public class ReviewManageController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-    public ReviewDto saveReview(HttpServletRequest req, @Valid @RequestBody ReviewDto reviewDto) {
+    public ResponseEntity<ResponseDto> saveReview(HttpServletRequest req, @Valid @RequestBody ReviewDto reviewDto) {
         String jwt = req.getHeader("Authorization").substring(7, req.getHeader("Authorization").length());
         String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
         Review reviewRequest = reviewConverter.convertToEntity(reviewDto);
 
-        Review review = reviewService.saveReview(reviewRequest, username);
+        ResponseDto responseDto = reviewService.saveReview(reviewRequest, username);
 
-        return modelMapper.map(review, ReviewDto.class);
+        responseDto.setData(modelMapper.map(responseDto.getData(), ReviewDto.class));
+
+        return ResponseEntity.ok(responseDto);
     }
 
     @PutMapping
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-    public ResponseEntity<?> updateReview(HttpServletRequest req, @Valid @RequestBody ReviewDto reviewDto) {
+    public ResponseEntity<ResponseDto> updateReview(HttpServletRequest req, @Valid @RequestBody ReviewDto reviewDto) {
         String jwt = req.getHeader("Authorization").substring(7, req.getHeader("Authorization").length());
         String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
         Review reviewRequest = reviewConverter.convertToEntity(reviewDto);
 
-        return reviewService.updateReview(reviewRequest, username);
+        return ResponseEntity.ok(reviewService.updateReview(reviewRequest, username));
     }
 
     @DeleteMapping("/{reviewId}")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-    public ResponseEntity<?> deleteReview(HttpServletRequest req, @PathVariable("reviewId") Long reviewId) {
+    public ResponseEntity<ResponseDto> deleteReview(HttpServletRequest req, @PathVariable("reviewId") Long reviewId) {
         String jwt = req.getHeader("Authorization").substring(7, req.getHeader("Authorization").length());
         String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
-        return reviewService.deleteReview(reviewId, username);
+        return ResponseEntity.ok(reviewService.deleteReview(reviewId, username));
     }
 }

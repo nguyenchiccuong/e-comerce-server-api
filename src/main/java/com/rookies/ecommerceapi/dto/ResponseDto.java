@@ -15,12 +15,12 @@ public class ResponseDto {
     private LocalDateTime time = LocalDateTime.now();
     private String errorCode;
     private Object data;
-    private String succesCode;
+    private String successCode;
 
-    public ResponseDto(String errorCode, Object data, String succesCode) {
+    public ResponseDto(String errorCode, Object data, String successCode) {
         this.errorCode = errorCode;
         this.data = data;
-        this.succesCode = succesCode;
+        this.successCode = successCode;
     }
 
 }

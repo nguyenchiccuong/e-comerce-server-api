@@ -1,16 +1,19 @@
 package com.rookies.ecommerceapi.service.impl;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.Optional;
 
 import com.rookies.ecommerceapi.constant.ErrorCode;
+import com.rookies.ecommerceapi.constant.SuccessCode;
+import com.rookies.ecommerceapi.dto.ProductDto;
+import com.rookies.ecommerceapi.dto.ResponseDto;
 import com.rookies.ecommerceapi.entity.Brand;
 import com.rookies.ecommerceapi.entity.Category;
 import com.rookies.ecommerceapi.entity.Origin;
@@ -22,14 +25,11 @@ import com.rookies.ecommerceapi.exception.OriginIdNotFoundException;
 import com.rookies.ecommerceapi.exception.ProductDetailIdExistInOrderDetail;
 import com.rookies.ecommerceapi.exception.ProductDetailNotValidException;
 import com.rookies.ecommerceapi.exception.ProductIdNotFoundException;
-import com.rookies.ecommerceapi.payload.respone.MessageResponse;
 import com.rookies.ecommerceapi.repository.BrandRepository;
 import com.rookies.ecommerceapi.repository.CategoryRepository;
-import com.rookies.ecommerceapi.repository.OrderDetailRepository;
 import com.rookies.ecommerceapi.repository.OriginRepository;
 import com.rookies.ecommerceapi.repository.ProductDetailRepository;
 import com.rookies.ecommerceapi.repository.ProductRepository;
-import com.rookies.ecommerceapi.repository.ReviewRepository;
 import com.rookies.ecommerceapi.service.ProductService;
 import com.rookies.ecommerceapi.util.ValidateProductDetailCollection;
 
@@ -46,71 +46,119 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductDetailRepository productDetailRepository;
 
-    private final ReviewRepository reviewRepository;
-
-    private final OrderDetailRepository orderDetailRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository,
             BrandRepository brandRepository, OriginRepository originRepository,
-            ProductDetailRepository productDetailRepository, ReviewRepository reviewRepository,
-            OrderDetailRepository orderDetailRepository) {
+            ProductDetailRepository productDetailRepository, ModelMapper modelMapper) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.brandRepository = brandRepository;
         this.originRepository = originRepository;
         this.productDetailRepository = productDetailRepository;
-        this.reviewRepository = reviewRepository;
-        this.orderDetailRepository = orderDetailRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    public Page<Product> retrieveProducts(Pageable page) {
-        return productRepository.findAll(page);
+    public ResponseDto retrieveProducts(Pageable page) {
+        ResponseDto responseDto = new ResponseDto();
+        Page<Product> products = productRepository.findAll(page);
+        List<ProductDto> ProductsDto = products.stream().map(product -> modelMapper.map(product, ProductDto.class))
+                .collect(Collectors.toList());
+        responseDto.setData(ProductsDto);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        return responseDto;
     }
 
     @Override
-    public Product retrieveProductById(Long id) {
-        return productRepository.findById(id).orElseThrow(() -> new ProductIdNotFoundException(ErrorCode.ERR_PRODUCT_ID_NOT_FOUND));
+    public ResponseDto retrieveProductById(Long id) {
+        ResponseDto responseDto = new ResponseDto();
+        Product productById = productRepository.findById(id)
+                .orElseThrow(() -> new ProductIdNotFoundException(ErrorCode.ERR_PRODUCT_ID_NOT_FOUND));
+
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setData(productById);
+        return responseDto;
     }
 
     @Override
-    public Page<Product> retrieveProductsByCategoryId(Pageable page, Integer categoryId) {
-        return productRepository.findByCategoryId(page, categoryId);
+    public ResponseDto retrieveProductsByCategoryId(Pageable page, Integer categoryId) {
+        ResponseDto responseDto = new ResponseDto();
+        Page<Product> productsByCategoryId = productRepository.findByCategoryId(page, categoryId);
+        List<ProductDto> ProductsDto = productsByCategoryId.stream()
+                .map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+        responseDto.setData(ProductsDto);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        return responseDto;
     }
 
     @Override
-    public Page<Product> retrieveProductsByBrandName(Pageable page, String brandName) {
-        return productRepository.findByBrandName(page, brandName);
+    public ResponseDto retrieveProductsByBrandName(Pageable page, String brandName) {
+        ResponseDto responseDto = new ResponseDto();
+        Page<Product> productsByBrandName = productRepository.findByBrandName(page, brandName);
+        List<ProductDto> ProductsDto = productsByBrandName.stream()
+                .map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+        responseDto.setData(ProductsDto);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        return responseDto;
     }
 
     @Override
-    public Page<Product> retrieveProductsByCountry(Pageable page, String country) {
-        return productRepository.findByCountry(page, country);
+    public ResponseDto retrieveProductsByCountry(Pageable page, String country) {
+        ResponseDto responseDto = new ResponseDto();
+        Page<Product> productsByCountry = productRepository.findByCountry(page, country);
+        List<ProductDto> ProductsDto = productsByCountry.stream()
+                .map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+        responseDto.setData(ProductsDto);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        return responseDto;
     }
 
     @Override
-    public Long countProduct() {
-        return productRepository.count();
+    public ResponseDto countProduct() {
+        ResponseDto responseDto = new ResponseDto();
+        Long quantity = productRepository.count();
+
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setData(quantity);
+        return responseDto;
     }
 
     @Override
-    public Long countProductByCategoryId(Integer categoryId) {
-        return productRepository.CountByCategoryId(categoryId);
+    public ResponseDto countProductByCategoryId(Integer categoryId) {
+        ResponseDto responseDto = new ResponseDto();
+        Long quantity = productRepository.CountByCategoryId(categoryId);
+
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setData(quantity);
+        return responseDto;
     }
 
     @Override
-    public Long countProductByBrandName(String brandName) {
-        return productRepository.CountByBrandName(brandName);
+    public ResponseDto countProductByBrandName(String brandName) {
+        ResponseDto responseDto = new ResponseDto();
+        Long quantity = productRepository.CountByBrandName(brandName);
+
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setData(quantity);
+        return responseDto;
     }
 
     @Override
-    public Long countProductByCountry(String country) {
-        return productRepository.CountByCountry(country);
+    public ResponseDto countProductByCountry(String country) {
+        ResponseDto responseDto = new ResponseDto();
+        Long quantity = productRepository.CountByCountry(country);
+
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setData(quantity);
+        return responseDto;
     }
 
     @Override
-    public Product saveProduct(Product product) {
+    public ResponseDto saveProduct(Product product) {
+        ResponseDto responseDto = new ResponseDto();
+
         Brand brand = brandRepository.findById(product.getBrand().getId())
                 .orElseThrow(() -> new BrandIdNotFoundException(ErrorCode.ERR_BRAND_ID_NOT_FOUND));
 
@@ -146,12 +194,16 @@ public class ProductServiceImpl implements ProductService {
 
         productSave.setProductDetails(productDetails);
 
-        return productSave;
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setData(productSave);
+        return responseDto;
 
     }
 
     @Override
-    public ResponseEntity<?> updateProduct(Product product) {
+    public ResponseDto updateProduct(Product product) {
+        ResponseDto responseDto = new ResponseDto();
+
         if (product.getId() == null) {
             throw new ProductIdNotFoundException(ErrorCode.ERR_PRODUCT_ID_NOT_FOUND);
         }
@@ -180,7 +232,8 @@ public class ProductServiceImpl implements ProductService {
             if (!productDetail.getOrderDetails().isEmpty()) {
                 product.getProductDetails().stream()
                         .filter(productDetailFromRequest -> productDetailFromRequest.getId() == productDetail.getId())
-                        .findAny().orElseThrow(() -> new ProductDetailIdExistInOrderDetail(ErrorCode.ERR_PRODUCT_DETAIL_ID_EXIST_IN_ORDER_DETAIL));
+                        .findAny().orElseThrow(() -> new ProductDetailIdExistInOrderDetail(
+                                ErrorCode.ERR_PRODUCT_DETAIL_ID_EXIST_IN_ORDER_DETAIL));
             }
         });
 
@@ -224,11 +277,14 @@ public class ProductServiceImpl implements ProductService {
             }
         });
 
-        return ResponseEntity.ok(new MessageResponse("Update success"));
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        return responseDto;
     }
 
     @Override
-    public ResponseEntity<?> deleteProduct(Long productId) {
+    public ResponseDto deleteProduct(Long productId) {
+        ResponseDto responseDto = new ResponseDto();
+
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductIdNotFoundException(ErrorCode.ERR_PRODUCT_ID_NOT_FOUND));
         // product detail list from db to check if a detail reference to a order detail
@@ -240,6 +296,8 @@ public class ProductServiceImpl implements ProductService {
         });
 
         productRepository.deleteById(productId);
-        return ResponseEntity.ok(new MessageResponse("Delete success"));
+
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        return responseDto;
     }
 }

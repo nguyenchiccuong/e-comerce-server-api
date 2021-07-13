@@ -120,4 +120,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(UsernameAlreadyTakenException.class)
+    public ResponseEntity<ResponseDto> UsernameAlreadyTakenException(UsernameAlreadyTakenException ex,
+            WebRequest request) {
+        ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
+        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EmailAlreadyTakenException.class)
+    public ResponseEntity<ResponseDto> EmailAlreadyTakenException(EmailAlreadyTakenException ex, WebRequest request) {
+        ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
+        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(PhonenumberAlreadyTakenException.class)
+    public ResponseEntity<ResponseDto> PhonenumberAlreadyTakenException(PhonenumberAlreadyTakenException ex,
+            WebRequest request) {
+        ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
+        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+    }
+
 }

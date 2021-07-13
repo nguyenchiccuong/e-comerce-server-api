@@ -1,19 +1,22 @@
 package com.rookies.ecommerceapi.service.impl;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Optional;
 
 import com.rookies.ecommerceapi.constant.ErrorCode;
+import com.rookies.ecommerceapi.constant.SuccessCode;
+import com.rookies.ecommerceapi.dto.CategoryDto;
+import com.rookies.ecommerceapi.dto.ResponseDto;
 import com.rookies.ecommerceapi.entity.Category;
 import com.rookies.ecommerceapi.entity.Product;
 import com.rookies.ecommerceapi.repository.CategoryRepository;
 import com.rookies.ecommerceapi.repository.ProductRepository;
 import com.rookies.ecommerceapi.service.CategoryService;
 import com.rookies.ecommerceapi.exception.CategoryNameExistException;
-import com.rookies.ecommerceapi.payload.respone.MessageResponse;
 import com.rookies.ecommerceapi.exception.CategoryExistInProductException;
 import com.rookies.ecommerceapi.exception.CategoryIdNotFoundException;
 
@@ -24,36 +27,60 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final ProductRepository productRepository;
 
+    private final ModelMapper modelMapper;
+
     @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository, ProductRepository productRepository) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, ProductRepository productRepository,
+            ModelMapper modelMapper) {
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    public List<Category> retrieveParentCategory() {
-        return categoryRepository.findByCategoryIsNull();
+    public ResponseDto retrieveParentCategory() {
+        ResponseDto responseDto = new ResponseDto();
+        List<Category> parentCategory = categoryRepository.findByCategoryIsNull();
+        List<CategoryDto> categoriesDto = parentCategory.stream()
+                .map(category -> modelMapper.map(category, CategoryDto.class)).collect(Collectors.toList());
+        responseDto.setData(categoriesDto);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        return responseDto;
     }
 
     @Override
-    public List<Category> retrieveSubCategory(Integer parentId) {
-        return categoryRepository.findSubCategoryByParentCategoryId(parentId);
+    public ResponseDto retrieveSubCategory(Integer parentId) {
+        ResponseDto responseDto = new ResponseDto();
+        List<Category> subCategory = categoryRepository.findSubCategoryByParentCategoryId(parentId);
+        List<CategoryDto> categoriesDto = subCategory.stream()
+                .map(category -> modelMapper.map(category, CategoryDto.class)).collect(Collectors.toList());
+        responseDto.setData(categoriesDto);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        return responseDto;
     }
 
     @Override
-    public Category saveCategory(Category category) {
+    public ResponseDto saveCategory(Category category) {
+        ResponseDto responseDto = new ResponseDto();
+
         Optional<Category> categoryByCategoryName = categoryRepository.findByCategoryName(category.getCategoryName());
         if (categoryByCategoryName.isPresent()) {
             throw new CategoryNameExistException(category.getCategoryName());
         } else {
             Category categorySave = new Category();
             categorySave.setCategoryName(category.getCategoryName());
-            return categoryRepository.save(categorySave);
+            categorySave = categoryRepository.save(categorySave);
+
+            responseDto.setSuccessCode(SuccessCode.SUCCESS);
+            responseDto.setData(categorySave);
+            return responseDto;
         }
     }
 
     @Override
-    public Category saveSubCategory(Category category) {
+    public ResponseDto saveSubCategory(Category category) {
+        ResponseDto responseDto = new ResponseDto();
+
         if (category.getId() == null) {
             throw new CategoryIdNotFoundException(ErrorCode.ERR_CATEGORY_ID_NOT_FOUND);
         }
@@ -70,12 +97,18 @@ public class CategoryServiceImpl implements CategoryService {
         Category categorySave = new Category();
         categorySave.setCategory(categoryById);
         categorySave.setCategoryName(category.getCategoryName());
-        return categoryRepository.save(categorySave);
+        categorySave = categoryRepository.save(categorySave);
+
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setData(categorySave);
+        return responseDto;
 
     }
 
     @Override
-    public ResponseEntity<?> updateCategory(Category category) {
+    public ResponseDto updateCategory(Category category) {
+        ResponseDto responseDto = new ResponseDto();
+
         if (category.getId() == null) {
             throw new CategoryIdNotFoundException(ErrorCode.ERR_CATEGORY_ID_NOT_FOUND);
         }
@@ -95,12 +128,16 @@ public class CategoryServiceImpl implements CategoryService {
         Category categoryUpdate = categoryById;
         categoryUpdate.setCategoryName(category.getCategoryName());
         categoryRepository.save(categoryUpdate);
-        return ResponseEntity.ok(new MessageResponse("Update success"));
+
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        return responseDto;
 
     }
 
     @Override
-    public ResponseEntity<?> deleteCategory(Integer id) {
+    public ResponseDto deleteCategory(Integer id) {
+        ResponseDto responseDto = new ResponseDto();
+
         boolean exist = categoryRepository.existsById(id);
         if (!exist) {
             throw new CategoryIdNotFoundException(ErrorCode.ERR_CATEGORY_ID_NOT_FOUND);
@@ -112,7 +149,9 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         categoryRepository.deleteById(id);
-        return ResponseEntity.ok(new MessageResponse("Delete success"));
+
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        return responseDto;
 
     }
 

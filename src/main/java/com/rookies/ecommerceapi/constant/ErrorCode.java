@@ -36,5 +36,11 @@ public class ErrorCode {
     public final static String ERR_USER_LOCKED = "ERR_USER_LOCKED";
     public final static String ERR_USERNAME_NOT_FOUND = "ERR_USERNAME_NOT_FOUND";
     public final static String ERR_USERNAME_UNAMTCH_WITH_REVIEW = "ERR_USERNAME_UNAMTCH_WITH_REVIEW";
+    public final static String ERR_USERNAME_ALREADY_TAKEN = "ERR_USERNAME_ALREADY_TAKEN";
+   
+    //CUSTOMER
+
+    public final static String ERR_EMAIL_ALREADY_TAKEN = "ERR_EMAIL_ALREADY_TAKEN";
+    public final static String ERR_PHONENUMBER_ALREADY_TAKEN = "ERR_PHONENUMBER_ALREADY_TAKEN";
 
 }

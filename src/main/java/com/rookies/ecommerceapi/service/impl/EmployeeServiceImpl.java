@@ -1,7 +1,6 @@
 package com.rookies.ecommerceapi.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -10,6 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.rookies.ecommerceapi.constant.SuccessCode;
+import com.rookies.ecommerceapi.dto.ResponseDto;
 import com.rookies.ecommerceapi.payload.request.LoginRequest;
 import com.rookies.ecommerceapi.payload.respone.JwtResponse;
 import com.rookies.ecommerceapi.security.jwt.JwtUtils;
@@ -30,7 +31,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public ResponseEntity<?> authenticateEmployee(LoginRequest loginRequest) {
+    public ResponseDto authenticateEmployee(LoginRequest loginRequest) {
+        ResponseDto responseDto = new ResponseDto();
+
         // TODO, authenticate when login
         // Username, pass from client
         // com.nashtech.rookies.security.WebSecurityConfig.configure(org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder)
@@ -49,7 +52,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles.get(0)));
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setData(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles.get(0)));
+        return responseDto;
     }
 
 }

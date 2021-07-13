@@ -18,9 +18,7 @@ import javax.validation.Valid;
 
 import com.rookies.ecommerceapi.converter.ProductConverter;
 import com.rookies.ecommerceapi.dto.ProductDto;
-import com.rookies.ecommerceapi.entity.Brand;
-import com.rookies.ecommerceapi.entity.Category;
-import com.rookies.ecommerceapi.entity.Origin;
+import com.rookies.ecommerceapi.dto.ResponseDto;
 import com.rookies.ecommerceapi.entity.Product;
 import com.rookies.ecommerceapi.service.ProductService;
 
@@ -47,22 +45,26 @@ public class ProductManageController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    public ProductDto saveProduct(@Valid @RequestBody ProductDto productDto) {
+    public ResponseEntity<ResponseDto> saveProduct(@Valid @RequestBody ProductDto productDto) {
         Product productRequest = productConverter.convertToEntity(productDto);
-        Product product = productService.saveProduct(productRequest);
-        return modelMapper.map(product, ProductDto.class);
+
+        ResponseDto responseDto = productService.saveProduct(productRequest);
+
+        responseDto.setData(modelMapper.map(responseDto.getData(), ProductDto.class));
+
+        return ResponseEntity.ok(responseDto);
     }
 
     @PutMapping
     @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> updateProduct(@Valid @RequestBody ProductDto productDto) {
+    public ResponseEntity<ResponseDto> updateProduct(@Valid @RequestBody ProductDto productDto) {
         Product productRequest = productConverter.convertToEntity(productDto);
-        return productService.updateProduct(productRequest);
+        return ResponseEntity.ok(productService.updateProduct(productRequest));
     }
 
     @DeleteMapping("/{productId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> deleteProduct(@PathVariable("productId") Long productId) {
-        return productService.deleteProduct(productId);
+    public ResponseEntity<ResponseDto> deleteProduct(@PathVariable("productId") Long productId) {
+        return ResponseEntity.ok(productService.deleteProduct(productId));
     }
 }

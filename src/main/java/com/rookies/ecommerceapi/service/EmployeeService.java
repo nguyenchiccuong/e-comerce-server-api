@@ -1,9 +1,8 @@
 package com.rookies.ecommerceapi.service;
 
-import org.springframework.http.ResponseEntity;
-
+import com.rookies.ecommerceapi.dto.ResponseDto;
 import com.rookies.ecommerceapi.payload.request.LoginRequest;
 
 public interface EmployeeService {
-    public ResponseEntity<?> authenticateEmployee(LoginRequest loginRequest);
+    public ResponseDto authenticateEmployee(LoginRequest loginRequest);
 }

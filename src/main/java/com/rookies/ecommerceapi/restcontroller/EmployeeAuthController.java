@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
+import com.rookies.ecommerceapi.dto.ResponseDto;
 import com.rookies.ecommerceapi.payload.request.LoginRequest;
 import com.rookies.ecommerceapi.service.EmployeeService;
 
@@ -29,7 +30,7 @@ public class EmployeeAuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateEmployee(@Valid @RequestBody LoginRequest loginRequest) {
-        return employeeService.authenticateEmployee(loginRequest);
+    public ResponseEntity<ResponseDto> authenticateEmployee(@Valid @RequestBody LoginRequest loginRequest) {
+        return ResponseEntity.ok(employeeService.authenticateEmployee(loginRequest));
     }
 }

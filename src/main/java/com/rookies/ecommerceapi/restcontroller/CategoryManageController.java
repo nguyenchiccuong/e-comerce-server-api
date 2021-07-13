@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 import com.rookies.ecommerceapi.dto.CategoryDto;
+import com.rookies.ecommerceapi.dto.ResponseDto;
 import com.rookies.ecommerceapi.entity.Category;
 import com.rookies.ecommerceapi.service.CategoryService;
 
@@ -39,30 +40,38 @@ public class CategoryManageController {
 
     @PostMapping("/parent")
     @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    public CategoryDto saveCategory(@Valid @RequestBody CategoryDto categoryDto) {
+    public ResponseEntity<ResponseDto> saveCategory(@Valid @RequestBody CategoryDto categoryDto) {
         Category categoryRequest = modelMapper.map(categoryDto, Category.class);
-        Category category = categoryService.saveCategory(categoryRequest);
-        return modelMapper.map(category, CategoryDto.class);
+
+        ResponseDto responseDto = categoryService.saveCategory(categoryRequest);
+
+        responseDto.setData(modelMapper.map(responseDto.getData(), CategoryDto.class));
+
+        return ResponseEntity.ok(responseDto);
     }
 
     @PostMapping("/sub")
     @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    public CategoryDto saveSubCategory(@Valid @RequestBody CategoryDto categoryDto) {
+    public ResponseEntity<ResponseDto> saveSubCategory(@Valid @RequestBody CategoryDto categoryDto) {
         Category categoryRequest = modelMapper.map(categoryDto, Category.class);
-        Category category = categoryService.saveSubCategory(categoryRequest);
-        return modelMapper.map(category, CategoryDto.class);
+
+        ResponseDto responseDto = categoryService.saveSubCategory(categoryRequest);
+
+        responseDto.setData(modelMapper.map(responseDto.getData(), CategoryDto.class));
+
+        return ResponseEntity.ok(responseDto);
     }
 
     @PutMapping
     @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> updateCategory(@Valid @RequestBody CategoryDto categoryDto) {
+    public ResponseEntity<ResponseDto> updateCategory(@Valid @RequestBody CategoryDto categoryDto) {
         Category categoryRequest = modelMapper.map(categoryDto, Category.class);
-        return categoryService.updateCategory(categoryRequest);
+        return ResponseEntity.ok(categoryService.updateCategory(categoryRequest));
     }
 
     @DeleteMapping("/{categoryId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> deleteCategory(@PathVariable("categoryId") Integer categoryId) {
-        return categoryService.deleteCategory(categoryId);
+    public ResponseEntity<ResponseDto> deleteCategory(@PathVariable("categoryId") Integer categoryId) {
+        return ResponseEntity.ok(categoryService.deleteCategory(categoryId));
     }
 }

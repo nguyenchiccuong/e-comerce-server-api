@@ -1,9 +1,9 @@
 package com.rookies.ecommerceapi.service.impl;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,21 +13,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.Optional;
 import java.time.LocalDateTime;
 
 import com.rookies.ecommerceapi.constant.ErrorCode;
+import com.rookies.ecommerceapi.constant.SuccessCode;
 import com.rookies.ecommerceapi.dto.CustomerDto;
+import com.rookies.ecommerceapi.dto.ResponseDto;
 import com.rookies.ecommerceapi.entity.Customer;
 import com.rookies.ecommerceapi.entity.Role;
 import com.rookies.ecommerceapi.entity.RoleName;
 import com.rookies.ecommerceapi.entity.User;
 import com.rookies.ecommerceapi.exception.RoleNameNotFoundException;
 import com.rookies.ecommerceapi.exception.UserIdNotFoundException;
+import com.rookies.ecommerceapi.exception.UsernameAlreadyTakenException;
+import com.rookies.ecommerceapi.exception.PhonenumberAlreadyTakenException;
+import com.rookies.ecommerceapi.exception.EmailAlreadyTakenException;
 import com.rookies.ecommerceapi.payload.request.LoginRequest;
 import com.rookies.ecommerceapi.payload.request.SignupRequest;
 import com.rookies.ecommerceapi.payload.respone.JwtResponse;
-import com.rookies.ecommerceapi.payload.respone.MessageResponse;
 import com.rookies.ecommerceapi.repository.CustomerRepository;
 import com.rookies.ecommerceapi.repository.RoleRepository;
 import com.rookies.ecommerceapi.repository.UserRepository;
@@ -50,20 +53,25 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final JwtUtils jwtUtils;
 
+    private final ModelMapper modelMapper;
+
     @Autowired
     public CustomerServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository,
             RoleRepository roleRepository, CustomerRepository customerRepository, PasswordEncoder encoder,
-            JwtUtils jwtUtils) {
+            JwtUtils jwtUtils, ModelMapper modelMapper) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.customerRepository = customerRepository;
         this.encoder = encoder;
         this.jwtUtils = jwtUtils;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    public ResponseEntity<?> authenticateCustomer(LoginRequest loginRequest) {
+    public ResponseDto authenticateCustomer(LoginRequest loginRequest) {
+        ResponseDto responseDto = new ResponseDto();
+
         // TODO, authenticate when login
         // Username, pass from client
         // com.nashtech.rookies.security.WebSecurityConfig.configure(org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder)
@@ -82,24 +90,28 @@ public class CustomerServiceImpl implements CustomerService {
         List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles.get(0)));
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setData(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles.get(0)));
+        return responseDto;
     }
 
     @Override
-    public ResponseEntity<?> registerCustomer(SignupRequest signUpRequest) {
+    public ResponseDto registerCustomer(SignupRequest signUpRequest) {
+        ResponseDto responseDto = new ResponseDto();
+
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
+            throw new UsernameAlreadyTakenException(ErrorCode.ERR_USERNAME_ALREADY_TAKEN);
         }
 
         if (signUpRequest.getEmail() != null && !signUpRequest.getEmail().equals("")) {
             if (customerRepository.existsByEmail(signUpRequest.getEmail())) {
-                return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
+                throw new EmailAlreadyTakenException(ErrorCode.ERR_EMAIL_ALREADY_TAKEN);
             }
         }
 
         if (signUpRequest.getPhoneNumber() != null && !signUpRequest.getPhoneNumber().equals("")) {
             if (customerRepository.existsByPhoneNumber(signUpRequest.getPhoneNumber())) {
-                return ResponseEntity.badRequest().body(new MessageResponse("Error: Phone number is already in use!"));
+                throw new PhonenumberAlreadyTakenException(ErrorCode.ERR_PHONENUMBER_ALREADY_TAKEN);
             }
         }
 
@@ -123,25 +135,42 @@ public class CustomerServiceImpl implements CustomerService {
 
         customerRepository.save(customer);
 
-        return ResponseEntity.ok(new MessageResponse("Customer registered successfully!"));
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        return responseDto;
     }
 
     @Override
-    public Page<Customer> retrieveCustomers(Pageable page) {
-        return customerRepository.findAll(page);
+    public ResponseDto retrieveCustomers(Pageable page) {
+        ResponseDto responseDto = new ResponseDto();
+        Page<Customer> customers = customerRepository.findAll(page);
+        List<CustomerDto> customersDto = customers.stream()
+                .map(customer -> modelMapper.map(customer, CustomerDto.class)).collect(Collectors.toList());
+        responseDto.setData(customersDto);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        return responseDto;
     }
 
     @Override
-    public Customer retrieveCustomerByUserId(Long userId) {
-        return customerRepository.findByUserId(userId).orElseThrow(() -> new UserIdNotFoundException(ErrorCode.ERR_USER_ID_NOT_FOUND));
+    public ResponseDto retrieveCustomerByUserId(Long userId) {
+        ResponseDto responseDto = new ResponseDto();
+        Customer customer = customerRepository.findByUserId(userId)
+                .orElseThrow(() -> new UserIdNotFoundException(ErrorCode.ERR_USER_ID_NOT_FOUND));
+
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setData(customer);
+        return responseDto;
     }
 
     @Override
     @Transactional
-    public ResponseEntity<?> lockCustomerByUserId(Long userId) {
-        customerRepository.findById(userId).orElseThrow(() -> new UserIdNotFoundException(ErrorCode.ERR_USER_ID_NOT_FOUND));
+    public ResponseDto lockCustomerByUserId(Long userId) {
+        ResponseDto responseDto = new ResponseDto();
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserIdNotFoundException(ErrorCode.ERR_USER_ID_NOT_FOUND));
+        customerRepository.findById(userId)
+                .orElseThrow(() -> new UserIdNotFoundException(ErrorCode.ERR_USER_ID_NOT_FOUND));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserIdNotFoundException(ErrorCode.ERR_USER_ID_NOT_FOUND));
 
         Role roleByRoleName = roleRepository.findByRoleName(RoleName.ROLE_CUSTOMER_LOCKED)
                 .orElseThrow(() -> new RoleNameNotFoundException(RoleName.ROLE_CUSTOMER_LOCKED.name()));
@@ -150,15 +179,20 @@ public class CustomerServiceImpl implements CustomerService {
         Short status = 0;
         user.setStatus(status);
 
-        return ResponseEntity.ok(new MessageResponse("Locked successfully"));
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        return responseDto;
     }
 
     @Override
     @Transactional
-    public ResponseEntity<?> unlockCustomerByUserId(Long userId) {
-        customerRepository.findById(userId).orElseThrow(() -> new UserIdNotFoundException(ErrorCode.ERR_USER_ID_NOT_FOUND));
+    public ResponseDto unlockCustomerByUserId(Long userId) {
+        ResponseDto responseDto = new ResponseDto();
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserIdNotFoundException(ErrorCode.ERR_USER_ID_NOT_FOUND));
+        customerRepository.findById(userId)
+                .orElseThrow(() -> new UserIdNotFoundException(ErrorCode.ERR_USER_ID_NOT_FOUND));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserIdNotFoundException(ErrorCode.ERR_USER_ID_NOT_FOUND));
 
         Role roleByRoleName = roleRepository.findByRoleName(RoleName.ROLE_CUSTOMER)
                 .orElseThrow(() -> new RoleNameNotFoundException(RoleName.ROLE_CUSTOMER.name()));
@@ -167,22 +201,39 @@ public class CustomerServiceImpl implements CustomerService {
         Short status = 1;
         user.setStatus(status);
 
-        return ResponseEntity.ok(new MessageResponse("Unlocked successfully"));
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        return responseDto;
     }
 
     @Override
-    public Long countCustomer() {
-        return customerRepository.count();
+    public ResponseDto countCustomer() {
+        ResponseDto responseDto = new ResponseDto();
+        Long quantity = customerRepository.count();
+
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setData(quantity);
+        return responseDto;
     }
 
     @Override
-    public Long countCustomerByStatus(Short status) {
-        return customerRepository.countByStatus(status);
+    public ResponseDto countCustomerByStatus(Short status) {
+        ResponseDto responseDto = new ResponseDto();
+        Long quantity = customerRepository.countByStatus(status);
+
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setData(quantity);
+        return responseDto;
     }
 
     @Override
-    public Page<Customer> retrieveCustomersByStatus(Pageable page, Short status) {
-        return customerRepository.findByStatus(page, status);
+    public ResponseDto retrieveCustomersByStatus(Pageable page, Short status) {
+        ResponseDto responseDto = new ResponseDto();
+        Page<Customer> customersByStatus = customerRepository.findByStatus(page, status);
+        List<CustomerDto> customerByStatusDto = customersByStatus.stream()
+                .map(customer -> modelMapper.map(customer, CustomerDto.class)).collect(Collectors.toList());
+        responseDto.setData(customerByStatusDto);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        return responseDto;
     }
 
 }

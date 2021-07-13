@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import com.rookies.ecommerceapi.constant.ErrorCode;
 import com.rookies.ecommerceapi.entity.Category;
 import com.rookies.ecommerceapi.entity.Product;
 import com.rookies.ecommerceapi.repository.CategoryRepository;
@@ -54,12 +55,12 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category saveSubCategory(Category category) {
         if (category.getId() == null) {
-            throw new CategoryIdNotFoundException(category.getId());
+            throw new CategoryIdNotFoundException(ErrorCode.ERR_CATEGORY_ID_NOT_FOUND);
         }
 
         // check if not null and id is a parent category
         Category categoryById = categoryRepository.findByIdAndCategoryIsNull(category.getId())
-                .orElseThrow(() -> new CategoryIdNotFoundException(category.getId()));
+                .orElseThrow(() -> new CategoryIdNotFoundException(ErrorCode.ERR_CATEGORY_ID_NOT_FOUND));
 
         Optional<Category> categoryByCategoryName = categoryRepository.findByCategoryName(category.getCategoryName());
         if (categoryByCategoryName.isPresent()) {
@@ -76,11 +77,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public ResponseEntity<?> updateCategory(Category category) {
         if (category.getId() == null) {
-            throw new CategoryIdNotFoundException(category.getId());
+            throw new CategoryIdNotFoundException(ErrorCode.ERR_CATEGORY_ID_NOT_FOUND);
         }
 
         Category categoryById = categoryRepository.findById(category.getId())
-                .orElseThrow(() -> new CategoryIdNotFoundException(category.getId()));
+                .orElseThrow(() -> new CategoryIdNotFoundException(ErrorCode.ERR_CATEGORY_ID_NOT_FOUND));
 
         if (categoryById.getCategoryName().equals(category.getCategoryName())) {
             throw new CategoryNameExistException(category.getCategoryName());
@@ -102,12 +103,12 @@ public class CategoryServiceImpl implements CategoryService {
     public ResponseEntity<?> deleteCategory(Integer id) {
         boolean exist = categoryRepository.existsById(id);
         if (!exist) {
-            throw new CategoryIdNotFoundException(id);
+            throw new CategoryIdNotFoundException(ErrorCode.ERR_CATEGORY_ID_NOT_FOUND);
         }
 
         List<Product> listProductCategoryId = productRepository.findByCategoryId(id);
         if (listProductCategoryId.size() > 0) {
-            throw new CategoryExistInProductException(id);
+            throw new CategoryExistInProductException(ErrorCode.ERR_CATEGORY_EXIST_IN_PRODUCT);
         }
 
         categoryRepository.deleteById(id);

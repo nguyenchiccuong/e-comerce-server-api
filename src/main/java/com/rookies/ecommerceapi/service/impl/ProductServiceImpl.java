@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.rookies.ecommerceapi.constant.ErrorCode;
 import com.rookies.ecommerceapi.entity.Brand;
 import com.rookies.ecommerceapi.entity.Category;
 import com.rookies.ecommerceapi.entity.Origin;
@@ -70,7 +71,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product retrieveProductById(Long id) {
-        return productRepository.findById(id).orElseThrow(() -> new ProductIdNotFoundException(id));
+        return productRepository.findById(id).orElseThrow(() -> new ProductIdNotFoundException(ErrorCode.ERR_PRODUCT_ID_NOT_FOUND));
     }
 
     @Override
@@ -111,16 +112,16 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product saveProduct(Product product) {
         Brand brand = brandRepository.findById(product.getBrand().getId())
-                .orElseThrow(() -> new BrandIdNotFoundException(product.getBrand().getId()));
+                .orElseThrow(() -> new BrandIdNotFoundException(ErrorCode.ERR_BRAND_ID_NOT_FOUND));
 
         Origin origin = originRepository.findById(product.getOrigin().getId())
-                .orElseThrow(() -> new OriginIdNotFoundException(product.getOrigin().getId()));
+                .orElseThrow(() -> new OriginIdNotFoundException(ErrorCode.ERR_ORIGIN_ID_NOT_FOUND));
 
         Category category = categoryRepository.findById(product.getCategory().getId())
-                .orElseThrow(() -> new CategoryIdNotFoundException(product.getCategory().getId()));
+                .orElseThrow(() -> new CategoryIdNotFoundException(ErrorCode.ERR_CATEGORY_ID_NOT_FOUND));
 
         if (!ValidateProductDetailCollection.validateProductDetailCollection(product.getProductDetails())) {
-            throw new ProductDetailNotValidException();
+            throw new ProductDetailNotValidException(ErrorCode.ERR_PRODUCT_DETAIL_NOT_VALID);
         }
 
         Product productSave = new Product(product.getProductName(), category, product.getModel(), brand, origin,
@@ -139,7 +140,7 @@ public class ProductServiceImpl implements ProductService {
         });
 
         productSave = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductIdNotFoundException(productId));
+                .orElseThrow(() -> new ProductIdNotFoundException(ErrorCode.ERR_PRODUCT_ID_NOT_FOUND));
 
         List<ProductDetail> productDetails = productDetailRepository.findByProductId(productId);
 
@@ -152,23 +153,23 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ResponseEntity<?> updateProduct(Product product) {
         if (product.getId() == null) {
-            throw new ProductIdNotFoundException(product.getId());
+            throw new ProductIdNotFoundException(ErrorCode.ERR_PRODUCT_ID_NOT_FOUND);
         }
 
         Product productUpdate = productRepository.findById(product.getId())
-                .orElseThrow(() -> new ProductIdNotFoundException(product.getId()));
+                .orElseThrow(() -> new ProductIdNotFoundException(ErrorCode.ERR_PRODUCT_ID_NOT_FOUND));
 
         Brand brand = brandRepository.findById(product.getBrand().getId())
-                .orElseThrow(() -> new BrandIdNotFoundException(product.getBrand().getId()));
+                .orElseThrow(() -> new BrandIdNotFoundException(ErrorCode.ERR_BRAND_ID_NOT_FOUND));
 
         Origin origin = originRepository.findById(product.getOrigin().getId())
-                .orElseThrow(() -> new OriginIdNotFoundException(product.getOrigin().getId()));
+                .orElseThrow(() -> new OriginIdNotFoundException(ErrorCode.ERR_ORIGIN_ID_NOT_FOUND));
 
         Category category = categoryRepository.findById(product.getCategory().getId())
-                .orElseThrow(() -> new CategoryIdNotFoundException(product.getCategory().getId()));
+                .orElseThrow(() -> new CategoryIdNotFoundException(ErrorCode.ERR_CATEGORY_ID_NOT_FOUND));
 
         if (!ValidateProductDetailCollection.validateProductDetailCollection(product.getProductDetails())) {
-            throw new ProductDetailNotValidException();
+            throw new ProductDetailNotValidException(ErrorCode.ERR_PRODUCT_DETAIL_NOT_VALID);
         }
 
         // product detail list from db to check if a detail can remove, if not throw
@@ -179,7 +180,7 @@ public class ProductServiceImpl implements ProductService {
             if (!productDetail.getOrderDetails().isEmpty()) {
                 product.getProductDetails().stream()
                         .filter(productDetailFromRequest -> productDetailFromRequest.getId() == productDetail.getId())
-                        .findAny().orElseThrow(() -> new ProductDetailIdExistInOrderDetail(productDetail.getId()));
+                        .findAny().orElseThrow(() -> new ProductDetailIdExistInOrderDetail(ErrorCode.ERR_PRODUCT_DETAIL_ID_EXIST_IN_ORDER_DETAIL));
             }
         });
 
@@ -229,12 +230,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ResponseEntity<?> deleteProduct(Long productId) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductIdNotFoundException(productId));
+                .orElseThrow(() -> new ProductIdNotFoundException(ErrorCode.ERR_PRODUCT_ID_NOT_FOUND));
         // product detail list from db to check if a detail reference to a order detail
         product.getProductDetails().forEach(productDetail -> {
             // if productDetail is exist in order detail, cannot remove it
             if (!productDetail.getOrderDetails().isEmpty()) {
-                throw new ProductDetailIdExistInOrderDetail(productDetail.getId());
+                throw new ProductDetailIdExistInOrderDetail(ErrorCode.ERR_PRODUCT_DETAIL_ID_EXIST_IN_ORDER_DETAIL);
             }
         });
 

@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
+import com.rookies.ecommerceapi.constant.ErrorCode;
 import com.rookies.ecommerceapi.entity.Order;
 import com.rookies.ecommerceapi.entity.ProductDetail;
 import com.rookies.ecommerceapi.entity.Review;
@@ -44,13 +45,13 @@ public class ReviewServiceImpl implements ReviewService {
     public Review saveReview(Review reviewRequest, String username) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
         ProductDetail productDetail = productDetailRepository.findById(reviewRequest.getProductDetail().getId())
-                .orElseThrow(() -> new ProductDetailIdNotFoundException(reviewRequest.getProductDetail().getId()));
+                .orElseThrow(() -> new ProductDetailIdNotFoundException(ErrorCode.ERR_PRODUCT_DETAIL_ID_NOT_FOUND));
 
         Order order = null;
 
         if (reviewRequest.getOrder().getId() != null) {
             order = orderRepository.findById(reviewRequest.getOrder().getId())
-                    .orElseThrow(() -> new OrderIdNotFoundException(reviewRequest.getOrder().getId()));
+                    .orElseThrow(() -> new OrderIdNotFoundException(ErrorCode.ERR_ORDER_ID_NOT_FOUND));
         }
 
         Short status = 1;
@@ -65,11 +66,11 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public ResponseEntity<?> updateReview(Review reviewRequest, String username) {
         if (reviewRequest.getId() == null) {
-            throw new ReviewIdNotFoundException(reviewRequest.getId());
+            throw new ReviewIdNotFoundException(ErrorCode.ERR_REVIEW_ID_NOT_FOUND);
         }
 
         Review reviewUpdate = reviewRepository.findById(reviewRequest.getId())
-                .orElseThrow(() -> new ReviewIdNotFoundException(reviewRequest.getId()));
+                .orElseThrow(() -> new ReviewIdNotFoundException(ErrorCode.ERR_REVIEW_ID_NOT_FOUND));
 
         if (!reviewUpdate.getUser().getUsername().equals(username)) {
             throw new UsernameUnmatchWithReviewException(username);
@@ -91,11 +92,11 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public ResponseEntity<?> deleteReview(Long reviewId, String username) {
         if (reviewId == null) {
-            throw new ReviewIdNotFoundException(reviewId);
+            throw new ReviewIdNotFoundException(ErrorCode.ERR_REVIEW_ID_NOT_FOUND);
         }
 
         Review reviewUpdate = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new ReviewIdNotFoundException(reviewId));
+                .orElseThrow(() -> new ReviewIdNotFoundException(ErrorCode.ERR_REVIEW_ID_NOT_FOUND));
 
         if (!reviewUpdate.getUser().getUsername().equals(username)) {
             throw new UsernameUnmatchWithReviewException(username);

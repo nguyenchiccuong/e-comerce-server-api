@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import java.util.Optional;
 import java.time.LocalDateTime;
 
+import com.rookies.ecommerceapi.constant.ErrorCode;
 import com.rookies.ecommerceapi.dto.CustomerDto;
 import com.rookies.ecommerceapi.entity.Customer;
 import com.rookies.ecommerceapi.entity.Role;
@@ -132,15 +133,15 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer retrieveCustomerByUserId(Long userId) {
-        return customerRepository.findByUserId(userId).orElseThrow(() -> new UserIdNotFoundException(userId));
+        return customerRepository.findByUserId(userId).orElseThrow(() -> new UserIdNotFoundException(ErrorCode.ERR_USER_ID_NOT_FOUND));
     }
 
     @Override
     @Transactional
     public ResponseEntity<?> lockCustomerByUserId(Long userId) {
-        customerRepository.findById(userId).orElseThrow(() -> new UserIdNotFoundException(userId));
+        customerRepository.findById(userId).orElseThrow(() -> new UserIdNotFoundException(ErrorCode.ERR_USER_ID_NOT_FOUND));
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserIdNotFoundException(userId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserIdNotFoundException(ErrorCode.ERR_USER_ID_NOT_FOUND));
 
         Role roleByRoleName = roleRepository.findByRoleName(RoleName.ROLE_CUSTOMER_LOCKED)
                 .orElseThrow(() -> new RoleNameNotFoundException(RoleName.ROLE_CUSTOMER_LOCKED.name()));
@@ -155,9 +156,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public ResponseEntity<?> unlockCustomerByUserId(Long userId) {
-        customerRepository.findById(userId).orElseThrow(() -> new UserIdNotFoundException(userId));
+        customerRepository.findById(userId).orElseThrow(() -> new UserIdNotFoundException(ErrorCode.ERR_USER_ID_NOT_FOUND));
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserIdNotFoundException(userId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserIdNotFoundException(ErrorCode.ERR_USER_ID_NOT_FOUND));
 
         Role roleByRoleName = roleRepository.findByRoleName(RoleName.ROLE_CUSTOMER)
                 .orElseThrow(() -> new RoleNameNotFoundException(RoleName.ROLE_CUSTOMER.name()));

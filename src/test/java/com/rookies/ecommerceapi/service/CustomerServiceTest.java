@@ -27,6 +27,8 @@ import java.time.LocalDateTime;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.rookies.ecommerceapi.constant.SuccessCode;
+import com.rookies.ecommerceapi.dto.ResponseDto;
 import com.rookies.ecommerceapi.entity.Customer;
 import com.rookies.ecommerceapi.entity.Role;
 import com.rookies.ecommerceapi.entity.RoleName;
@@ -104,11 +106,12 @@ public class CustomerServiceTest {
         when(customerRepository.save(Mockito.any(Customer.class))).thenReturn(this.customer.get());
 
         // When
-        ResponseEntity<?> respone = customerService.registerCustomer(signUpRequest);
+        ResponseDto responseDto = customerService.registerCustomer(signUpRequest);
 
         // Then
-
-        assertEquals(ResponseEntity.ok(), respone);
+        ResponseDto responseDtoExpect = new ResponseDto();
+        responseDtoExpect.setSuccessCode(SuccessCode.SUCCESS);
+        assertEquals(responseDtoExpect, responseDto);
     }
 
     @Test
@@ -117,10 +120,13 @@ public class CustomerServiceTest {
         when(customerRepository.findByUserId(Mockito.anyLong())).thenReturn(this.customer);
 
         // When
-        Customer customer = customerService.retrieveCustomerByUserId(Mockito.anyLong());
+        ResponseDto responseDto = customerService.retrieveCustomerByUserId(Mockito.anyLong());
 
         // Then
-        assertEquals(customer, this.customer.get());
+        ResponseDto responseDtoExpect = new ResponseDto();
+        responseDtoExpect.setSuccessCode(SuccessCode.SUCCESS);
+        responseDtoExpect.setData(this.customer.get());
+        assertEquals(responseDtoExpect, responseDto);
     }
 
 }

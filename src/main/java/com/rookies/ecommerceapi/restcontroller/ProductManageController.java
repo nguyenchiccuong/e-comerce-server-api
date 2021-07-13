@@ -1,6 +1,8 @@
 package com.rookies.ecommerceapi.restcontroller;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +27,8 @@ import com.rookies.ecommerceapi.service.ProductService;
 @RestController
 @RequestMapping("/employee/product")
 public class ProductManageController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductManageController.class);
 
     private final ProductService productService;
 

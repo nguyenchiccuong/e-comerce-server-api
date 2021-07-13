@@ -3,6 +3,8 @@ package com.rookies.ecommerceapi.restcontroller;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,9 @@ import com.rookies.ecommerceapi.service.CategoryService;
 @RestController
 @RequestMapping("/public/category")
 public class CategoryController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CategoryController.class);
+
     private final CategoryService categoryService;
 
     private final ModelMapper modelMapper;

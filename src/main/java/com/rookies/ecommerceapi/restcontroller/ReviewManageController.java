@@ -3,14 +3,9 @@ package com.rookies.ecommerceapi.restcontroller;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import com.rookies.ecommerceapi.dto.ReviewDto;
-import com.rookies.ecommerceapi.entity.Order;
-import com.rookies.ecommerceapi.entity.ProductDetail;
-import com.rookies.ecommerceapi.entity.Review;
-import com.rookies.ecommerceapi.security.jwt.JwtUtils;
-import com.rookies.ecommerceapi.service.ReviewService;
-
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,10 +18,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rookies.ecommerceapi.dto.ReviewDto;
+import com.rookies.ecommerceapi.entity.Order;
+import com.rookies.ecommerceapi.entity.ProductDetail;
+import com.rookies.ecommerceapi.entity.Review;
+import com.rookies.ecommerceapi.security.jwt.JwtUtils;
+import com.rookies.ecommerceapi.service.ReviewService;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/customer/review")
 public class ReviewManageController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReviewManageController.class);
 
     private final ReviewService reviewService;
 
@@ -53,7 +57,7 @@ public class ReviewManageController {
         reviewRequest.getProductDetail().setId(reviewDto.getProductDetailId());
         reviewRequest.getOrder().setId(reviewDto.getOrderId());
         Review review = reviewService.saveReview(reviewRequest, username);
-        
+
         return modelMapper.map(review, ReviewDto.class);
     }
 

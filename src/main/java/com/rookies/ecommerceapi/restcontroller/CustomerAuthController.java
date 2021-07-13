@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.rookies.ecommerceapi.payload.request.LoginRequest;
@@ -17,6 +19,8 @@ import com.rookies.ecommerceapi.service.CustomerService;
 @RestController
 @RequestMapping("/customer/auth")
 public class CustomerAuthController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerAuthController.class);
 
     private final CustomerService customerService;
 

@@ -1,6 +1,8 @@
 package com.rookies.ecommerceapi.restcontroller;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -26,6 +28,9 @@ import com.rookies.ecommerceapi.service.CustomerService;
 @RestController
 @RequestMapping("/employee/customer")
 public class CustomerManageController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerManageController.class);
+
     private final CustomerService customerService;
 
     private final ModelMapper modelMapper;

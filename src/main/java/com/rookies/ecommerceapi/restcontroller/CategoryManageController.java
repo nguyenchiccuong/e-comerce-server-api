@@ -1,6 +1,8 @@
 package com.rookies.ecommerceapi.restcontroller;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,6 +24,8 @@ import com.rookies.ecommerceapi.service.CategoryService;
 @RestController
 @RequestMapping("/employee/category")
 public class CategoryManageController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CategoryManageController.class);
 
     private final CategoryService categoryService;
 

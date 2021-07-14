@@ -39,6 +39,6 @@ public class CategoryRepositoryTest {
         assertNotNull(categoryRepository.save(subCategory));
 
         categoryRepository.deleteById(parentCategory.getId());
-        assertTrue(categoryRepository.findByCategoryName("test").isPresent());
+        assertTrue(!categoryRepository.findByCategoryName("test").isPresent());
     }
 }

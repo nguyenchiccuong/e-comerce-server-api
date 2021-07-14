@@ -5,11 +5,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
 import java.util.Optional;
-import com.rookies.ecommerceapi.constant.ErrorCode;
-import com.rookies.ecommerceapi.entity.Category;
-import com.rookies.ecommerceapi.repository.CategoryRepository;
-import com.rookies.ecommerceapi.repository.ProductRepository;
-
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
@@ -20,6 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.rookies.ecommerceapi.constant.ErrorCode;
+import com.rookies.ecommerceapi.entity.Category;
+import com.rookies.ecommerceapi.repository.CategoryRepository;
+import com.rookies.ecommerceapi.repository.ProductRepository;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)

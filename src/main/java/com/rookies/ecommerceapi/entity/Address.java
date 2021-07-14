@@ -1,6 +1,7 @@
 package com.rookies.ecommerceapi.entity;
 
 import java.util.Collection;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
@@ -20,37 +20,66 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "brands", uniqueConstraints = { @UniqueConstraint(columnNames = { "brand_name" }) })
+@Table(name = "Addresss")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Brand {
+public class Address {
     @Id
     // @GeneratedValue (strategy = GenerationType.IDENTITY)
     @GeneratedValue(generator = "sequence-generator")
     @GenericGenerator(name = "sequence-generator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
-            @Parameter(name = "sequence_name", value = "brand_sequence"),
+            @Parameter(name = "sequence_name", value = "address_sequence"),
             // @Parameter(name = "initial_value", value = "0"),
             @Parameter(name = "increment_size", value = "1") })
-    private Integer id;
+    private Long id;
 
-    @Column(name = "brand_name")
-    @NotBlank // @NotNull
-    private String brandName;
+    // @Column(name = "user_id")
+    // private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     // @Column(name = "organization_id")
     // private Long organizationId;
     @ManyToOne
-    @JoinColumn(name = "organization_id", nullable = false)
+    @JoinColumn(name = "organization_id")
     private Organization Organization;
 
-    @OneToMany(mappedBy = "brand")
-    private Collection<Product> products;
+    @Column(name = "street_and_number")
+    @NotBlank
+    private String streetAndNumber;
 
-    @Override
-    public String toString() {
-        return "Brand [brandName=" + brandName + ", id=" + id + "]";
-    }
+    @NotBlank
+    private String city;
+
+    @NotBlank
+    private String district;
+
+    @NotBlank
+    private String ward;
+
+    private String detail;
+
+    @Column(name = "contact_name")
+    @NotBlank
+    private String contactName;
+
+    @Column(name = "contact_number")
+    @NotBlank
+    private String contactNumber;
+
+    @NotBlank
+    private String tag;
+
+    @Column(name = "default_address")
+    private Boolean defaultAddress;
+
+    @Column(name = "payment_address")
+    private Boolean paymentAddress;
+
+    @OneToMany(mappedBy = "Address")
+    private Collection<Order> orders;
 
 }

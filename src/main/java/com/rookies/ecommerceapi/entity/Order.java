@@ -55,15 +55,21 @@ public class Order {
     @NotNull
     private LocalDateTime updateDate;
 
-    @NotBlank // @NotNull
-    private String receiver;
+    // @NotBlank // @NotNull
+    // private String receiver;
 
-    @NotBlank // @NotNull
-    private String address;
+    // @NotBlank // @NotNull
+    // private String address;
 
-    @Column(name = "phone_number")
-    @NotBlank // @NotNull
-    private String phoneNumber;
+    // @Column(name = "phone_number")
+    // @NotBlank // @NotNull
+    // private String phoneNumber;
+
+    // @Column(name = "address_id")
+    // private Long addressId;
+    @ManyToOne
+    @JoinColumn(name = "address_id", nullable = false)
+    private Address Address;
 
     @Column(name = "payment_method")
     @NotBlank // @NotNull
@@ -97,10 +103,9 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order [address=" + address + ", createDate=" + createDate + ", id=" + id + ", paymentId=" + paymentId
-                + ", paymentMethod=" + paymentMethod + ", paymentStatus=" + paymentStatus + ", phoneNumber="
-                + phoneNumber + ", receiver=" + receiver + ", status=" + status + ", total=" + total + ", updateDate="
-                + updateDate + "]";
+        return "Order [createDate=" + createDate + ", id=" + id + ", paymentId=" + paymentId + ", paymentMethod="
+                + paymentMethod + ", paymentStatus=" + paymentStatus + ", status=" + status + ", total=" + total
+                + ", updateDate=" + updateDate + "]";
     }
 
 }

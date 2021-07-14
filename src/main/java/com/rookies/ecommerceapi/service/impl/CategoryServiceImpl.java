@@ -65,7 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         Optional<Category> categoryByCategoryName = categoryRepository.findByCategoryName(category.getCategoryName());
         if (categoryByCategoryName.isPresent()) {
-            throw new CategoryNameExistException(category.getCategoryName());
+            throw new CategoryNameExistException(ErrorCode.ERR_CATEGORY_NAME_EXIST);
         } else {
             Category categorySave = new Category();
             categorySave.setCategoryName(category.getCategoryName());
@@ -91,7 +91,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         Optional<Category> categoryByCategoryName = categoryRepository.findByCategoryName(category.getCategoryName());
         if (categoryByCategoryName.isPresent()) {
-            throw new CategoryNameExistException(category.getCategoryName());
+            throw new CategoryNameExistException(ErrorCode.ERR_CATEGORY_NAME_EXIST);
         }
 
         Category categorySave = new Category();
@@ -117,12 +117,12 @@ public class CategoryServiceImpl implements CategoryService {
                 .orElseThrow(() -> new CategoryIdNotFoundException(ErrorCode.ERR_CATEGORY_ID_NOT_FOUND));
 
         if (categoryById.getCategoryName().equals(category.getCategoryName())) {
-            throw new CategoryNameExistException(category.getCategoryName());
+            throw new CategoryNameExistException(ErrorCode.ERR_CATEGORY_NAME_EXIST);
         }
 
         Optional<Category> categoryByCategoryName = categoryRepository.findByCategoryName(category.getCategoryName());
         if (categoryByCategoryName.isPresent()) {
-            throw new CategoryNameExistException(category.getCategoryName());
+            throw new CategoryNameExistException(ErrorCode.ERR_CATEGORY_NAME_EXIST);
         }
 
         Category categoryUpdate = categoryById;

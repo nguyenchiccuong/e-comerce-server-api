@@ -2,12 +2,15 @@ package com.rookies.ecommerceapi.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -47,7 +50,9 @@ public class Customer {
     @Email
     private String email;
 
-    private String address;
+    // private String address;
+    @OneToMany(mappedBy = "user")
+    private Collection<Address> Addresss;
 
     private Boolean sex;
 
@@ -66,8 +71,8 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer [address=" + address + ", createDate=" + createDate + ", dob=" + dob + ", email=" + email
-                + ", name=" + name + ", phoneNumber=" + phoneNumber + ", sex=" + sex + ", userId=" + userId + "]";
+        return "Customer [createDate=" + createDate + ", dob=" + dob + ", email=" + email + ", name=" + name
+                + ", phoneNumber=" + phoneNumber + ", sex=" + sex + ", userId=" + userId + "]";
     }
 
 }

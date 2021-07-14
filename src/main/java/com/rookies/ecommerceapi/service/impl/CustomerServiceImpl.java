@@ -24,6 +24,7 @@ import com.rookies.ecommerceapi.entity.Role;
 import com.rookies.ecommerceapi.entity.RoleName;
 import com.rookies.ecommerceapi.entity.User;
 import com.rookies.ecommerceapi.exception.RoleNameNotFoundException;
+import com.rookies.ecommerceapi.exception.SaveErrorException;
 import com.rookies.ecommerceapi.exception.UserIdNotFoundException;
 import com.rookies.ecommerceapi.exception.UsernameAlreadyTakenException;
 import com.rookies.ecommerceapi.exception.PhonenumberAlreadyTakenException;
@@ -125,7 +126,12 @@ public class CustomerServiceImpl implements CustomerService {
         Short status = 1;
         user.setStatus(status);
 
-        user = userRepository.save(user);
+        try {
+            user = userRepository.save(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SaveErrorException(ErrorCode.ERR_SAVE);
+        }
         long id = user.getId();
 
         Customer customer = new Customer(id, signUpRequest.getName(), signUpRequest.getPhoneNumber(),
@@ -133,7 +139,12 @@ public class CustomerServiceImpl implements CustomerService {
 
         customer.setUser(user);
 
-        customerRepository.save(customer);
+        try {
+            customerRepository.save(customer);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SaveErrorException(ErrorCode.ERR_SAVE);
+        }
 
         responseDto.setSuccessCode(SuccessCode.SUCCESS);
         return responseDto;

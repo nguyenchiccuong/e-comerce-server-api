@@ -11,11 +11,14 @@ import com.rookies.ecommerceapi.entity.Order;
 import com.rookies.ecommerceapi.entity.ProductDetail;
 import com.rookies.ecommerceapi.entity.Review;
 import com.rookies.ecommerceapi.entity.User;
+import com.rookies.ecommerceapi.exception.DeleteErrorException;
 import com.rookies.ecommerceapi.exception.OrderIdNotFoundException;
 import com.rookies.ecommerceapi.exception.ProductDetailIdNotFoundException;
 import com.rookies.ecommerceapi.exception.UsernameNotFoundException;
 import com.rookies.ecommerceapi.exception.UsernameUnmatchWithReviewException;
 import com.rookies.ecommerceapi.exception.ReviewIdNotFoundException;
+import com.rookies.ecommerceapi.exception.SaveErrorException;
+import com.rookies.ecommerceapi.exception.UpdateErrorException;
 import com.rookies.ecommerceapi.repository.OrderRepository;
 import com.rookies.ecommerceapi.repository.ProductDetailRepository;
 import com.rookies.ecommerceapi.repository.ReviewRepository;
@@ -61,8 +64,12 @@ public class ReviewServiceImpl implements ReviewService {
         Review reviewSave = new Review(null, productDetail, user, order, reviewRequest.getNumOfStar(),
                 reviewRequest.getDescription(), reviewRequest.getImg(), LocalDateTime.now(), null,
                 reviewRequest.getAnonymous(), status);
-
-        reviewSave = reviewRepository.save(reviewSave);
+        try {
+            reviewSave = reviewRepository.save(reviewSave);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SaveErrorException(ErrorCode.ERR_SAVE);
+        }
 
         responseDto.setSuccessCode(SuccessCode.SUCCESS);
         responseDto.setData(reviewSave);
@@ -92,7 +99,13 @@ public class ReviewServiceImpl implements ReviewService {
         reviewUpdate.setAnonymous(reviewRequest.getAnonymous());
         reviewUpdate
                 .setStatus(reviewRequest.getStatus() == null ? reviewUpdate.getStatus() : reviewRequest.getStatus());
-        reviewRepository.save(reviewUpdate);
+
+        try {
+            reviewRepository.save(reviewUpdate);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new UpdateErrorException(ErrorCode.ERR_UPDATE);
+        }
 
         responseDto.setSuccessCode(SuccessCode.SUCCESS);
         return responseDto;
@@ -112,7 +125,13 @@ public class ReviewServiceImpl implements ReviewService {
         if (!reviewUpdate.getUser().getUsername().equals(username)) {
             throw new UsernameUnmatchWithReviewException(username);
         }
-        reviewRepository.deleteById(reviewId);
+        
+        try {
+            reviewRepository.deleteById(reviewId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DeleteErrorException(ErrorCode.ERR_DELETE);
+        }
 
         responseDto.setSuccessCode(SuccessCode.SUCCESS);
         return responseDto;

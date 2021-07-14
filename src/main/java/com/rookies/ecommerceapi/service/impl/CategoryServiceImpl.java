@@ -17,6 +17,9 @@ import com.rookies.ecommerceapi.repository.CategoryRepository;
 import com.rookies.ecommerceapi.repository.ProductRepository;
 import com.rookies.ecommerceapi.service.CategoryService;
 import com.rookies.ecommerceapi.exception.CategoryNameExistException;
+import com.rookies.ecommerceapi.exception.DeleteErrorException;
+import com.rookies.ecommerceapi.exception.SaveErrorException;
+import com.rookies.ecommerceapi.exception.UpdateErrorException;
 import com.rookies.ecommerceapi.exception.CategoryExistInProductException;
 import com.rookies.ecommerceapi.exception.CategoryIdNotFoundException;
 
@@ -66,15 +69,22 @@ public class CategoryServiceImpl implements CategoryService {
         Optional<Category> categoryByCategoryName = categoryRepository.findByCategoryName(category.getCategoryName());
         if (categoryByCategoryName.isPresent()) {
             throw new CategoryNameExistException(ErrorCode.ERR_CATEGORY_NAME_EXIST);
-        } else {
-            Category categorySave = new Category();
-            categorySave.setCategoryName(category.getCategoryName());
-            categorySave = categoryRepository.save(categorySave);
-
-            responseDto.setSuccessCode(SuccessCode.SUCCESS);
-            responseDto.setData(categorySave);
-            return responseDto;
         }
+        
+        Category categorySave = new Category();
+        categorySave.setCategoryName(category.getCategoryName());
+
+        try {
+            categorySave = categoryRepository.save(categorySave);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SaveErrorException(ErrorCode.ERR_SAVE);
+        }
+
+        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setData(categorySave);
+        return responseDto;
+
     }
 
     @Override
@@ -97,7 +107,12 @@ public class CategoryServiceImpl implements CategoryService {
         Category categorySave = new Category();
         categorySave.setCategory(categoryById);
         categorySave.setCategoryName(category.getCategoryName());
-        categorySave = categoryRepository.save(categorySave);
+        try {
+            categorySave = categoryRepository.save(categorySave);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SaveErrorException(ErrorCode.ERR_SAVE);
+        }
 
         responseDto.setSuccessCode(SuccessCode.SUCCESS);
         responseDto.setData(categorySave);
@@ -127,7 +142,12 @@ public class CategoryServiceImpl implements CategoryService {
 
         Category categoryUpdate = categoryById;
         categoryUpdate.setCategoryName(category.getCategoryName());
-        categoryRepository.save(categoryUpdate);
+        try {
+            categoryRepository.save(categoryUpdate);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new UpdateErrorException(ErrorCode.ERR_UPDATE);
+        }
 
         responseDto.setSuccessCode(SuccessCode.SUCCESS);
         return responseDto;
@@ -148,7 +168,12 @@ public class CategoryServiceImpl implements CategoryService {
             throw new CategoryExistInProductException(ErrorCode.ERR_CATEGORY_EXIST_IN_PRODUCT);
         }
 
-        categoryRepository.deleteById(id);
+        try {
+            categoryRepository.deleteById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DeleteErrorException(ErrorCode.ERR_DELETE);
+        }
 
         responseDto.setSuccessCode(SuccessCode.SUCCESS);
         return responseDto;

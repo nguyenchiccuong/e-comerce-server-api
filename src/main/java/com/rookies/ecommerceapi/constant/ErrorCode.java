@@ -37,13 +37,17 @@ public class ErrorCode {
     public final static String ERR_USERNAME_NOT_FOUND = "ERR_USERNAME_NOT_FOUND";
     public final static String ERR_USERNAME_UNAMTCH_WITH_REVIEW = "ERR_USERNAME_UNAMTCH_WITH_REVIEW";
     public final static String ERR_USERNAME_ALREADY_TAKEN = "ERR_USERNAME_ALREADY_TAKEN";
-   
-    //CUSTOMER
+
+    // CUSTOMER
 
     public final static String ERR_EMAIL_ALREADY_TAKEN = "ERR_EMAIL_ALREADY_TAKEN";
     public final static String ERR_PHONENUMBER_ALREADY_TAKEN = "ERR_PHONENUMBER_ALREADY_TAKEN";
 
-
     // CONVERTER
     public final static String ERR_CONVERTER = "ERR_CONVERTER";
+
+    //
+    public final static String ERR_SAVE = "ERR_SAVE";
+    public final static String ERR_UPDATE = "ERR_UPDATE";
+    public final static String ERR_DELETE = "ERR_DELETE";
 }

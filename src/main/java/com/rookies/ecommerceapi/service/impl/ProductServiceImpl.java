@@ -21,10 +21,13 @@ import com.rookies.ecommerceapi.entity.Product;
 import com.rookies.ecommerceapi.entity.ProductDetail;
 import com.rookies.ecommerceapi.exception.BrandIdNotFoundException;
 import com.rookies.ecommerceapi.exception.CategoryIdNotFoundException;
+import com.rookies.ecommerceapi.exception.DeleteErrorException;
 import com.rookies.ecommerceapi.exception.OriginIdNotFoundException;
 import com.rookies.ecommerceapi.exception.ProductDetailIdExistInOrderDetail;
 import com.rookies.ecommerceapi.exception.ProductDetailNotValidException;
 import com.rookies.ecommerceapi.exception.ProductIdNotFoundException;
+import com.rookies.ecommerceapi.exception.SaveErrorException;
+import com.rookies.ecommerceapi.exception.UpdateErrorException;
 import com.rookies.ecommerceapi.repository.BrandRepository;
 import com.rookies.ecommerceapi.repository.CategoryRepository;
 import com.rookies.ecommerceapi.repository.OriginRepository;
@@ -175,7 +178,13 @@ public class ProductServiceImpl implements ProductService {
         Product productSave = new Product(product.getProductName(), category, product.getModel(), brand, origin,
                 product.getStandard(), product.getSize(), product.getWeight(), product.getMaterial(),
                 product.getDescription(), product.getWarranty(), product.getImg(), LocalDateTime.now());
-        productSave = productRepository.save(productSave);
+
+        try {
+            productSave = productRepository.save(productSave);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SaveErrorException(ErrorCode.ERR_SAVE);
+        }
 
         Long productId = productSave.getId();
 
@@ -184,7 +193,14 @@ public class ProductServiceImpl implements ProductService {
             productTemp.setId(productId);
             ProductDetail productDetailSave = new ProductDetail(productTemp, productdDetail.getColor(),
                     productdDetail.getQuantity(), productdDetail.getPrice());
-            productDetailRepository.save(productDetailSave);
+
+            try {
+                productDetailRepository.save(productDetailSave);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new SaveErrorException(ErrorCode.ERR_SAVE);
+            }
+
         });
 
         productSave = productRepository.findById(productId)
@@ -252,7 +268,12 @@ public class ProductServiceImpl implements ProductService {
         productUpdate.setUpdateDate(LocalDateTime.now());
         productUpdate.setWarranty(product.getWarranty() == null ? productUpdate.getWarranty() : product.getWarranty());
 
-        productRepository.save(productUpdate);
+        try {
+            productRepository.save(productUpdate);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new UpdateErrorException(ErrorCode.ERR_UPDATE);
+        }
 
         // product detail list from db to check if not exist in request, then remove, if
         // exist then update
@@ -261,11 +282,21 @@ public class ProductServiceImpl implements ProductService {
                     .filter(productDetailFromRequest -> productDetailFromRequest.getId() == productDetail.getId())
                     .findAny();
             if (!productDetailFoundFromRequest.isPresent()) {
-                productDetailRepository.deleteById(productDetail.getId());
+                try {
+                    productDetailRepository.deleteById(productDetail.getId());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new UpdateErrorException(ErrorCode.ERR_UPDATE);
+                }
             } else {
                 ProductDetail productDetailUpdate = productDetailFoundFromRequest.get();
                 productDetailUpdate.setProduct(productUpdate);
-                productDetailRepository.save(productDetailUpdate);
+                try {
+                    productDetailRepository.save(productDetailUpdate);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new UpdateErrorException(ErrorCode.ERR_UPDATE);
+                }
             }
         });
 
@@ -295,7 +326,12 @@ public class ProductServiceImpl implements ProductService {
             }
         });
 
-        productRepository.deleteById(productId);
+        try {
+            productRepository.deleteById(productId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new DeleteErrorException(ErrorCode.ERR_DELETE);
+        }
 
         responseDto.setSuccessCode(SuccessCode.SUCCESS);
         return responseDto;

@@ -6,8 +6,4 @@ public class UsernameUnmatchWithReviewException extends RuntimeException {
         super(message);
     }
 
-    // public UsernameUnmatchWithReviewException(String username) {
-    //     super("Username: " + username + " unmatch with review");
-    // }
-
 }

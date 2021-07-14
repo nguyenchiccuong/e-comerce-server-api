@@ -6,9 +6,4 @@ public class BrandIdNotFoundException extends RuntimeException {
         super(message);
     }
 
-    // public BrandIdNotFoundException(Integer brandId) {
-    //     super("Brand id: " + brandId + " not found");
-    // }
-
-    
 }

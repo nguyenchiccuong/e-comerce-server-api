@@ -6,7 +6,4 @@ public class CategoryExistInProductException extends RuntimeException {
         super(message);
     }
 
-    // public CategoryExistInProductException(Integer categoryId) {
-    //     super("Category id: " + categoryId + " exist in product");
-    // }
 }

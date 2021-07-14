@@ -6,8 +6,4 @@ public class CategoryHaveSubCategoryException extends RuntimeException {
         super(message);
     }
 
-    // public CategoryHaveSubCategoryException(String categoryName) {
-    //     super("Category: " + categoryName + " already have sub category, cannot assign to a product");
-    // }
-
 }

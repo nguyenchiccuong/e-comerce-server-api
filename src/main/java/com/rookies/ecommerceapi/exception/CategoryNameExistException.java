@@ -6,8 +6,4 @@ public class CategoryNameExistException extends RuntimeException {
         super(message);
     }
 
-    // public CategoryNameExistException(String categoryName) {
-    //     super("Category name: " + categoryName + " exist ");
-    // }
-
 }

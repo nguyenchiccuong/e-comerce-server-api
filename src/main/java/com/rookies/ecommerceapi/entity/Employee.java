@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -39,22 +38,20 @@ public class Employee {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @NotBlank // @NotNull
+    @NotBlank 
     private String name;
 
     @Column(name = "phone_number")
-    @NotBlank // @NotNull
+    @NotBlank 
     private String phoneNumber;
 
     @NotNull
     private LocalDate dob;
 
     @Email
-    @NotBlank // @NotNull
+    @NotBlank
     private String email;
 
-    // @NotBlank // @NotNull
-    // private String address;
     @NotNull
     @OneToMany(mappedBy = "user")
     private Collection<Address> Addresss;

@@ -6,7 +6,4 @@ public class CategoryIdNotFoundException extends RuntimeException {
         super(message);
     }
 
-    // public CategoryIdNotFoundException(Integer id) {
-    //     super("Category id: " + id + " not found ");
-    // }
 }

@@ -6,8 +6,4 @@ public class ProductDetailIdNotFoundException extends RuntimeException {
         super(message);
     }
 
-    // public ProductDetailIdNotFoundException(Long productDetailId) {
-    //     super("Product detail id: " + productDetailId + " not found");
-    // }
-
 }

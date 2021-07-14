@@ -2,7 +2,6 @@ package com.rookies.ecommerceapi.entity;
 
 import java.util.Collection;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -28,22 +27,17 @@ import lombok.Setter;
 @Setter
 public class ProductDetail {
     @Id
-    // @GeneratedValue (strategy = GenerationType.IDENTITY)
     @GeneratedValue(generator = "sequence-generator")
     @GenericGenerator(name = "sequence-generator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
             @Parameter(name = "sequence_name", value = "product_detail_sequence"),
-            // @Parameter(name = "initial_value", value = "0"),
             @Parameter(name = "increment_size", value = "1") })
     private Long id;
 
-    // @Column(name = "product_id")
-    // @NotNull
-    // private Long productId;
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @NotBlank // @NotNull
+    @NotBlank 
     private String color;
 
     @NotNull

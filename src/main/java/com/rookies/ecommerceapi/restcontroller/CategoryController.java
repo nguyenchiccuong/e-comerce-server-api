@@ -1,9 +1,5 @@
 package com.rookies.ecommerceapi.restcontroller;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rookies.ecommerceapi.dto.CategoryDto;
 import com.rookies.ecommerceapi.dto.ResponseDto;
 import com.rookies.ecommerceapi.service.CategoryService;
 
@@ -27,12 +22,9 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    private final ModelMapper modelMapper;
-
     @Autowired
-    public CategoryController(CategoryService categoryService, ModelMapper modelMapper) {
+    public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
-        this.modelMapper = modelMapper;
     }
 
     @GetMapping("/parent")

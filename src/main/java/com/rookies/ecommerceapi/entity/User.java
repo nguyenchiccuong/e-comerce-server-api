@@ -30,23 +30,18 @@ import lombok.Setter;
 @Setter
 public class User {
     @Id
-    // @GeneratedValue (strategy = GenerationType.IDENTITY)
     @GeneratedValue(generator = "sequence-generator")
     @GenericGenerator(name = "sequence-generator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
             @Parameter(name = "sequence_name", value = "user_sequence"),
-            // @Parameter(name = "initial_value", value = "0"),
             @Parameter(name = "increment_size", value = "1") })
     private Long id;
 
-    @NotBlank // @NotNull
+    @NotBlank
     private String username;
 
-    @NotBlank // @NotNull
+    @NotBlank
     private String password;
 
-    // @Column(name = "role_id")
-    // @NotNull
-    // private Short roleId;
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role Role;
@@ -68,7 +63,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Collection<Review> reviews;
 
-    public User(@NotBlank /* @NotNull */ String username, @NotBlank /* @NotNull */ String password) {
+    public User(@NotBlank String username, @NotBlank String password) {
         this.username = username;
         this.password = password;
     }

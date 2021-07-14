@@ -1,7 +1,6 @@
 package com.rookies.ecommerceapi.entity;
 
 import java.util.Collection;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +10,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import lombok.AllArgsConstructor;
@@ -27,22 +25,16 @@ import lombok.Setter;
 @Setter
 public class Address {
     @Id
-    // @GeneratedValue (strategy = GenerationType.IDENTITY)
     @GeneratedValue(generator = "sequence-generator")
     @GenericGenerator(name = "sequence-generator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
             @Parameter(name = "sequence_name", value = "address_sequence"),
-            // @Parameter(name = "initial_value", value = "0"),
             @Parameter(name = "increment_size", value = "1") })
     private Long id;
 
-    // @Column(name = "user_id")
-    // private Long userId;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    // @Column(name = "organization_id")
-    // private Long organizationId;
     @ManyToOne
     @JoinColumn(name = "organization_id")
     private Organization Organization;

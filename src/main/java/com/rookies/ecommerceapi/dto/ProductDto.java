@@ -2,8 +2,6 @@ package com.rookies.ecommerceapi.dto;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Set;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -20,7 +18,7 @@ import lombok.Setter;
 public class ProductDto {
     private Long id;
 
-    @NotBlank // @NotNull
+    @NotBlank
     private String productName;
 
     @NotNull
@@ -51,7 +49,6 @@ public class ProductDto {
 
     private Short img;
 
-    // @NotNull
     private LocalDateTime createDate;
 
     private LocalDateTime updateDate;

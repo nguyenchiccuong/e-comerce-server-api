@@ -6,8 +6,4 @@ public class ProductDetailNotValidException extends RuntimeException {
         super(message);
     }
 
-    // public ProductDetailNotValidException() {
-    //     super("Product detail duplicate color");
-    // }
-
 }

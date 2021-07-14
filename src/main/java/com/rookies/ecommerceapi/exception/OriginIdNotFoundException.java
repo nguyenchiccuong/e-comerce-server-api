@@ -6,8 +6,4 @@ public class OriginIdNotFoundException extends RuntimeException {
         super(message);
     }
 
-    // public OriginIdNotFoundException(Integer originId) {
-    //     super("Origin id: " + originId + " not found");
-    // }
-
 }

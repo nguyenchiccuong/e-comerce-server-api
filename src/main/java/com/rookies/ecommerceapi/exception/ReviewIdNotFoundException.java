@@ -6,8 +6,4 @@ public class ReviewIdNotFoundException extends RuntimeException {
         super(message);
     }
 
-    // public ReviewIdNotFoundException(Long ReviewId) {
-    //     super("Review id: " + ReviewId + " not found");
-    // }
-
 }

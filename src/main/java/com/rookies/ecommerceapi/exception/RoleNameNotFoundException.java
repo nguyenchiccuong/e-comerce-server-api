@@ -6,8 +6,4 @@ public class RoleNameNotFoundException extends RuntimeException {
         super(message);
     }
 
-    // public RoleNameNotFoundException(String roleName) {
-    //     super("Error: Role: " + roleName + " is not found.");
-    // }
-
 }

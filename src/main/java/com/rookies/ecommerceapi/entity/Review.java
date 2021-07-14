@@ -26,30 +26,20 @@ import lombok.Setter;
 @Setter
 public class Review {
         @Id
-        // @GeneratedValue (strategy = GenerationType.IDENTITY)
         @GeneratedValue(generator = "sequence-generator")
         @GenericGenerator(name = "sequence-generator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
                         @Parameter(name = "sequence_name", value = "review_sequence"),
-                        // @Parameter(name = "initial_value", value = "0"),
                         @Parameter(name = "increment_size", value = "1") })
         private Long id;
 
-        // @Column(name = "product_detail_id")
-        // @NotNull
-        // private Long productDetailId;
         @ManyToOne
         @JoinColumn(name = "product_detail_id", nullable = false)
         private ProductDetail productDetail;
 
-        // @Column(name = "user_id")
-        // @NotNull
-        // private Long userId;
         @ManyToOne
         @JoinColumn(name = "user_id", nullable = false)
         private User user;
 
-        // @Column(name = "order_id")
-        // private Long orderId;
         @ManyToOne
         @JoinColumn(name = "order_id")
         private Order order;

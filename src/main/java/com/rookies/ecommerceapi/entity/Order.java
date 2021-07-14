@@ -29,17 +29,12 @@ import lombok.Setter;
 @Setter
 public class Order {
     @Id
-    // @GeneratedValue (strategy = GenerationType.IDENTITY)
     @GeneratedValue(generator = "sequence-generator")
     @GenericGenerator(name = "sequence-generator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
             @Parameter(name = "sequence_name", value = "order_sequence"),
-            // @Parameter(name = "initial_value", value = "0"),
             @Parameter(name = "increment_size", value = "1") })
     private Long id;
 
-    // @Column(name = "user_id")
-    // @NotNull
-    // private Long userId;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -54,24 +49,12 @@ public class Order {
     @Column(name = "update_date")
     private LocalDateTime updateDate;
 
-    // @NotBlank // @NotNull
-    // private String receiver;
-
-    // @NotBlank // @NotNull
-    // private String address;
-
-    // @Column(name = "phone_number")
-    // @NotBlank // @NotNull
-    // private String phoneNumber;
-
-    // @Column(name = "address_id")
-    // private Long addressId;
     @ManyToOne
     @JoinColumn(name = "address_id", nullable = false)
     private Address Address;
 
     @Column(name = "payment_method")
-    @NotBlank // @NotNull
+    @NotBlank
     private String paymentMethod;
 
     @Column(name = "payment_id")

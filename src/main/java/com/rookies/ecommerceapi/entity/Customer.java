@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -39,7 +38,7 @@ public class Customer {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @NotBlank // @NotNull
+    @NotBlank
     private String name;
 
     @Column(name = "phone_number")
@@ -50,7 +49,6 @@ public class Customer {
     @Email
     private String email;
 
-    // private String address;
     @OneToMany(mappedBy = "user")
     private Collection<Address> Addresss;
 
@@ -60,7 +58,7 @@ public class Customer {
     @NotNull
     private LocalDateTime createDate;
 
-    public Customer(Long userId, @NotBlank /* @NotNull */ String name, String phoneNumber, @Email String email,
+    public Customer(Long userId, @NotBlank String name, String phoneNumber, @Email String email,
             @NotNull LocalDateTime createDate) {
         this.userId = userId;
         this.name = name;

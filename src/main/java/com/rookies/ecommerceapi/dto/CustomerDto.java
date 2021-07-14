@@ -2,7 +2,6 @@ package com.rookies.ecommerceapi.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +16,6 @@ public class CustomerDto {
 
     private UserDto user;
 
-    // @NotNull
     private String name;
 
     private String phoneNumber;
@@ -30,7 +28,6 @@ public class CustomerDto {
 
     private Boolean sex;
 
-    // @NotNull
     private LocalDateTime createDate;
 
 }

@@ -18,10 +18,8 @@ public class ReviewDto {
     @NotNull
     private Long productDetailId;
 
-    // @NotNull
     private UserDto user;
 
-    // private OrderDto order;
     private Long orderId;
 
     @NotNull
@@ -31,7 +29,6 @@ public class ReviewDto {
 
     private Short img;
 
-    // @NotNull
     private LocalDateTime createDate;
 
     private LocalDateTime updateDate;
@@ -39,7 +36,6 @@ public class ReviewDto {
     @NotNull
     private Short anonymous;
 
-    // @NotNull
     private Short status;
 
 }

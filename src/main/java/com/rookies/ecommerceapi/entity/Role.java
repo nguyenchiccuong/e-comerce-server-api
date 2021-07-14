@@ -27,11 +27,9 @@ import lombok.Setter;
 @Setter
 public class Role {
     @Id
-    // @GeneratedValue (strategy = GenerationType.IDENTITY)
     @GeneratedValue(generator = "sequence-generator")
     @GenericGenerator(name = "sequence-generator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
             @Parameter(name = "sequence_name", value = "role_sequence"),
-            // @Parameter(name = "initial_value", value = "0"),
             @Parameter(name = "increment_size", value = "1") })
     private Short id;
 

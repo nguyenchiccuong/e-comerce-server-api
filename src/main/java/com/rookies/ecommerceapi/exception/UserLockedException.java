@@ -6,8 +6,4 @@ public class UserLockedException extends RuntimeException {
         super(message);
     }
 
-    // public UserLockedException(String username) {
-    //     super("Username: " + username + " is locked");
-    // }
-
 }

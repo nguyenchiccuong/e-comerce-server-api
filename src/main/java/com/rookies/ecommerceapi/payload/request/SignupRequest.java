@@ -1,6 +1,5 @@
 package com.rookies.ecommerceapi.payload.request;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -35,7 +34,6 @@ public class SignupRequest {
     @Pattern(regexp = "^[a-z][a-z0-9_\\.]{5,32}@[a-z0-9]{2,}(\\.[a-z0-9]{2,4}){1,2}$", message = "Invalid email!")
     private String email;
 
-    // @Size(min = 7, max = 12)
     @Pattern(regexp = "[0-9]{7,12}", message = "Invalid phone number!")
     private String phoneNumber;
 

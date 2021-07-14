@@ -6,8 +6,4 @@ public class OrderIdNotFoundException extends RuntimeException {
         super(message);
     }
 
-    // public OrderIdNotFoundException(Long orderId) {
-    //     super("Order id: " + orderId + " not found");
-    // }
-
 }

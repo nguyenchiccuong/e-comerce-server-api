@@ -1,10 +1,13 @@
 package com.rookies.ecommerceapi.repository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.rookies.ecommerceapi.entity.Brand;
 import com.rookies.ecommerceapi.entity.Category;
@@ -12,13 +15,6 @@ import com.rookies.ecommerceapi.entity.Origin;
 import com.rookies.ecommerceapi.entity.Product;
 import com.rookies.ecommerceapi.entity.ProductDetail;
 import com.rookies.ecommerceapi.entity.Review;
-
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

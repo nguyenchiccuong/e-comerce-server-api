@@ -15,10 +15,9 @@ import lombok.Setter;
 public class ProductDetailDto {
     private Long id;
 
-    // @NotNull
     private long productId;
 
-    @NotBlank // @NotNull
+    @NotBlank
     private String color;
 
     @NotNull

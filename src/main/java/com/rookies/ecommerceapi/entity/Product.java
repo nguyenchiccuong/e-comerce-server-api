@@ -28,37 +28,26 @@ import lombok.Setter;
 @Setter
 public class Product {
     @Id
-    // @GeneratedValue (strategy = GenerationType.IDENTITY)
     @GeneratedValue(generator = "sequence-generator")
     @GenericGenerator(name = "sequence-generator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
             @Parameter(name = "sequence_name", value = "product_sequence"),
-            // @Parameter(name = "initial_value", value = "0"),
             @Parameter(name = "increment_size", value = "1") })
     private Long id;
 
     @Column(name = "product_name")
-    @NotBlank // @NotNull
+    @NotBlank 
     private String productName;
 
-    // @Column(name = "category_id")
-    // @NotNull
-    // private Integer categoryId;
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     private String model;
 
-    // @Column(name = "brand_id")
-    // @NotNull
-    // private Integer brandId;
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
 
-    // @Column(name = "origin_id")
-    // @NotNull
-    // private Integer originId;
     @ManyToOne
     @JoinColumn(name = "origin_id", nullable = false)
     private Origin origin;

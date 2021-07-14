@@ -6,8 +6,4 @@ public class UsernameNotFoundException extends RuntimeException {
         super(message);
     }
 
-    // public UsernameNotFoundException(String username) {
-    //     super("Username: " + username + " not found");
-    // }
-
 }

@@ -37,6 +37,8 @@ public class Organization {
     @NotBlank
     private String organizationName;
 
+    private Short img;
+
     @OneToMany(mappedBy = "Organization")
     private Collection<Brand> Brands;
 

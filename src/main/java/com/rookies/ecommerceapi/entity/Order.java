@@ -52,7 +52,6 @@ public class Order {
     private LocalDateTime createDate;
 
     @Column(name = "update_date")
-    @NotNull
     private LocalDateTime updateDate;
 
     // @NotBlank // @NotNull

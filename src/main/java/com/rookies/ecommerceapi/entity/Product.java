@@ -50,15 +50,17 @@ public class Product {
     private String model;
 
     // @Column(name = "brand_id")
+    // @NotNull
     // private Integer brandId;
     @ManyToOne
-    @JoinColumn(name = "brand_id")
+    @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
 
     // @Column(name = "origin_id")
+    // @NotNull
     // private Integer originId;
     @ManyToOne
-    @JoinColumn(name = "origin_id")
+    @JoinColumn(name = "origin_id", nullable = false)
     private Origin origin;
 
     private String standard;

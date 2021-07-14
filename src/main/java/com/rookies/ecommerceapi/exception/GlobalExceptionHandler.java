@@ -140,4 +140,28 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ConvertToEntityDtoException.class)
+    public ResponseEntity<ResponseDto> ConvertToEntityDtoException(ConvertToEntityDtoException ex, WebRequest request) {
+        ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
+        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(SaveErrorException.class)
+    public ResponseEntity<ResponseDto> SaveErrorException(SaveErrorException ex, WebRequest request) {
+        ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
+        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UpdateErrorException.class)
+    public ResponseEntity<ResponseDto> UpdateErrorException(UpdateErrorException ex, WebRequest request) {
+        ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
+        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DeleteErrorException.class)
+    public ResponseEntity<ResponseDto> DeleteErrorException(DeleteErrorException ex, WebRequest request) {
+        ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
+        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+    }
+
 }

@@ -43,4 +43,7 @@ public class ErrorCode {
     public final static String ERR_EMAIL_ALREADY_TAKEN = "ERR_EMAIL_ALREADY_TAKEN";
     public final static String ERR_PHONENUMBER_ALREADY_TAKEN = "ERR_PHONENUMBER_ALREADY_TAKEN";
 
+
+    // CONVERTER
+    public final static String ERR_CONVERTER = "ERR_CONVERTER";
 }

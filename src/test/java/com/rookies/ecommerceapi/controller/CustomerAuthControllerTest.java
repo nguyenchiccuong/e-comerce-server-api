@@ -1,9 +1,7 @@
 package com.rookies.ecommerceapi.controller;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,18 +12,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.rookies.ecommerceapi.entity.Customer;
 import com.rookies.ecommerceapi.entity.Role;
 import com.rookies.ecommerceapi.entity.RoleName;
@@ -34,7 +26,6 @@ import com.rookies.ecommerceapi.repository.CustomerRepository;
 import com.rookies.ecommerceapi.repository.RoleRepository;
 import com.rookies.ecommerceapi.repository.UserRepository;
 import com.rookies.ecommerceapi.security.jwt.JwtUtils;
-import com.rookies.ecommerceapi.security.service.impl.UserDetailsServiceImpl;
 import com.rookies.ecommerceapi.service.CustomerService;
 
 @SpringBootTest

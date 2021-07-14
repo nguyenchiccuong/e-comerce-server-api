@@ -1,32 +1,18 @@
 package com.rookies.ecommerceapi.service;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.time.LocalDateTime;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.rookies.ecommerceapi.constant.SuccessCode;
 import com.rookies.ecommerceapi.dto.ResponseDto;
 import com.rookies.ecommerceapi.entity.Customer;
@@ -34,14 +20,10 @@ import com.rookies.ecommerceapi.entity.Role;
 import com.rookies.ecommerceapi.entity.RoleName;
 import com.rookies.ecommerceapi.entity.User;
 import com.rookies.ecommerceapi.payload.request.SignupRequest;
-import com.rookies.ecommerceapi.payload.respone.MessageResponse;
 import com.rookies.ecommerceapi.repository.CustomerRepository;
 import com.rookies.ecommerceapi.repository.RoleRepository;
 import com.rookies.ecommerceapi.repository.UserRepository;
 import com.rookies.ecommerceapi.security.jwt.JwtUtils;
-import com.rookies.ecommerceapi.security.service.impl.UserDetailsServiceImpl;
-import com.rookies.ecommerceapi.service.CustomerService;
-import com.rookies.ecommerceapi.service.impl.CustomerServiceImpl;
 
 @SpringBootTest
 public class CustomerServiceTest {

@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Index;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
@@ -21,7 +22,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "products")
+@Table(name = "products", indexes = { @Index(name = "pr_ci_index", columnList = "category_id"),
+        @Index(name = "pr_mulitIndex1", columnList = "create_date, update_date"),
+        @Index(name = "pr_bi_index", columnList = "brand_id"), @Index(name = "pr_oi_index", columnList = "origin_id") })
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -35,7 +38,7 @@ public class Product {
     private Long id;
 
     @Column(name = "product_name")
-    @NotBlank 
+    @NotBlank
     private String productName;
 
     @ManyToOne

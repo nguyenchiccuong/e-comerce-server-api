@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Index;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
@@ -17,7 +18,8 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "order_details", uniqueConstraints = {
-                @UniqueConstraint(columnNames = { "order_id", "product_detail_id" }) })
+                @UniqueConstraint(columnNames = { "order_id", "product_detail_id" }) }, indexes = {
+                                @Index(name = "od_mulitIndex1", columnList = "order_id, product_detail_id") })
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

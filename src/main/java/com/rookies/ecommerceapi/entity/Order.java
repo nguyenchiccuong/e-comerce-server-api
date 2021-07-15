@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Index;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -22,7 +23,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "orders", indexes = { @Index(name = "or_ui_index", columnList = "user_id"),
+        @Index(name = "or_mulitIndex1", columnList = "create_date, update_date") })
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

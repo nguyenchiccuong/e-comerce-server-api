@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Index;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
@@ -20,7 +21,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "roles", uniqueConstraints = { @UniqueConstraint(columnNames = { "role_name" }) })
+@Table(name = "roles", uniqueConstraints = { @UniqueConstraint(columnNames = { "role_name" }) }, indexes = {
+        @Index(name = "ro_rn_index", columnList = "role_name") })
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

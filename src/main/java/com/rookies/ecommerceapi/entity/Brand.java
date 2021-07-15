@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Index;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 import org.hibernate.annotations.GenericGenerator;
@@ -19,7 +20,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "brands", uniqueConstraints = { @UniqueConstraint(columnNames = { "brand_name" }) })
+@Table(name = "brands", uniqueConstraints = { @UniqueConstraint(columnNames = { "brand_name" }) }, indexes = {
+        @Index(name = "br_bn_index", columnList = "brand_name", unique = true) })
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

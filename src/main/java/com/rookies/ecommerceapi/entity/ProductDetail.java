@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Index;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,7 +21,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "product_details", uniqueConstraints = { @UniqueConstraint(columnNames = { "product_id", "color" }) })
+@Table(name = "product_details", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "product_id", "color" }) }, indexes = {
+                @Index(name = "pd_pi_index", columnList = "product_id") })
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -37,7 +40,7 @@ public class ProductDetail {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @NotBlank 
+    @NotBlank
     private String color;
 
     @NotNull

@@ -12,6 +12,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Index;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -23,7 +24,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "employees", uniqueConstraints = { @UniqueConstraint(columnNames = { "phone_number" }),
-        @UniqueConstraint(columnNames = { "email" }) })
+        @UniqueConstraint(columnNames = { "email" }) }, indexes = { @Index(name = "em_n_index", columnList = "name") })
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -38,11 +39,11 @@ public class Employee {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @NotBlank 
+    @NotBlank
     private String name;
 
     @Column(name = "phone_number")
-    @NotBlank 
+    @NotBlank
     private String phoneNumber;
 
     @NotNull

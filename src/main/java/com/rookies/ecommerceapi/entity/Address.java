@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Index;
 import javax.validation.constraints.NotBlank;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -18,7 +19,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Addresss")
+@Table(name = "Addresss", indexes = { @Index(name = "ad_ui_index", columnList = "user_id"),
+        @Index(name = "ad_oi_index", columnList = "organization_id"),
+        @Index(name = "ad_cn_index", columnList = "contact_name"),
+        @Index(name = "ad_cn_index2", columnList = "contact_number") })
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

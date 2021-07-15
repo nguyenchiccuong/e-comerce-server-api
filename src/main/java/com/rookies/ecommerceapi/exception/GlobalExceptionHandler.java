@@ -15,153 +15,153 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(BrandIdNotFoundException.class)
     public ResponseEntity<ResponseDto> BrandIdNotFoundException(BrandIdNotFoundException ex, WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.NOT_FOUND);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(CategoryExistInProductException.class)
     public ResponseEntity<ResponseDto> CategoryExistInProductException(CategoryExistInProductException ex,
             WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(CategoryHaveSubCategoryException.class)
     public ResponseEntity<ResponseDto> CategoryHaveSubCategoryException(CategoryHaveSubCategoryException ex,
             WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(CategoryIdNotFoundException.class)
     public ResponseEntity<ResponseDto> CategoryIdNotFoundException(CategoryIdNotFoundException ex, WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.NOT_FOUND);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(CategoryNameExistException.class)
     public ResponseEntity<ResponseDto> CategoryNameExistException(CategoryNameExistException ex, WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(OrderIdNotFoundException.class)
     public ResponseEntity<ResponseDto> OrderIdNotFoundException(OrderIdNotFoundException ex, WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.NOT_FOUND);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(OriginIdNotFoundException.class)
     public ResponseEntity<ResponseDto> OriginIdNotFoundException(OriginIdNotFoundException ex, WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.NOT_FOUND);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ProductDetailIdExistInOrderDetail.class)
     public ResponseEntity<ResponseDto> ProductDetailIdExistInOrderDetail(ProductDetailIdExistInOrderDetail ex,
             WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ProductDetailIdNotFoundException.class)
     public ResponseEntity<ResponseDto> ProductDetailIdNotFoundException(ProductDetailIdNotFoundException ex,
             WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.NOT_FOUND);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ProductDetailNotValidException.class)
     public ResponseEntity<ResponseDto> ProductDetailNotValidException(ProductDetailNotValidException ex,
             WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ProductIdNotFoundException.class)
     public ResponseEntity<ResponseDto> ProductIdNotFoundException(ProductIdNotFoundException ex, WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.NOT_FOUND);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ReviewIdNotFoundException.class)
     public ResponseEntity<ResponseDto> ReviewIdNotFoundException(ReviewIdNotFoundException ex, WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.NOT_FOUND);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(RoleNameNotFoundException.class)
     public ResponseEntity<ResponseDto> RoleNameNotFoundException(RoleNameNotFoundException ex, WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.NOT_FOUND);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(UserIdNotFoundException.class)
     public ResponseEntity<ResponseDto> UserIdNotFoundException(UserIdNotFoundException ex, WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.NOT_FOUND);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(UserLockedException.class)
     public ResponseEntity<ResponseDto> UserLockedException(UserLockedException ex, WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.FORBIDDEN);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<ResponseDto> UsernameNotFoundException(UsernameNotFoundException ex, WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.NOT_FOUND);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(UsernameUnmatchWithReviewException.class)
     public ResponseEntity<ResponseDto> UsernameUnmatchWithReviewException(UsernameUnmatchWithReviewException ex,
             WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(UsernameAlreadyTakenException.class)
     public ResponseEntity<ResponseDto> UsernameAlreadyTakenException(UsernameAlreadyTakenException ex,
             WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(EmailAlreadyTakenException.class)
     public ResponseEntity<ResponseDto> EmailAlreadyTakenException(EmailAlreadyTakenException ex, WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(PhonenumberAlreadyTakenException.class)
     public ResponseEntity<ResponseDto> PhonenumberAlreadyTakenException(PhonenumberAlreadyTakenException ex,
             WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ConvertToEntityDtoException.class)
     public ResponseEntity<ResponseDto> ConvertToEntityDtoException(ConvertToEntityDtoException ex, WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(SaveErrorException.class)
     public ResponseEntity<ResponseDto> SaveErrorException(SaveErrorException ex, WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(UpdateErrorException.class)
     public ResponseEntity<ResponseDto> UpdateErrorException(UpdateErrorException ex, WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(DeleteErrorException.class)
     public ResponseEntity<ResponseDto> DeleteErrorException(DeleteErrorException ex, WebRequest request) {
         ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
-        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

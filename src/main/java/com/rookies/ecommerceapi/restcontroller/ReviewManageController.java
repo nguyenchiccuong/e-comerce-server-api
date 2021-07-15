@@ -17,6 +17,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import com.rookies.ecommerceapi.converter.ReviewConverter;
 import com.rookies.ecommerceapi.dto.ResponseDto;
@@ -28,6 +33,7 @@ import com.rookies.ecommerceapi.service.ReviewService;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/customer/review")
+@Tag(name = "REVIEW", description = "REVIEW API")
 public class ReviewManageController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReviewManageController.class);
@@ -49,6 +55,14 @@ public class ReviewManageController {
         this.reviewConverter = reviewConverter;
     }
 
+    @Operation(summary = "Save review", description = "", tags = { "REVIEW" }, security = {
+            @SecurityRequirement(name = "bearer-key") })
+    @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error") })
     @PostMapping
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     public ResponseEntity<ResponseDto> saveReview(HttpServletRequest req, @Valid @RequestBody ReviewDto reviewDto) {
@@ -64,6 +78,14 @@ public class ReviewManageController {
         return ResponseEntity.ok(responseDto);
     }
 
+    @Operation(summary = "Update review", description = "", tags = { "REVIEW" }, security = {
+            @SecurityRequirement(name = "bearer-key") })
+    @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error") })
     @PutMapping
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     public ResponseEntity<ResponseDto> updateReview(HttpServletRequest req, @Valid @RequestBody ReviewDto reviewDto) {
@@ -75,6 +97,14 @@ public class ReviewManageController {
         return ResponseEntity.ok(reviewService.updateReview(reviewRequest, username));
     }
 
+    @Operation(summary = "Delete review", description = "", tags = { "REVIEW" }, security = {
+            @SecurityRequirement(name = "bearer-key") })
+    @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error") })
     @DeleteMapping("/{reviewId}")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     public ResponseEntity<ResponseDto> deleteReview(HttpServletRequest req, @PathVariable("reviewId") Long reviewId) {

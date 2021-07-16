@@ -35,3 +35,6 @@ build/
 ###old db###
 ecommerce.sql
 erd.png
+
+## log ##
+/logs/

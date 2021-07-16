@@ -15,6 +15,7 @@ import com.rookies.ecommerceapi.entity.Origin;
 import com.rookies.ecommerceapi.entity.Product;
 import com.rookies.ecommerceapi.entity.ProductDetail;
 import com.rookies.ecommerceapi.entity.Review;
+import com.rookies.ecommerceapi.exception.SaveErrorException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -83,5 +84,19 @@ public class ProductRepositorytest {
         productRepository.deleteById(product.getId());
         assertTrue(!productRepository.findById(product.getId()).isPresent());
 
+    }
+
+    @Test
+    public void saveErrorTest() {
+        Exception result = null;
+        try {
+            productRepository.save(new Product());
+        } catch (Exception e) {
+            result = e;
+            System.out.println(result.getMessage());
+        }
+       
+
+        assertNotNull(result);
     }
 }

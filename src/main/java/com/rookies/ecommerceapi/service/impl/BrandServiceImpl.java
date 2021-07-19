@@ -32,7 +32,7 @@ public class BrandServiceImpl implements BrandService {
         List<BrandDto> brandsDto = brands.stream().map(brand -> modelMapper.map(brand, BrandDto.class))
                 .collect(Collectors.toList());
         responseDto.setData(brandsDto);
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_GET_ALL_BRAND);
         return responseDto;
     }
 

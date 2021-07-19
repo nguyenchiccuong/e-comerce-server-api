@@ -91,7 +91,7 @@ public class CustomerServiceImpl implements CustomerService {
         List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_CUSTOMER_LOGIN);
         responseDto.setData(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles.get(0)));
         return responseDto;
     }
@@ -130,7 +130,7 @@ public class CustomerServiceImpl implements CustomerService {
             user = userRepository.save(user);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new SaveErrorException(ErrorCode.ERR_SAVE);
+            throw new SaveErrorException(ErrorCode.ERR_SAVE_USER);
         }
         long id = user.getId();
 
@@ -143,10 +143,10 @@ public class CustomerServiceImpl implements CustomerService {
             customerRepository.save(customer);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new SaveErrorException(ErrorCode.ERR_SAVE);
+            throw new SaveErrorException(ErrorCode.ERR_SAVE_CUSTOMER);
         }
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_CUSTOMER_SIGN_UP);
         return responseDto;
     }
 
@@ -157,7 +157,7 @@ public class CustomerServiceImpl implements CustomerService {
         List<CustomerDto> customersDto = customers.stream()
                 .map(customer -> modelMapper.map(customer, CustomerDto.class)).collect(Collectors.toList());
         responseDto.setData(customersDto);
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_GET_ALL_CUSTOMER);
         return responseDto;
     }
 
@@ -167,7 +167,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserIdNotFoundException(ErrorCode.ERR_USER_ID_NOT_FOUND));
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_GET_CUSTOMER);
         responseDto.setData(customer);
         return responseDto;
     }
@@ -190,7 +190,7 @@ public class CustomerServiceImpl implements CustomerService {
         Short status = 0;
         user.setStatus(status);
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_LOCK_CUSTOMER);
         return responseDto;
     }
 
@@ -212,7 +212,7 @@ public class CustomerServiceImpl implements CustomerService {
         Short status = 1;
         user.setStatus(status);
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_UNLOCK_CUSTOMER);
         return responseDto;
     }
 
@@ -221,7 +221,7 @@ public class CustomerServiceImpl implements CustomerService {
         ResponseDto responseDto = new ResponseDto();
         Long quantity = customerRepository.count();
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_COUNT_CUSTOMER);
         responseDto.setData(quantity);
         return responseDto;
     }
@@ -231,7 +231,7 @@ public class CustomerServiceImpl implements CustomerService {
         ResponseDto responseDto = new ResponseDto();
         Long quantity = customerRepository.countByStatus(status);
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_COUNT_CUSTOMER);
         responseDto.setData(quantity);
         return responseDto;
     }
@@ -243,7 +243,7 @@ public class CustomerServiceImpl implements CustomerService {
         List<CustomerDto> customerByStatusDto = customersByStatus.stream()
                 .map(customer -> modelMapper.map(customer, CustomerDto.class)).collect(Collectors.toList());
         responseDto.setData(customerByStatusDto);
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_GET_ALL_CUSTOMER);
         return responseDto;
     }
 

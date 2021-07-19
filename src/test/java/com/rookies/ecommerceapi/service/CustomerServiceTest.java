@@ -92,7 +92,7 @@ public class CustomerServiceTest {
 
         // Then
         ResponseDto responseDtoExpect = new ResponseDto();
-        responseDtoExpect.setSuccessCode(SuccessCode.SUCCESS);
+        responseDtoExpect.setSuccessCode(SuccessCode.SUCCESS_CUSTOMER_SIGN_UP);
         assertEquals(responseDtoExpect, responseDto);
     }
 
@@ -106,7 +106,7 @@ public class CustomerServiceTest {
 
         // Then
         ResponseDto responseDtoExpect = new ResponseDto();
-        responseDtoExpect.setSuccessCode(SuccessCode.SUCCESS);
+        responseDtoExpect.setSuccessCode(SuccessCode.SUCCESS_GET_CUSTOMER);
         responseDtoExpect.setData(this.customer.get());
         assertEquals(responseDtoExpect, responseDto);
     }

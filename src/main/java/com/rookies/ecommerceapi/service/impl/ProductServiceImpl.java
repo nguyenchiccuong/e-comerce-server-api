@@ -70,7 +70,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductDto> ProductsDto = products.stream().map(product -> modelMapper.map(product, ProductDto.class))
                 .collect(Collectors.toList());
         responseDto.setData(ProductsDto);
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_GET_ALL_PRODUCT);
         return responseDto;
     }
 
@@ -80,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
         Product productById = productRepository.findById(id)
                 .orElseThrow(() -> new ProductIdNotFoundException(ErrorCode.ERR_PRODUCT_ID_NOT_FOUND));
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_GET_PRODUCT);
         responseDto.setData(productById);
         return responseDto;
     }
@@ -92,7 +92,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductDto> ProductsDto = productsByCategoryId.stream()
                 .map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
         responseDto.setData(ProductsDto);
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_GET_ALL_PRODUCT);
         return responseDto;
     }
 
@@ -103,7 +103,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductDto> ProductsDto = productsByBrandName.stream()
                 .map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
         responseDto.setData(ProductsDto);
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_GET_ALL_PRODUCT);
         return responseDto;
     }
 
@@ -114,7 +114,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductDto> ProductsDto = productsByCountry.stream()
                 .map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
         responseDto.setData(ProductsDto);
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_GET_ALL_PRODUCT);
         return responseDto;
     }
 
@@ -123,7 +123,7 @@ public class ProductServiceImpl implements ProductService {
         ResponseDto responseDto = new ResponseDto();
         Long quantity = productRepository.count();
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_COUNT_PRODUCT);
         responseDto.setData(quantity);
         return responseDto;
     }
@@ -133,7 +133,7 @@ public class ProductServiceImpl implements ProductService {
         ResponseDto responseDto = new ResponseDto();
         Long quantity = productRepository.CountByCategoryId(categoryId);
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_COUNT_PRODUCT);
         responseDto.setData(quantity);
         return responseDto;
     }
@@ -143,7 +143,7 @@ public class ProductServiceImpl implements ProductService {
         ResponseDto responseDto = new ResponseDto();
         Long quantity = productRepository.CountByBrandName(brandName);
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_COUNT_PRODUCT);
         responseDto.setData(quantity);
         return responseDto;
     }
@@ -153,7 +153,7 @@ public class ProductServiceImpl implements ProductService {
         ResponseDto responseDto = new ResponseDto();
         Long quantity = productRepository.CountByCountry(country);
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_COUNT_PRODUCT);
         responseDto.setData(quantity);
         return responseDto;
     }
@@ -183,7 +183,7 @@ public class ProductServiceImpl implements ProductService {
             productSave = productRepository.save(productSave);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new SaveErrorException(ErrorCode.ERR_SAVE);
+            throw new SaveErrorException(ErrorCode.ERR_SAVE_PRODUCT);
         }
 
         Long productId = productSave.getId();
@@ -198,7 +198,7 @@ public class ProductServiceImpl implements ProductService {
                 productDetailRepository.save(productDetailSave);
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new SaveErrorException(ErrorCode.ERR_SAVE);
+                throw new SaveErrorException(ErrorCode.ERR_SAVE_PRODUCT_DETAIL);
             }
 
         });
@@ -210,7 +210,7 @@ public class ProductServiceImpl implements ProductService {
 
         productSave.setProductDetails(productDetails);
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_SAVE_PRODUCT);
         responseDto.setData(productSave);
         return responseDto;
 
@@ -272,7 +272,7 @@ public class ProductServiceImpl implements ProductService {
             productRepository.save(productUpdate);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new UpdateErrorException(ErrorCode.ERR_UPDATE);
+            throw new UpdateErrorException(ErrorCode.ERR_UPDATE_PRODUCT);
         }
 
         // product detail list from db to check if not exist in request, then remove, if
@@ -286,7 +286,7 @@ public class ProductServiceImpl implements ProductService {
                     productDetailRepository.deleteById(productDetail.getId());
                 } catch (Exception e) {
                     e.printStackTrace();
-                    throw new UpdateErrorException(ErrorCode.ERR_UPDATE);
+                    throw new UpdateErrorException(ErrorCode.ERR_UPDATE_PRODUCT_DELETE_PRODUCT_DETAIL);
                 }
             } else {
                 ProductDetail productDetailUpdate = productDetailFoundFromRequest.get();
@@ -295,7 +295,7 @@ public class ProductServiceImpl implements ProductService {
                     productDetailRepository.save(productDetailUpdate);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    throw new UpdateErrorException(ErrorCode.ERR_UPDATE);
+                    throw new UpdateErrorException(ErrorCode.ERR_UPDATE_PRODUCT_DETAIL);
                 }
             }
         });
@@ -308,7 +308,7 @@ public class ProductServiceImpl implements ProductService {
             }
         });
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_UPDATE_PRODUCT);
         return responseDto;
     }
 
@@ -330,10 +330,10 @@ public class ProductServiceImpl implements ProductService {
             productRepository.deleteById(productId);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new DeleteErrorException(ErrorCode.ERR_DELETE);
+            throw new DeleteErrorException(ErrorCode.ERR_DELETE_PRODUCT);
         }
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_DELETE_PRODUCT);
         return responseDto;
     }
 }

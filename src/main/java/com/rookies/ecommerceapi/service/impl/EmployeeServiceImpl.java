@@ -52,7 +52,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_EMPLOYEE_LOGIN);
         responseDto.setData(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles.get(0)));
         return responseDto;
     }

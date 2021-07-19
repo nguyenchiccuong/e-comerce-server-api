@@ -68,10 +68,10 @@ public class ReviewServiceImpl implements ReviewService {
             reviewSave = reviewRepository.save(reviewSave);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new SaveErrorException(ErrorCode.ERR_SAVE);
+            throw new SaveErrorException(ErrorCode.ERR_SAVE_REVIEW);
         }
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_SAVE_REVIEW);
         responseDto.setData(reviewSave);
         return responseDto;
     }
@@ -104,10 +104,10 @@ public class ReviewServiceImpl implements ReviewService {
             reviewRepository.save(reviewUpdate);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new UpdateErrorException(ErrorCode.ERR_UPDATE);
+            throw new UpdateErrorException(ErrorCode.ERR_UPDATE_REVIEW);
         }
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_UPDATE_REVIEW);
         return responseDto;
     }
 
@@ -130,10 +130,10 @@ public class ReviewServiceImpl implements ReviewService {
             reviewRepository.deleteById(reviewId);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new DeleteErrorException(ErrorCode.ERR_DELETE);
+            throw new DeleteErrorException(ErrorCode.ERR_DELETE_REVIEW);
         }
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_DELETE_REVIEW);
         return responseDto;
     }
 

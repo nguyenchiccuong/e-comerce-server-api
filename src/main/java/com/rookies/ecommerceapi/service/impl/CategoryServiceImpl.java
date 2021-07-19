@@ -47,7 +47,7 @@ public class CategoryServiceImpl implements CategoryService {
         List<CategoryDto> categoriesDto = parentCategory.stream()
                 .map(category -> modelMapper.map(category, CategoryDto.class)).collect(Collectors.toList());
         responseDto.setData(categoriesDto);
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_GET_ALL_PARENT_CATEGORY);
         return responseDto;
     }
 
@@ -58,7 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
         List<CategoryDto> categoriesDto = subCategory.stream()
                 .map(category -> modelMapper.map(category, CategoryDto.class)).collect(Collectors.toList());
         responseDto.setData(categoriesDto);
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_GET_SUB_CATEGORY);
         return responseDto;
     }
 
@@ -78,10 +78,10 @@ public class CategoryServiceImpl implements CategoryService {
             categorySave = categoryRepository.save(categorySave);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new SaveErrorException(ErrorCode.ERR_SAVE);
+            throw new SaveErrorException(ErrorCode.ERR_SAVE_CATEGORY);
         }
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_SAVE_CATEGORY);
         responseDto.setData(categorySave);
         return responseDto;
 
@@ -111,10 +111,10 @@ public class CategoryServiceImpl implements CategoryService {
             categorySave = categoryRepository.save(categorySave);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new SaveErrorException(ErrorCode.ERR_SAVE);
+            throw new SaveErrorException(ErrorCode.ERR_SAVE_SUB_CATEGORY);
         }
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_SAVE_SUB_CATEGORY);
         responseDto.setData(categorySave);
         return responseDto;
 
@@ -146,10 +146,10 @@ public class CategoryServiceImpl implements CategoryService {
             categoryRepository.save(categoryUpdate);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new UpdateErrorException(ErrorCode.ERR_UPDATE);
+            throw new UpdateErrorException(ErrorCode.ERR_UPDATE_CATEGORY);
         }
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_UPDATE_CATEGORY);
         return responseDto;
 
     }
@@ -172,10 +172,10 @@ public class CategoryServiceImpl implements CategoryService {
             categoryRepository.deleteById(id);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new DeleteErrorException(ErrorCode.ERR_DELETE);
+            throw new DeleteErrorException(ErrorCode.ERR_DELETE_CATEGORY);
         }
 
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_DELETE_CATEGORY);
         return responseDto;
 
     }

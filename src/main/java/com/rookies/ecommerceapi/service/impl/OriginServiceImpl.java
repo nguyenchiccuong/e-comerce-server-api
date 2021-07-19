@@ -32,7 +32,7 @@ public class OriginServiceImpl implements OriginService {
         List<OriginDto> originsDto = origins.stream().map(origin -> modelMapper.map(origin, OriginDto.class))
                 .collect(Collectors.toList());
         responseDto.setData(originsDto);
-        responseDto.setSuccessCode(SuccessCode.SUCCESS);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_GET_ALL_ORIGIN);
         return responseDto;
     }
 

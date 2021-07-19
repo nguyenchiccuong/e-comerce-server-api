@@ -33,68 +33,64 @@ import com.rookies.ecommerceapi.service.ProductService;
 @Tag(name = "PRODUCT", description = "PRODUCT API")
 public class ProductManageController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProductManageController.class);
+        private static final Logger LOGGER = LoggerFactory.getLogger(ProductManageController.class);
 
-    private final ProductService productService;
+        private final ProductService productService;
 
-    private final ModelMapper modelMapper;
+        private final ProductConverter productConverter;
 
-    private final ProductConverter productConverter;
+        @Autowired
+        public ProductManageController(ProductService productService, ProductConverter productConverter) {
+                this.productService = productService;
+                this.productConverter = productConverter;
+        }
 
-    @Autowired
-    public ProductManageController(ProductService productService, ModelMapper modelMapper,
-            ProductConverter productConverter) {
-        this.productService = productService;
-        this.modelMapper = modelMapper;
-        this.productConverter = productConverter;
-    }
+        @Operation(summary = "Save product", description = "", tags = { "PRODUCT" }, security = {
+                        @SecurityRequirement(name = "bearer-key") })
+        @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
+                        @ApiResponse(responseCode = "400", description = "Bad request"),
+                        @ApiResponse(responseCode = "401", description = "Unauthorized"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden"),
+                        @ApiResponse(responseCode = "404", description = "Not found"),
+                        @ApiResponse(responseCode = "500", description = "Internal Server Error") })
+        @PostMapping
+        @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+        public ResponseEntity<ResponseDto> saveProduct(@Valid @RequestBody ProductDto productDto) {
+                Product productRequest = productConverter.convertToEntity(productDto);
 
-    @Operation(summary = "Save product", description = "", tags = { "PRODUCT" }, security = {
-            @SecurityRequirement(name = "bearer-key") })
-    @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "404", description = "Not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error") })
-    @PostMapping
-    @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ResponseDto> saveProduct(@Valid @RequestBody ProductDto productDto) {
-        Product productRequest = productConverter.convertToEntity(productDto);
+                ResponseDto responseDto = productService.saveProduct(productRequest);
 
-        ResponseDto responseDto = productService.saveProduct(productRequest);
+                responseDto.setData(productConverter.convertToDto((Product) responseDto.getData()));
 
-        responseDto.setData(modelMapper.map(responseDto.getData(), ProductDto.class));
+                return ResponseEntity.ok(responseDto);
+        }
 
-        return ResponseEntity.ok(responseDto);
-    }
+        @Operation(summary = "Update product", description = "", tags = { "PRODUCT" }, security = {
+                        @SecurityRequirement(name = "bearer-key") })
+        @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
+                        @ApiResponse(responseCode = "400", description = "Bad request"),
+                        @ApiResponse(responseCode = "401", description = "Unauthorized"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden"),
+                        @ApiResponse(responseCode = "404", description = "Not found"),
+                        @ApiResponse(responseCode = "500", description = "Internal Server Error") })
+        @PutMapping
+        @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+        public ResponseEntity<ResponseDto> updateProduct(@Valid @RequestBody ProductDto productDto) {
+                Product productRequest = productConverter.convertToEntity(productDto);
+                return ResponseEntity.ok(productService.updateProduct(productRequest));
+        }
 
-    @Operation(summary = "Update product", description = "", tags = { "PRODUCT" }, security = {
-            @SecurityRequirement(name = "bearer-key") })
-    @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "404", description = "Not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error") })
-    @PutMapping
-    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ResponseDto> updateProduct(@Valid @RequestBody ProductDto productDto) {
-        Product productRequest = productConverter.convertToEntity(productDto);
-        return ResponseEntity.ok(productService.updateProduct(productRequest));
-    }
-
-    @Operation(summary = "Delete product", description = "", tags = { "PRODUCT" }, security = {
-            @SecurityRequirement(name = "bearer-key") })
-    @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "404", description = "Not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error") })
-    @DeleteMapping("/{productId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ResponseDto> deleteProduct(@PathVariable("productId") Long productId) {
-        return ResponseEntity.ok(productService.deleteProduct(productId));
-    }
+        @Operation(summary = "Delete product", description = "", tags = { "PRODUCT" }, security = {
+                        @SecurityRequirement(name = "bearer-key") })
+        @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
+                        @ApiResponse(responseCode = "400", description = "Bad request"),
+                        @ApiResponse(responseCode = "401", description = "Unauthorized"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden"),
+                        @ApiResponse(responseCode = "404", description = "Not found"),
+                        @ApiResponse(responseCode = "500", description = "Internal Server Error") })
+        @DeleteMapping("/{productId}")
+        @PreAuthorize("hasRole('ROLE_ADMIN')")
+        public ResponseEntity<ResponseDto> deleteProduct(@PathVariable("productId") Long productId) {
+                return ResponseEntity.ok(productService.deleteProduct(productId));
+        }
 }

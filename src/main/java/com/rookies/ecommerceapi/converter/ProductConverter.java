@@ -36,7 +36,14 @@ public class ProductConverter {
     }
 
     public ProductDto convertToDto(Product product) {
-        return modelMapper.map(product, ProductDto.class);
+        try {
+            ProductDto productDto = modelMapper.map(product, ProductDto.class);
+            productDto.setCategoryId(product.getCategory().getCategory().getId());
+            return productDto;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ConvertToEntityDtoException(ErrorCode.ERR_CONVERTER);
+        }
     }
 
 }

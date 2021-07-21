@@ -18,9 +18,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import com.rookies.ecommerceapi.converter.ProductConverter;
 import com.rookies.ecommerceapi.dto.NumberOfEntityDto;
 import com.rookies.ecommerceapi.dto.ProductDto;
 import com.rookies.ecommerceapi.dto.ResponseDto;
+import com.rookies.ecommerceapi.entity.Product;
 import com.rookies.ecommerceapi.service.ProductService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -33,12 +35,12 @@ public class ProductController {
 
         private final ProductService productService;
 
-        private final ModelMapper modelMapper;
+        private final ProductConverter productConverter;
 
         @Autowired
-        public ProductController(ProductService productService, ModelMapper modelMapper) {
+        public ProductController(ProductService productService, ProductConverter productConverter) {
                 this.productService = productService;
-                this.modelMapper = modelMapper;
+                this.productConverter = productConverter;
         }
 
         @Operation(summary = "Get all product", description = "", tags = { "PRODUCT" })
@@ -63,7 +65,7 @@ public class ProductController {
         public ResponseEntity<ResponseDto> retrieveProductById(@PathVariable("productId") Long productId) {
                 ResponseDto responseDto = productService.retrieveProductById(productId);
 
-                ProductDto productByIdDto = modelMapper.map(responseDto.getData(), ProductDto.class);
+                ProductDto productByIdDto = productConverter.convertToDto((Product) responseDto.getData());
                 responseDto.setData(productByIdDto);
 
                 return ResponseEntity.ok(responseDto);

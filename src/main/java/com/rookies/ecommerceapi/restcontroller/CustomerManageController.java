@@ -57,7 +57,7 @@ public class CustomerManageController {
     public ResponseEntity<ResponseDto> retrieveCustomers(@RequestParam(name = "page", required = true) Integer pageNum,
             @RequestParam(name = "items", required = true) Integer numOfItems) {
         return ResponseEntity.ok(
-                customerService.retrieveCustomers(PageRequest.of(pageNum, numOfItems, Sort.by("userId").descending())));
+                customerService.retrieveCustomers(PageRequest.of(pageNum, numOfItems, Sort.by("name"))));
     }
 
     @Operation(summary = "Get customer by id", description = "", tags = { "CUSTOMER" }, security = {
@@ -122,7 +122,7 @@ public class CustomerManageController {
             @RequestParam(name = "items", required = true) Integer numOfItems,
             @RequestParam(name = "status", required = true) Short status) {
         return ResponseEntity.ok(customerService.retrieveCustomersByStatus(
-                PageRequest.of(pageNum, numOfItems, Sort.by("userId").descending()), status));
+                PageRequest.of(pageNum, numOfItems, Sort.by("name")), status));
     }
 
     @Operation(summary = "Count customer by status", description = "", tags = { "CUSTOMER" }, security = {

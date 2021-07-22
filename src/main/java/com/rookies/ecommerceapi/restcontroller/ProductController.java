@@ -53,7 +53,7 @@ public class ProductController {
                         @RequestParam(name = "page", required = true) Integer pageNum,
                         @RequestParam(name = "items", required = true) Integer numOfItems) {
                 return ResponseEntity.ok(productService.retrieveProducts(PageRequest.of(pageNum, numOfItems,
-                                Sort.by("id").descending().and(Sort.by("updateDate").descending()))));
+                                Sort.by("productName").descending().and(Sort.by("updateDate").descending()))));
         }
 
         @Operation(summary = "Get product by id", description = "", tags = { "PRODUCT" })
@@ -85,7 +85,7 @@ public class ProductController {
                 return ResponseEntity
                                 .ok(productService.retrieveProductsByCategoryId(
                                                 PageRequest.of(pageNum, numOfItems,
-                                                                Sort.by("id").descending().and(
+                                                                Sort.by("productName").descending().and(
                                                                                 Sort.by("updateDate").descending())),
                                                 categoryId));
         }
@@ -103,7 +103,7 @@ public class ProductController {
                 return ResponseEntity
                                 .ok(productService.retrieveProductsByBrandName(
                                                 PageRequest.of(pageNum, numOfItems,
-                                                                Sort.by("id").descending().and(
+                                                                Sort.by("productName").descending().and(
                                                                                 Sort.by("updateDate").descending())),
                                                 brandName));
         }
@@ -121,7 +121,7 @@ public class ProductController {
                 return ResponseEntity
                                 .ok(productService.retrieveProductsByCountry(
                                                 PageRequest.of(pageNum, numOfItems,
-                                                                Sort.by("id").descending().and(
+                                                                Sort.by("productName").descending().and(
                                                                                 Sort.by("updateDate").descending())),
                                                 country));
         }

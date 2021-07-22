@@ -304,7 +304,13 @@ public class ProductServiceImpl implements ProductService {
         product.getProductDetails().forEach(productDetail -> {
             if (productDetail.getId() == null) {
                 productDetail.setProduct(productUpdate);
-                productDetailRepository.save(productDetail);
+                try {
+                    productDetailRepository.save(productDetail);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new UpdateErrorException(ErrorCode.ERR_UPDATE_PRODUCT_DETAIL);
+                }
+
             }
         });
 

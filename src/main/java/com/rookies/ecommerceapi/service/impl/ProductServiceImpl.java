@@ -97,6 +97,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ResponseDto retrieveProductsByParentCategoryId(Pageable page, Integer categoryId) {
+        ResponseDto responseDto = new ResponseDto();
+        Page<Product> productsByParentCategoryId = productRepository.findByParentCategoryId(page, categoryId);
+        List<ProductDto> ProductsDto = productsByParentCategoryId.stream()
+                .map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+        responseDto.setData(ProductsDto);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_GET_ALL_PRODUCT);
+        return responseDto;
+    }
+
+    @Override
     public ResponseDto retrieveProductsByBrandName(Pageable page, String brandName) {
         ResponseDto responseDto = new ResponseDto();
         Page<Product> productsByBrandName = productRepository.findByBrandName(page, brandName);
@@ -131,7 +142,17 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ResponseDto countProductByCategoryId(Integer categoryId) {
         ResponseDto responseDto = new ResponseDto();
-        Long quantity = productRepository.CountByCategoryId(categoryId);
+        Long quantity = productRepository.countByCategoryId(categoryId);
+
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_COUNT_PRODUCT);
+        responseDto.setData(quantity);
+        return responseDto;
+    }
+
+    @Override
+    public ResponseDto countProductByParentCategoryId(Integer categoryId) {
+        ResponseDto responseDto = new ResponseDto();
+        Long quantity = productRepository.countByParentCategoryId(categoryId);
 
         responseDto.setSuccessCode(SuccessCode.SUCCESS_COUNT_PRODUCT);
         responseDto.setData(quantity);
@@ -141,7 +162,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ResponseDto countProductByBrandName(String brandName) {
         ResponseDto responseDto = new ResponseDto();
-        Long quantity = productRepository.CountByBrandName(brandName);
+        Long quantity = productRepository.countByBrandName(brandName);
 
         responseDto.setSuccessCode(SuccessCode.SUCCESS_COUNT_PRODUCT);
         responseDto.setData(quantity);
@@ -151,7 +172,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ResponseDto countProductByCountry(String country) {
         ResponseDto responseDto = new ResponseDto();
-        Long quantity = productRepository.CountByCountry(country);
+        Long quantity = productRepository.countByCountry(country);
 
         responseDto.setSuccessCode(SuccessCode.SUCCESS_COUNT_PRODUCT);
         responseDto.setData(quantity);

@@ -15,13 +15,16 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByCategoryId(Integer categoryId);
 
     @Query("SELECT COUNT (*) FROM Product p WHERE p.category.id = ?1")
-    public Long CountByCategoryId(Integer categoryId);
+    public Long countByCategoryId(Integer categoryId);
+
+    @Query("SELECT COUNT (*) FROM Product p WHERE p.category.category.id = ?1")
+    public Long countByParentCategoryId(Integer categoryId);
 
     @Query("SELECT COUNT (*) FROM Product p WHERE p.brand.brandName like %?1%")
-    public Long CountByBrandName(String brandName);
+    public Long countByBrandName(String brandName);
 
     @Query("SELECT COUNT (*) FROM Product p WHERE p.origin.country like %?1%")
-    public Long CountByCountry(String country);
+    public Long countByCountry(String country);
 
     @Query("FROM Product p WHERE p.category.id = ?1")
     Page<Product> findByCategoryId(Pageable page, Integer categoryId);
@@ -31,4 +34,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("FROM Product p WHERE p.origin.country like %?1%")
     Page<Product> findByCountry(Pageable page, String country);
+
+    @Query("FROM Product p WHERE p.category.category.id = ?1")
+    Page<Product> findByParentCategoryId(Pageable page, Integer categoryId);
 }

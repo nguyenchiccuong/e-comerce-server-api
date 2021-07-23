@@ -13,6 +13,8 @@ public interface ProductService {
 
     public ResponseDto retrieveProductsByCategoryId(Pageable page, Integer categoryId);
 
+    public ResponseDto retrieveProductsByParentCategoryId(Pageable page, Integer categoryId);
+
     public ResponseDto retrieveProductsByBrandName(Pageable page, String brandName);
 
     public ResponseDto retrieveProductsByCountry(Pageable page, String country);
@@ -20,6 +22,8 @@ public interface ProductService {
     public ResponseDto countProduct();
 
     public ResponseDto countProductByCategoryId(Integer categoryId);
+
+    public ResponseDto countProductByParentCategoryId(Integer categoryId);
 
     public ResponseDto countProductByBrandName(String brandName);
 

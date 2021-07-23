@@ -90,6 +90,24 @@ public class ProductController {
                                                 categoryId));
         }
 
+        @Operation(summary = "Get all product by parent category id", description = "", tags = { "PRODUCT" })
+        @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
+                        @ApiResponse(responseCode = "400", description = "Bad request"),
+                        @ApiResponse(responseCode = "404", description = "Not found"),
+                        @ApiResponse(responseCode = "500", description = "Internal Server Error") })
+        @GetMapping("/parent-category")
+        public ResponseEntity<ResponseDto> retrieveProductsByParentCategoryId(
+                        @RequestParam(name = "category_id", required = true) Integer categoryId,
+                        @RequestParam(name = "page", required = true) Integer pageNum,
+                        @RequestParam(name = "items", required = true) Integer numOfItems) {
+                return ResponseEntity
+                                .ok(productService.retrieveProductsByParentCategoryId(
+                                                PageRequest.of(pageNum, numOfItems,
+                                                                Sort.by("productName").and(
+                                                                                Sort.by("updateDate").descending())),
+                                                categoryId));
+        }
+
         @Operation(summary = "Get all product by brand name", description = "", tags = { "PRODUCT" })
         @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
                         @ApiResponse(responseCode = "400", description = "Bad request"),
@@ -150,6 +168,22 @@ public class ProductController {
         public ResponseEntity<ResponseDto> countProductByCategoryId(
                         @RequestParam(name = "category_id", required = true) Integer categoryId) {
                 ResponseDto responseDto = productService.countProductByCategoryId(categoryId);
+
+                NumberOfEntityDto quantity = new NumberOfEntityDto((Long) responseDto.getData());
+                responseDto.setData(quantity);
+
+                return ResponseEntity.ok(responseDto);
+        }
+
+        @Operation(summary = "Count product by parent category id", description = "", tags = { "PRODUCT" })
+        @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
+                        @ApiResponse(responseCode = "400", description = "Bad request"),
+                        @ApiResponse(responseCode = "404", description = "Not found"),
+                        @ApiResponse(responseCode = "500", description = "Internal Server Error") })
+        @GetMapping("/count/parent-category")
+        public ResponseEntity<ResponseDto> countProductByParentCategoryId(
+                        @RequestParam(name = "category_id", required = true) Integer categoryId) {
+                ResponseDto responseDto = productService.countProductByParentCategoryId(categoryId);
 
                 NumberOfEntityDto quantity = new NumberOfEntityDto((Long) responseDto.getData());
                 responseDto.setData(quantity);

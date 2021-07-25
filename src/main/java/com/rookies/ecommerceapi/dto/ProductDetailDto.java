@@ -15,7 +15,7 @@ import lombok.Setter;
 public class ProductDetailDto {
     private Long id;
 
-    private long productId;
+    private Long productId;
 
     @NotBlank
     private String color;

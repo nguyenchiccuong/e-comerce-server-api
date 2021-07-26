@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,6 +36,9 @@ import com.rookies.ecommerceapi.payload.respone.JwtResponse;
 import com.rookies.ecommerceapi.repository.CustomerRepository;
 import com.rookies.ecommerceapi.repository.RoleRepository;
 import com.rookies.ecommerceapi.repository.UserRepository;
+import com.rookies.ecommerceapi.repository.specs.CustomerSpecification;
+import com.rookies.ecommerceapi.repository.specs.SearchCriteria;
+import com.rookies.ecommerceapi.repository.specs.SearchOperation;
 import com.rookies.ecommerceapi.security.jwt.JwtUtils;
 import com.rookies.ecommerceapi.security.service.impl.UserDetailsImpl;
 import com.rookies.ecommerceapi.service.CustomerService;
@@ -243,6 +247,26 @@ public class CustomerServiceImpl implements CustomerService {
         List<CustomerDto> customerByStatusDto = customersByStatus.stream()
                 .map(customer -> modelMapper.map(customer, CustomerDto.class)).collect(Collectors.toList());
         responseDto.setData(customerByStatusDto);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_GET_ALL_CUSTOMER);
+        return responseDto;
+    }
+
+    @Override
+    public ResponseDto searchCustomers(String keyword) {
+        ResponseDto responseDto = new ResponseDto();
+
+        CustomerSpecification customerName = new CustomerSpecification();
+        customerName.add(new SearchCriteria("name", keyword, SearchOperation.MATCH));
+        CustomerSpecification email = new CustomerSpecification();
+        email.add(new SearchCriteria("email", keyword, SearchOperation.MATCH));
+        CustomerSpecification phoneNumber = new CustomerSpecification();
+        phoneNumber.add(new SearchCriteria("phoneNumber", keyword, SearchOperation.MATCH));
+        List<Customer> customers = customerRepository
+                .findAll(Specification.where(customerName).or(email).or(phoneNumber));
+        List<CustomerDto> customersDto = customers.stream()
+                .map(customer -> modelMapper.map(customer, CustomerDto.class)).collect(Collectors.toList());
+
+        responseDto.setData(customersDto);
         responseDto.setSuccessCode(SuccessCode.SUCCESS_GET_ALL_CUSTOMER);
         return responseDto;
     }

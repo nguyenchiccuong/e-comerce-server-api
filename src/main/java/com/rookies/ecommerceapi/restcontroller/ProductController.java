@@ -56,6 +56,17 @@ public class ProductController {
                                 Sort.by("productName").and(Sort.by("updateDate").descending()))));
         }
 
+        @Operation(summary = "Search products", description = "", tags = { "PRODUCT" })
+        @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
+                        @ApiResponse(responseCode = "400", description = "Bad request"),
+                        @ApiResponse(responseCode = "404", description = "Not found"),
+                        @ApiResponse(responseCode = "500", description = "Internal Server Error") })
+        @GetMapping("/search")
+        public ResponseEntity<ResponseDto> searchProducts(
+                        @RequestParam(name = "keyword", required = true) String keyword) {
+                return ResponseEntity.ok(productService.searchProducts(keyword));
+        }
+
         @Operation(summary = "Get product by id", description = "", tags = { "PRODUCT" })
         @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
                         @ApiResponse(responseCode = "400", description = "Bad request"),

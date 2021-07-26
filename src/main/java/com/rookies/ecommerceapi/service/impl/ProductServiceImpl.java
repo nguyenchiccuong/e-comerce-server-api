@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,6 +34,9 @@ import com.rookies.ecommerceapi.repository.CategoryRepository;
 import com.rookies.ecommerceapi.repository.OriginRepository;
 import com.rookies.ecommerceapi.repository.ProductDetailRepository;
 import com.rookies.ecommerceapi.repository.ProductRepository;
+import com.rookies.ecommerceapi.repository.specs.ProductSpecification;
+import com.rookies.ecommerceapi.repository.specs.SearchCriteria;
+import com.rookies.ecommerceapi.repository.specs.SearchOperation;
 import com.rookies.ecommerceapi.service.ProductService;
 import com.rookies.ecommerceapi.util.ValidateProductDetailCollection;
 
@@ -361,6 +365,23 @@ public class ProductServiceImpl implements ProductService {
         }
 
         responseDto.setSuccessCode(SuccessCode.SUCCESS_DELETE_PRODUCT);
+        return responseDto;
+    }
+
+    @Override
+    public ResponseDto searchProducts(String keyword) {
+        ResponseDto responseDto = new ResponseDto();
+
+        ProductSpecification productName = new ProductSpecification();
+        productName.add(new SearchCriteria("productName", keyword, SearchOperation.MATCH));
+        ProductSpecification description = new ProductSpecification();
+        description.add(new SearchCriteria("description", keyword, SearchOperation.MATCH));
+        List<Product> products = productRepository.findAll(Specification.where(productName).or(description));
+        List<ProductDto> ProductsDto = products.stream().map(product -> modelMapper.map(product, ProductDto.class))
+                .collect(Collectors.toList());
+
+        responseDto.setData(ProductsDto);
+        responseDto.setSuccessCode(SuccessCode.SUCCESS_GET_ALL_PRODUCT);
         return responseDto;
     }
 }

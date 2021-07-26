@@ -32,136 +32,152 @@ import com.rookies.ecommerceapi.service.CustomerService;
 @Tag(name = "CUSTOMER", description = "CUSTOMER API")
 public class CustomerManageController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerManageController.class);
+        private static final Logger LOGGER = LoggerFactory.getLogger(CustomerManageController.class);
 
-    private final CustomerService customerService;
+        private final CustomerService customerService;
 
-    private final ModelMapper modelMapper;
+        private final ModelMapper modelMapper;
 
-    @Autowired
-    public CustomerManageController(CustomerService customerService, ModelMapper modelMapper) {
-        this.customerService = customerService;
-        this.modelMapper = modelMapper;
-    }
+        @Autowired
+        public CustomerManageController(CustomerService customerService, ModelMapper modelMapper) {
+                this.customerService = customerService;
+                this.modelMapper = modelMapper;
+        }
 
-    @Operation(summary = "Get all customer", description = "", tags = { "CUSTOMER" }, security = {
-            @SecurityRequirement(name = "bearer-key") })
-    @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "404", description = "Not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error") })
-    @GetMapping
-    @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ResponseDto> retrieveCustomers(@RequestParam(name = "page", required = true) Integer pageNum,
-            @RequestParam(name = "items", required = true) Integer numOfItems) {
-        return ResponseEntity.ok(
-                customerService.retrieveCustomers(PageRequest.of(pageNum, numOfItems, Sort.by("name"))));
-    }
+        @Operation(summary = "Get all customer", description = "", tags = { "CUSTOMER" }, security = {
+                        @SecurityRequirement(name = "bearer-key") })
+        @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
+                        @ApiResponse(responseCode = "400", description = "Bad request"),
+                        @ApiResponse(responseCode = "401", description = "Unauthorized"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden"),
+                        @ApiResponse(responseCode = "404", description = "Not found"),
+                        @ApiResponse(responseCode = "500", description = "Internal Server Error") })
+        @GetMapping
+        @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+        public ResponseEntity<ResponseDto> retrieveCustomers(
+                        @RequestParam(name = "page", required = true) Integer pageNum,
+                        @RequestParam(name = "items", required = true) Integer numOfItems) {
+                return ResponseEntity.ok(customerService
+                                .retrieveCustomers(PageRequest.of(pageNum, numOfItems, Sort.by("name"))));
+        }
 
-    @Operation(summary = "Get customer by id", description = "", tags = { "CUSTOMER" }, security = {
-            @SecurityRequirement(name = "bearer-key") })
-    @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "404", description = "Not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error") })
-    @GetMapping("/{userId}")
-    @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ResponseDto> retrieveCustomerByUserId(@PathVariable("userId") Long userId) {
-        ResponseDto responseDto = customerService.retrieveCustomerByUserId(userId);
+        @Operation(summary = "Search customers", description = "", tags = { "CUSTOMER" }, security = {
+                        @SecurityRequirement(name = "bearer-key") })
+        @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
+                        @ApiResponse(responseCode = "400", description = "Bad request"),
+                        @ApiResponse(responseCode = "401", description = "Unauthorized"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden"),
+                        @ApiResponse(responseCode = "404", description = "Not found"),
+                        @ApiResponse(responseCode = "500", description = "Internal Server Error") })
+        @GetMapping("/search")
+        @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+        public ResponseEntity<ResponseDto> searchCustomers(
+                        @RequestParam(name = "keyword", required = true) String keyword) {
+                return ResponseEntity.ok(customerService.searchCustomers(keyword));
+        }
 
-        CustomerDto customerDto = modelMapper.map(responseDto.getData(), CustomerDto.class);
-        responseDto.setData(customerDto);
+        @Operation(summary = "Get customer by id", description = "", tags = { "CUSTOMER" }, security = {
+                        @SecurityRequirement(name = "bearer-key") })
+        @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
+                        @ApiResponse(responseCode = "400", description = "Bad request"),
+                        @ApiResponse(responseCode = "401", description = "Unauthorized"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden"),
+                        @ApiResponse(responseCode = "404", description = "Not found"),
+                        @ApiResponse(responseCode = "500", description = "Internal Server Error") })
+        @GetMapping("/{userId}")
+        @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+        public ResponseEntity<ResponseDto> retrieveCustomerByUserId(@PathVariable("userId") Long userId) {
+                ResponseDto responseDto = customerService.retrieveCustomerByUserId(userId);
 
-        return ResponseEntity.ok(responseDto);
-    }
+                CustomerDto customerDto = modelMapper.map(responseDto.getData(), CustomerDto.class);
+                responseDto.setData(customerDto);
 
-    @Operation(summary = "Lock customer by id", description = "", tags = { "CUSTOMER" }, security = {
-            @SecurityRequirement(name = "bearer-key") })
-    @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "404", description = "Not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error") })
-    @PutMapping("/lock/{userId}")
-    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ResponseDto> lockCustomerByUserId(@PathVariable("userId") Long userId) {
-        return ResponseEntity.ok(customerService.lockCustomerByUserId(userId));
-    }
+                return ResponseEntity.ok(responseDto);
+        }
 
-    @Operation(summary = "Unlock customer by id", description = "", tags = { "CUSTOMER" }, security = {
-            @SecurityRequirement(name = "bearer-key") })
-    @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "404", description = "Not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error") })
-    @PutMapping("/unlock/{userId}")
-    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ResponseDto> unlockCustomerByUserId(@PathVariable("userId") Long userId) {
-        return ResponseEntity.ok(customerService.unlockCustomerByUserId(userId));
-    }
+        @Operation(summary = "Lock customer by id", description = "", tags = { "CUSTOMER" }, security = {
+                        @SecurityRequirement(name = "bearer-key") })
+        @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
+                        @ApiResponse(responseCode = "400", description = "Bad request"),
+                        @ApiResponse(responseCode = "401", description = "Unauthorized"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden"),
+                        @ApiResponse(responseCode = "404", description = "Not found"),
+                        @ApiResponse(responseCode = "500", description = "Internal Server Error") })
+        @PutMapping("/lock/{userId}")
+        @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+        public ResponseEntity<ResponseDto> lockCustomerByUserId(@PathVariable("userId") Long userId) {
+                return ResponseEntity.ok(customerService.lockCustomerByUserId(userId));
+        }
 
-    @Operation(summary = "Get all customer by status", description = "", tags = { "CUSTOMER" }, security = {
-            @SecurityRequirement(name = "bearer-key") })
-    @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "404", description = "Not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error") })
-    @GetMapping("/status")
-    @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ResponseDto> retrieveCustomersByStatus(
-            @RequestParam(name = "page", required = true) Integer pageNum,
-            @RequestParam(name = "items", required = true) Integer numOfItems,
-            @RequestParam(name = "status", required = true) Short status) {
-        return ResponseEntity.ok(customerService.retrieveCustomersByStatus(
-                PageRequest.of(pageNum, numOfItems, Sort.by("name")), status));
-    }
+        @Operation(summary = "Unlock customer by id", description = "", tags = { "CUSTOMER" }, security = {
+                        @SecurityRequirement(name = "bearer-key") })
+        @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
+                        @ApiResponse(responseCode = "400", description = "Bad request"),
+                        @ApiResponse(responseCode = "401", description = "Unauthorized"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden"),
+                        @ApiResponse(responseCode = "404", description = "Not found"),
+                        @ApiResponse(responseCode = "500", description = "Internal Server Error") })
+        @PutMapping("/unlock/{userId}")
+        @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+        public ResponseEntity<ResponseDto> unlockCustomerByUserId(@PathVariable("userId") Long userId) {
+                return ResponseEntity.ok(customerService.unlockCustomerByUserId(userId));
+        }
 
-    @Operation(summary = "Count customer by status", description = "", tags = { "CUSTOMER" }, security = {
-            @SecurityRequirement(name = "bearer-key") })
-    @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "404", description = "Not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error") })
-    @GetMapping("/count/status")
-    @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ResponseDto> countCustomerByStatus(
-            @RequestParam(name = "status", required = true) Short status) {
-        ResponseDto responseDto = customerService.countCustomerByStatus(status);
+        @Operation(summary = "Get all customer by status", description = "", tags = { "CUSTOMER" }, security = {
+                        @SecurityRequirement(name = "bearer-key") })
+        @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
+                        @ApiResponse(responseCode = "400", description = "Bad request"),
+                        @ApiResponse(responseCode = "401", description = "Unauthorized"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden"),
+                        @ApiResponse(responseCode = "404", description = "Not found"),
+                        @ApiResponse(responseCode = "500", description = "Internal Server Error") })
+        @GetMapping("/status")
+        @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+        public ResponseEntity<ResponseDto> retrieveCustomersByStatus(
+                        @RequestParam(name = "page", required = true) Integer pageNum,
+                        @RequestParam(name = "items", required = true) Integer numOfItems,
+                        @RequestParam(name = "status", required = true) Short status) {
+                return ResponseEntity.ok(customerService.retrieveCustomersByStatus(
+                                PageRequest.of(pageNum, numOfItems, Sort.by("name")), status));
+        }
 
-        NumberOfEntityDto quantity = new NumberOfEntityDto((Long) responseDto.getData());
-        responseDto.setData(quantity);
+        @Operation(summary = "Count customer by status", description = "", tags = { "CUSTOMER" }, security = {
+                        @SecurityRequirement(name = "bearer-key") })
+        @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
+                        @ApiResponse(responseCode = "400", description = "Bad request"),
+                        @ApiResponse(responseCode = "401", description = "Unauthorized"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden"),
+                        @ApiResponse(responseCode = "404", description = "Not found"),
+                        @ApiResponse(responseCode = "500", description = "Internal Server Error") })
+        @GetMapping("/count/status")
+        @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+        public ResponseEntity<ResponseDto> countCustomerByStatus(
+                        @RequestParam(name = "status", required = true) Short status) {
+                ResponseDto responseDto = customerService.countCustomerByStatus(status);
 
-        return ResponseEntity.ok(responseDto);
-    }
+                NumberOfEntityDto quantity = new NumberOfEntityDto((Long) responseDto.getData());
+                responseDto.setData(quantity);
 
-    @Operation(summary = "Count customer", description = "", tags = { "CUSTOMER" }, security = {
-            @SecurityRequirement(name = "bearer-key") })
-    @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "404", description = "Not found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error") })
-    @GetMapping("/count")
-    @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ResponseDto> countCustomer() {
-        ResponseDto responseDto = customerService.countCustomer();
+                return ResponseEntity.ok(responseDto);
+        }
 
-        NumberOfEntityDto quantity = new NumberOfEntityDto((Long) responseDto.getData());
-        responseDto.setData(quantity);
+        @Operation(summary = "Count customer", description = "", tags = { "CUSTOMER" }, security = {
+                        @SecurityRequirement(name = "bearer-key") })
+        @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
+                        @ApiResponse(responseCode = "400", description = "Bad request"),
+                        @ApiResponse(responseCode = "401", description = "Unauthorized"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden"),
+                        @ApiResponse(responseCode = "404", description = "Not found"),
+                        @ApiResponse(responseCode = "500", description = "Internal Server Error") })
+        @GetMapping("/count")
+        @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+        public ResponseEntity<ResponseDto> countCustomer() {
+                ResponseDto responseDto = customerService.countCustomer();
 
-        return ResponseEntity.ok(responseDto);
-    }
+                NumberOfEntityDto quantity = new NumberOfEntityDto((Long) responseDto.getData());
+                responseDto.setData(quantity);
+
+                return ResponseEntity.ok(responseDto);
+        }
 
 }

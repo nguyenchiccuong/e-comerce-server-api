@@ -24,4 +24,6 @@ public interface CustomerService {
     public ResponseDto countCustomerByStatus(Short status);
 
     public ResponseDto retrieveCustomersByStatus(Pageable page, Short status);
+
+    public ResponseDto searchCustomers(String keyword);
 }

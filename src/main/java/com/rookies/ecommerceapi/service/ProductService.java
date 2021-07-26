@@ -34,4 +34,6 @@ public interface ProductService {
     public ResponseDto updateProduct(Product product);
 
     public ResponseDto deleteProduct(Long productId);
+
+    public ResponseDto searchProducts(String keyword);
 }

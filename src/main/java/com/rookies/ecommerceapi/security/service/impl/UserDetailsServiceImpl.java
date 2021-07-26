@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.rookies.ecommerceapi.constant.ErrorCode;
 import com.rookies.ecommerceapi.entity.User;
 import com.rookies.ecommerceapi.exception.UserLockedException;
 import com.rookies.ecommerceapi.repository.UserRepository;
@@ -26,7 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         // check if status = 0 mean user is log in
         if (user.getStatus() == 0) {
-            throw new UserLockedException(username);
+            throw new UserLockedException(ErrorCode.ERR_USER_LOCKED);
         }
 
         return UserDetailsImpl.build(user);

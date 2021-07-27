@@ -35,5 +35,5 @@ public interface ProductService {
 
     public ResponseDto deleteProduct(Long productId);
 
-    public ResponseDto searchProducts(String keyword);
+    public ResponseDto searchProducts(String keyword, Pageable page);
 }

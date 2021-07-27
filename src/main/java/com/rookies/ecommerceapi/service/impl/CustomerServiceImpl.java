@@ -252,7 +252,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public ResponseDto searchCustomers(String keyword) {
+    public ResponseDto searchCustomers(String keyword, Pageable page) {
         ResponseDto responseDto = new ResponseDto();
 
         CustomerSpecification customerName = new CustomerSpecification();
@@ -261,8 +261,8 @@ public class CustomerServiceImpl implements CustomerService {
         email.add(new SearchCriteria("email", keyword, SearchOperation.MATCH));
         CustomerSpecification phoneNumber = new CustomerSpecification();
         phoneNumber.add(new SearchCriteria("phoneNumber", keyword, SearchOperation.MATCH));
-        List<Customer> customers = customerRepository
-                .findAll(Specification.where(customerName).or(email).or(phoneNumber));
+        Page<Customer> customers = customerRepository
+                .findAll(Specification.where(customerName).or(email).or(phoneNumber), page);
         List<CustomerDto> customersDto = customers.stream()
                 .map(customer -> modelMapper.map(customer, CustomerDto.class)).collect(Collectors.toList());
 

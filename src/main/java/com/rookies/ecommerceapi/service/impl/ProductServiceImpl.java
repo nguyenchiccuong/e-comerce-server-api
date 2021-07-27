@@ -369,14 +369,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponseDto searchProducts(String keyword) {
+    public ResponseDto searchProducts(String keyword, Pageable page) {
         ResponseDto responseDto = new ResponseDto();
 
         ProductSpecification productName = new ProductSpecification();
         productName.add(new SearchCriteria("productName", keyword, SearchOperation.MATCH));
         ProductSpecification description = new ProductSpecification();
         description.add(new SearchCriteria("description", keyword, SearchOperation.MATCH));
-        List<Product> products = productRepository.findAll(Specification.where(productName).or(description));
+        Page<Product> products = productRepository.findAll(Specification.where(productName).or(description), page);
         List<ProductDto> ProductsDto = products.stream().map(product -> modelMapper.map(product, ProductDto.class))
                 .collect(Collectors.toList());
 

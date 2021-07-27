@@ -25,5 +25,5 @@ public interface CustomerService {
 
     public ResponseDto retrieveCustomersByStatus(Pageable page, Short status);
 
-    public ResponseDto searchCustomers(String keyword);
+    public ResponseDto searchCustomers(String keyword, Pageable page);
 }

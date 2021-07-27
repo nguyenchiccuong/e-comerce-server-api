@@ -63,8 +63,11 @@ public class ProductController {
                         @ApiResponse(responseCode = "500", description = "Internal Server Error") })
         @GetMapping("/search")
         public ResponseEntity<ResponseDto> searchProducts(
-                        @RequestParam(name = "keyword", required = true) String keyword) {
-                return ResponseEntity.ok(productService.searchProducts(keyword));
+                        @RequestParam(name = "keyword", required = true) String keyword,
+                        @RequestParam(name = "page", required = true) Integer pageNum,
+                        @RequestParam(name = "items", required = true) Integer numOfItems) {
+                return ResponseEntity.ok(productService.searchProducts(keyword,PageRequest.of(pageNum, numOfItems,
+                Sort.by("productName").and(Sort.by("updateDate").descending()))));
         }
 
         @Operation(summary = "Get product by id", description = "", tags = { "PRODUCT" })

@@ -72,8 +72,11 @@ public class CustomerManageController {
         @GetMapping("/search")
         @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
         public ResponseEntity<ResponseDto> searchCustomers(
-                        @RequestParam(name = "keyword", required = true) String keyword) {
-                return ResponseEntity.ok(customerService.searchCustomers(keyword));
+                        @RequestParam(name = "keyword", required = true) String keyword,
+                        @RequestParam(name = "page", required = true) Integer pageNum,
+                        @RequestParam(name = "items", required = true) Integer numOfItems) {
+                return ResponseEntity.ok(customerService.searchCustomers(keyword,
+                                PageRequest.of(pageNum, numOfItems, Sort.by("name"))));
         }
 
         @Operation(summary = "Get customer by id", description = "", tags = { "CUSTOMER" }, security = {

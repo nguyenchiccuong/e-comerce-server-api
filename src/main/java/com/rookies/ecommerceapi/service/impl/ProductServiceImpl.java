@@ -374,9 +374,12 @@ public class ProductServiceImpl implements ProductService {
 
         ProductSpecification productName = new ProductSpecification();
         productName.add(new SearchCriteria("productName", keyword, SearchOperation.MATCH));
+        ProductSpecification model = new ProductSpecification();
+        model.add(new SearchCriteria("model", keyword, SearchOperation.MATCH));
         ProductSpecification description = new ProductSpecification();
         description.add(new SearchCriteria("description", keyword, SearchOperation.MATCH));
-        Page<Product> products = productRepository.findAll(Specification.where(productName).or(description), page);
+        Page<Product> products = productRepository.findAll(Specification.where(productName).or(description).or(model),
+                page);
         List<ProductDto> ProductsDto = products.stream().map(product -> modelMapper.map(product, ProductDto.class))
                 .collect(Collectors.toList());
 

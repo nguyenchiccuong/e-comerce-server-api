@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.rookies.ecommerceapi.entity.Customer;
+import com.rookies.ecommerceapi.entity.User;
 
 public class CustomerSpecification implements Specification<Customer> {
 
@@ -43,8 +45,14 @@ public class CustomerSpecification implements Specification<Customer> {
             } else if (criteria.getOperation().equals(SearchOperation.EQUAL)) {
                 predicates.add(builder.equal(root.get(criteria.getKey()), criteria.getValue()));
             } else if (criteria.getOperation().equals(SearchOperation.MATCH)) {
-                predicates.add(builder.like(builder.lower(root.get(criteria.getKey())),
-                        "%" + criteria.getValue().toString().toLowerCase() + "%"));
+                if (criteria.getKey().equals("username")) {
+                    Join<Customer, User> groupJoin = root.join("user");
+                    predicates.add(builder.like(builder.lower(groupJoin.<String>get("username")),
+                            "%" + criteria.getValue().toString().toLowerCase() + "%"));
+                } else {
+                    predicates.add(builder.like(builder.lower(root.get(criteria.getKey())),
+                            "%" + criteria.getValue().toString().toLowerCase() + "%"));
+                }
             } else if (criteria.getOperation().equals(SearchOperation.MATCH_END)) {
                 predicates.add(builder.like(builder.lower(root.get(criteria.getKey())),
                         criteria.getValue().toString().toLowerCase() + "%"));

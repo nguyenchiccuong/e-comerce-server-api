@@ -261,8 +261,10 @@ public class CustomerServiceImpl implements CustomerService {
         email.add(new SearchCriteria("email", keyword, SearchOperation.MATCH));
         CustomerSpecification phoneNumber = new CustomerSpecification();
         phoneNumber.add(new SearchCriteria("phoneNumber", keyword, SearchOperation.MATCH));
+        CustomerSpecification username = new CustomerSpecification();
+        username.add(new SearchCriteria("username", keyword, SearchOperation.MATCH));
         Page<Customer> customers = customerRepository
-                .findAll(Specification.where(customerName).or(email).or(phoneNumber), page);
+                .findAll(Specification.where(customerName).or(email).or(phoneNumber).or(username), page);
         List<CustomerDto> customersDto = customers.stream()
                 .map(customer -> modelMapper.map(customer, CustomerDto.class)).collect(Collectors.toList());
 

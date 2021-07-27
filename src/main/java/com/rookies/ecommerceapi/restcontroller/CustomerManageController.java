@@ -45,7 +45,9 @@ public class CustomerManageController {
         }
 
         @Operation(summary = "Get all customer", description = "", tags = { "CUSTOMER" }, security = {
-                        @SecurityRequirement(name = "bearer-key") })
+                        @SecurityRequirement(name = "bearer-key-employee"),
+                        @SecurityRequirement(name = "bearer-key-manager"),
+                        @SecurityRequirement(name = "bearer-key-admin") })
         @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
                         @ApiResponse(responseCode = "400", description = "Bad request"),
                         @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -62,7 +64,9 @@ public class CustomerManageController {
         }
 
         @Operation(summary = "Search customers", description = "", tags = { "CUSTOMER" }, security = {
-                        @SecurityRequirement(name = "bearer-key") })
+                        @SecurityRequirement(name = "bearer-key-employee"),
+                        @SecurityRequirement(name = "bearer-key-manager"),
+                        @SecurityRequirement(name = "bearer-key-admin") })
         @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
                         @ApiResponse(responseCode = "400", description = "Bad request"),
                         @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -80,7 +84,9 @@ public class CustomerManageController {
         }
 
         @Operation(summary = "Get customer by id", description = "", tags = { "CUSTOMER" }, security = {
-                        @SecurityRequirement(name = "bearer-key") })
+                        @SecurityRequirement(name = "bearer-key-employee"),
+                        @SecurityRequirement(name = "bearer-key-manager"),
+                        @SecurityRequirement(name = "bearer-key-admin") })
         @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
                         @ApiResponse(responseCode = "400", description = "Bad request"),
                         @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -99,7 +105,8 @@ public class CustomerManageController {
         }
 
         @Operation(summary = "Lock customer by id", description = "", tags = { "CUSTOMER" }, security = {
-                        @SecurityRequirement(name = "bearer-key") })
+                        @SecurityRequirement(name = "bearer-key-manager"),
+                        @SecurityRequirement(name = "bearer-key-admin") })
         @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
                         @ApiResponse(responseCode = "400", description = "Bad request"),
                         @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -113,7 +120,8 @@ public class CustomerManageController {
         }
 
         @Operation(summary = "Unlock customer by id", description = "", tags = { "CUSTOMER" }, security = {
-                        @SecurityRequirement(name = "bearer-key") })
+                        @SecurityRequirement(name = "bearer-key-manager"),
+                        @SecurityRequirement(name = "bearer-key-admin") })
         @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
                         @ApiResponse(responseCode = "400", description = "Bad request"),
                         @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -127,7 +135,9 @@ public class CustomerManageController {
         }
 
         @Operation(summary = "Get all customer by status", description = "", tags = { "CUSTOMER" }, security = {
-                        @SecurityRequirement(name = "bearer-key") })
+                        @SecurityRequirement(name = "bearer-key-employee"),
+                        @SecurityRequirement(name = "bearer-key-manager"),
+                        @SecurityRequirement(name = "bearer-key-admin") })
         @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
                         @ApiResponse(responseCode = "400", description = "Bad request"),
                         @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -145,7 +155,9 @@ public class CustomerManageController {
         }
 
         @Operation(summary = "Count customer by status", description = "", tags = { "CUSTOMER" }, security = {
-                        @SecurityRequirement(name = "bearer-key") })
+                        @SecurityRequirement(name = "bearer-key-employee"),
+                        @SecurityRequirement(name = "bearer-key-manager"),
+                        @SecurityRequirement(name = "bearer-key-admin") })
         @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
                         @ApiResponse(responseCode = "400", description = "Bad request"),
                         @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -165,7 +177,9 @@ public class CustomerManageController {
         }
 
         @Operation(summary = "Count customer", description = "", tags = { "CUSTOMER" }, security = {
-                        @SecurityRequirement(name = "bearer-key") })
+                        @SecurityRequirement(name = "bearer-key-employee"),
+                        @SecurityRequirement(name = "bearer-key-manager"),
+                        @SecurityRequirement(name = "bearer-key-admin") })
         @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
                         @ApiResponse(responseCode = "400", description = "Bad request"),
                         @ApiResponse(responseCode = "401", description = "Unauthorized"),

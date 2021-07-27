@@ -46,7 +46,9 @@ public class ProductManageController {
         }
 
         @Operation(summary = "Save product", description = "", tags = { "PRODUCT" }, security = {
-                        @SecurityRequirement(name = "bearer-key") })
+                        @SecurityRequirement(name = "bearer-key-employee"),
+                        @SecurityRequirement(name = "bearer-key-manager"),
+                        @SecurityRequirement(name = "bearer-key-admin") })
         @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
                         @ApiResponse(responseCode = "400", description = "Bad request"),
                         @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -66,7 +68,8 @@ public class ProductManageController {
         }
 
         @Operation(summary = "Update product", description = "", tags = { "PRODUCT" }, security = {
-                        @SecurityRequirement(name = "bearer-key") })
+                        @SecurityRequirement(name = "bearer-key-manager"),
+                        @SecurityRequirement(name = "bearer-key-admin") })
         @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
                         @ApiResponse(responseCode = "400", description = "Bad request"),
                         @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -81,7 +84,7 @@ public class ProductManageController {
         }
 
         @Operation(summary = "Delete product", description = "", tags = { "PRODUCT" }, security = {
-                        @SecurityRequirement(name = "bearer-key") })
+                        @SecurityRequirement(name = "bearer-key-admin") })
         @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
                         @ApiResponse(responseCode = "400", description = "Bad request"),
                         @ApiResponse(responseCode = "401", description = "Unauthorized"),

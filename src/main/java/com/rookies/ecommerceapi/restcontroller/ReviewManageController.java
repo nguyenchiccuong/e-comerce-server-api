@@ -51,7 +51,7 @@ public class ReviewManageController {
         }
 
         @Operation(summary = "Save review", description = "", tags = { "REVIEW" }, security = {
-                        @SecurityRequirement(name = "bearer-key") })
+                        @SecurityRequirement(name = "bearer-key-customer") })
         @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
                         @ApiResponse(responseCode = "400", description = "Bad request"),
                         @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -74,7 +74,7 @@ public class ReviewManageController {
         }
 
         @Operation(summary = "Update review", description = "", tags = { "REVIEW" }, security = {
-                        @SecurityRequirement(name = "bearer-key") })
+                        @SecurityRequirement(name = "bearer-key-customer") })
         @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
                         @ApiResponse(responseCode = "400", description = "Bad request"),
                         @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -94,7 +94,7 @@ public class ReviewManageController {
         }
 
         @Operation(summary = "Delete review", description = "", tags = { "REVIEW" }, security = {
-                        @SecurityRequirement(name = "bearer-key") })
+                        @SecurityRequirement(name = "bearer-key-customer") })
         @ApiResponses(value = { @ApiResponse(responseCode = "2xx", description = "Successfull"),
                         @ApiResponse(responseCode = "400", description = "Bad request"),
                         @ApiResponse(responseCode = "401", description = "Unauthorized"),

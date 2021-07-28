@@ -49,7 +49,7 @@ public class ApplicationConfig {
                                                                 new SecurityScheme().type(SecurityScheme.Type.HTTP)
                                                                                 .scheme("bearer").bearerFormat("JWT")))
                                 // config list of server to test
-                                .servers(Arrays.asList(new Server().url("http://localhost:9995")))
+                                .servers(Arrays.asList(new Server().url("http://localhost:9995/my-shop/api/v1/")))
                                 // info
                                 .info(new Info().title("My shop Application API").description("Sample OpenAPI 3.0")
                                                 .contact(new Contact().email("nccuong281299@gmail.com").name("NCC")

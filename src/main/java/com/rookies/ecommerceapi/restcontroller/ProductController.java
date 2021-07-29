@@ -1,6 +1,5 @@
 package com.rookies.ecommerceapi.restcontroller;
 
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +17,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import com.rookies.ecommerceapi.constant.ErrorCode;
 import com.rookies.ecommerceapi.converter.ProductConverter;
 import com.rookies.ecommerceapi.dto.NumberOfEntityDto;
 import com.rookies.ecommerceapi.dto.ProductDto;
 import com.rookies.ecommerceapi.dto.ResponseDto;
 import com.rookies.ecommerceapi.entity.Product;
+import com.rookies.ecommerceapi.exception.SearchKeywordNotFoundException;
 import com.rookies.ecommerceapi.service.ProductService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -63,11 +64,14 @@ public class ProductController {
                         @ApiResponse(responseCode = "500", description = "Internal Server Error") })
         @GetMapping("/search")
         public ResponseEntity<ResponseDto> searchProducts(
-                        @RequestParam(name = "keyword", required = true) String keyword,
+                        @RequestParam(name = "keyword", required = false) String keyword,
                         @RequestParam(name = "page", required = true) Integer pageNum,
                         @RequestParam(name = "items", required = true) Integer numOfItems) {
-                return ResponseEntity.ok(productService.searchProducts(keyword,PageRequest.of(pageNum, numOfItems,
-                Sort.by("productName").and(Sort.by("updateDate").descending()))));
+                if (keyword == null || keyword.isBlank()) {
+                        throw new SearchKeywordNotFoundException(ErrorCode.ERR_SEARCH_KEYWORD_NOT_FOUND);
+                }
+                return ResponseEntity.ok(productService.searchProducts(keyword, PageRequest.of(pageNum, numOfItems,
+                                Sort.by("productName").and(Sort.by("updateDate").descending()))));
         }
 
         @Operation(summary = "Get product by id", description = "", tags = { "PRODUCT" })

@@ -164,4 +164,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(SearchKeywordNotFoundException.class)
+    public ResponseEntity<ResponseDto> SearchKeywordNotFoundException(SearchKeywordNotFoundException ex,
+            WebRequest request) {
+        ResponseDto responseDto = new ResponseDto(ex.getMessage(), request.getDescription(false), null);
+        return new ResponseEntity(responseDto, HttpStatus.BAD_REQUEST);
+    }
 }

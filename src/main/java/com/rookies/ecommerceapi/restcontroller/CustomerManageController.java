@@ -20,10 +20,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import javax.validation.constraints.NotBlank;
 
+import com.rookies.ecommerceapi.constant.ErrorCode;
 import com.rookies.ecommerceapi.dto.CustomerDto;
 import com.rookies.ecommerceapi.dto.NumberOfEntityDto;
 import com.rookies.ecommerceapi.dto.ResponseDto;
+import com.rookies.ecommerceapi.exception.SearchKeywordNotFoundException;
 import com.rookies.ecommerceapi.service.CustomerService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -76,9 +79,12 @@ public class CustomerManageController {
         @GetMapping("/search")
         @PreAuthorize("hasRole('ROLE_EMPLOYEE') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
         public ResponseEntity<ResponseDto> searchCustomers(
-                        @RequestParam(name = "keyword", required = true) String keyword,
+                        @RequestParam(name = "keyword", required = false) String keyword,
                         @RequestParam(name = "page", required = true) Integer pageNum,
                         @RequestParam(name = "items", required = true) Integer numOfItems) {
+                if (keyword == null || keyword.isBlank()) {
+                        throw new SearchKeywordNotFoundException(ErrorCode.ERR_SEARCH_KEYWORD_NOT_FOUND);
+                }
                 return ResponseEntity.ok(customerService.searchCustomers(keyword,
                                 PageRequest.of(pageNum, numOfItems, Sort.by("name"))));
         }

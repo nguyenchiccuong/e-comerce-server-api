@@ -60,10 +60,6 @@ public class ErrorCode {
     // CONVERTER
     public final static String ERR_CONVERTER = "ERR_CONVERTER";
 
-    // EMPLOYEE
-    // public final static String ERR_SAVE = "ERR_SAVE";
-    // public final static String ERR_UPDATE = "ERR_UPDATE";
-    // public final static String ERR_DELETE = "ERR_DELETE";
-
+    public final static String ERR_SEARCH_KEYWORD_NOT_FOUND = "ERR_SEARCH_KEYWORD_NOT_FOUND";
 
 }

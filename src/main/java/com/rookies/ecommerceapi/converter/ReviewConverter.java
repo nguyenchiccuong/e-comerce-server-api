@@ -6,6 +6,7 @@ import com.rookies.ecommerceapi.entity.Order;
 import com.rookies.ecommerceapi.entity.ProductDetail;
 import com.rookies.ecommerceapi.entity.Review;
 import com.rookies.ecommerceapi.exception.ConvertToEntityDtoException;
+import com.rookies.ecommerceapi.exception.SaveErrorException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +28,18 @@ public class ReviewConverter {
             return review;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ConvertToEntityDtoException(ErrorCode.ERR_CONVERTER);
+            // throw new ConvertToEntityDtoException(ErrorCode.ERR_CONVERTER);
+            throw new SaveErrorException(ErrorCode.ERR_SAVE_REVIEW);
         }
     }
 
     public ReviewDto convertToDto(Review review) {
-        return modelMapper.map(review, ReviewDto.class);
+        try {
+            return modelMapper.map(review, ReviewDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            // throw new ConvertToEntityDtoException(ErrorCode.ERR_CONVERTER);
+            throw new SaveErrorException(ErrorCode.ERR_SAVE_REVIEW);
+        }
     }
 }

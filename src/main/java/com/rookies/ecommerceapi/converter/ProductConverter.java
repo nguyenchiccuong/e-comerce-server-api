@@ -10,7 +10,7 @@ import com.rookies.ecommerceapi.entity.Brand;
 import com.rookies.ecommerceapi.entity.Category;
 import com.rookies.ecommerceapi.entity.Origin;
 import com.rookies.ecommerceapi.entity.Product;
-import com.rookies.ecommerceapi.exception.ConvertToEntityDtoException;
+import com.rookies.ecommerceapi.exception.SaveErrorException;
 
 @Component
 public class ProductConverter {
@@ -30,7 +30,8 @@ public class ProductConverter {
             return product;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ConvertToEntityDtoException(ErrorCode.ERR_CONVERTER);
+            // throw new ConvertToEntityDtoException(ErrorCode.ERR_CONVERTER);
+            throw new SaveErrorException(ErrorCode.ERR_SAVE_PRODUCT);
         }
 
     }
@@ -42,7 +43,8 @@ public class ProductConverter {
             return productDto;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ConvertToEntityDtoException(ErrorCode.ERR_CONVERTER);
+            // throw new ConvertToEntityDtoException(ErrorCode.ERR_CONVERTER);
+            throw new SaveErrorException(ErrorCode.ERR_SAVE_PRODUCT);
         }
     }
 

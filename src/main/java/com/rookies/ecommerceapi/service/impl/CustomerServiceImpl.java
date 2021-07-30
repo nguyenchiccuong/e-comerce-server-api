@@ -124,7 +124,7 @@ public class CustomerServiceImpl implements CustomerService {
         User user = new User(signUpRequest.getUsername(), encoder.encode(signUpRequest.getPassword()));
 
         Role role = roleRepository.findByRoleName(RoleName.ROLE_CUSTOMER)
-                .orElseThrow(() -> new RoleNameNotFoundException(RoleName.ROLE_CUSTOMER.name()));
+                .orElseThrow(() -> new RoleNameNotFoundException(ErrorCode.ERR_ROLE_NAME_ID_NOT_FOUND));
         user.setRole(role);
 
         Short status = 1;
@@ -188,7 +188,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .orElseThrow(() -> new UserIdNotFoundException(ErrorCode.ERR_USER_ID_NOT_FOUND));
 
         Role roleByRoleName = roleRepository.findByRoleName(RoleName.ROLE_CUSTOMER_LOCKED)
-                .orElseThrow(() -> new RoleNameNotFoundException(RoleName.ROLE_CUSTOMER_LOCKED.name()));
+                .orElseThrow(() -> new RoleNameNotFoundException(ErrorCode.ERR_ROLE_NAME_ID_NOT_FOUND));
 
         user.setRole(roleByRoleName);
         Short status = 0;
@@ -210,7 +210,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .orElseThrow(() -> new UserIdNotFoundException(ErrorCode.ERR_USER_ID_NOT_FOUND));
 
         Role roleByRoleName = roleRepository.findByRoleName(RoleName.ROLE_CUSTOMER)
-                .orElseThrow(() -> new RoleNameNotFoundException(RoleName.ROLE_CUSTOMER.name()));
+                .orElseThrow(() -> new RoleNameNotFoundException(ErrorCode.ERR_ROLE_NAME_ID_NOT_FOUND));
 
         user.setRole(roleByRoleName);
         Short status = 1;

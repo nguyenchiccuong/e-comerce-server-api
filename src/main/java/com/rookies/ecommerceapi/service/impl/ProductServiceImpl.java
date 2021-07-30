@@ -314,8 +314,11 @@ public class ProductServiceImpl implements ProductService {
                     throw new UpdateErrorException(ErrorCode.ERR_UPDATE_PRODUCT_DELETE_PRODUCT_DETAIL);
                 }
             } else {
-                ProductDetail productDetailUpdate = productDetailFoundFromRequest.get();
-                productDetailUpdate.setProduct(productUpdate);
+                ProductDetail productDetailUpdate = productDetail;
+                productDetailUpdate.setColor(productDetailFoundFromRequest.get().getColor());
+                productDetailUpdate.setPrice(productDetailFoundFromRequest.get().getPrice());
+                productDetailUpdate.setQuantity(productDetailFoundFromRequest.get().getQuantity());
+
                 try {
                     productDetailRepository.save(productDetailUpdate);
                 } catch (Exception e) {

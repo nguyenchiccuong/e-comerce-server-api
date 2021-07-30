@@ -88,7 +88,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .orElseThrow(() -> new ReviewIdNotFoundException(ErrorCode.ERR_REVIEW_ID_NOT_FOUND));
 
         if (!reviewUpdate.getUser().getUsername().equals(username)) {
-            throw new UsernameUnmatchWithReviewException(username);
+            throw new UsernameUnmatchWithReviewException(ErrorCode.ERR_USERNAME_UNAMTCH_WITH_REVIEW);
         }
 
         reviewUpdate.setNumOfStar(reviewRequest.getNumOfStar());
@@ -123,9 +123,9 @@ public class ReviewServiceImpl implements ReviewService {
                 .orElseThrow(() -> new ReviewIdNotFoundException(ErrorCode.ERR_REVIEW_ID_NOT_FOUND));
 
         if (!reviewUpdate.getUser().getUsername().equals(username)) {
-            throw new UsernameUnmatchWithReviewException(username);
+            throw new UsernameUnmatchWithReviewException(ErrorCode.ERR_USERNAME_UNAMTCH_WITH_REVIEW);
         }
-        
+
         try {
             reviewRepository.deleteById(reviewId);
         } catch (Exception e) {
